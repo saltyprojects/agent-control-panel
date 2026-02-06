@@ -9,13 +9,27 @@ class ReactAppView(View):
     React Router will handle the actual routing.
     """
     def get(self, request, *args, **kwargs):
-        # Path to React build index.html
-        react_index = os.path.join(settings.BASE_DIR, 'frontend', 'dist', 'index.html')
+        # Try static files directory first (after collectstatic)
+        static_index = os.path.join(settings.STATIC_ROOT, 'index.html')
         
-        # Check if React build exists
-        if os.path.exists(react_index):
-            with open(react_index, 'r') as f:
+        # Try source directory (development)
+        source_index = os.path.join(settings.BASE_DIR, 'frontend', 'dist', 'index.html')
+        
+        # Check which one exists
+        index_path = None
+        if os.path.exists(static_index):
+            index_path = static_index
+        elif os.path.exists(source_index):
+            index_path = source_index
+        
+        if index_path:
+            with open(index_path, 'r') as f:
                 return HttpResponse(f.read(), content_type='text/html')
         
-        # Fallback error
-        return HttpResponse('<h1>React app not built</h1><p>Run: cd frontend && npm run build</p>', status=500)
+        # Fallback error with debugging info
+        return HttpResponse(
+            f'<h1>React app not found</h1>'
+            f'<p>Checked: {static_index} (exists: {os.path.exists(static_index)})</p>'
+            f'<p>Checked: {source_index} (exists: {os.path.exists(source_index)})</p>',
+            status=500
+        )
