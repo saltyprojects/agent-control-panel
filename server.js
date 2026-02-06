@@ -9,7 +9,7 @@ const COMMIT_SHA = process.env.RAILWAY_GIT_COMMIT_SHA || 'unknown';
 const COMMIT_SHORT = COMMIT_SHA.substring(0, 7);
 const COMMIT_MESSAGE = process.env.RAILWAY_GIT_COMMIT_MESSAGE || '';
 //const BUILD_TIME = new Date().toISOString();
-const BUILD_TIME = new Date();
+const BUILD_TIME = new Date().toLocaleString();
 // ${BUILD_TIME.replace('T', ' ').replace('Z', '')}
 
 app.use(express.json());
