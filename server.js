@@ -26,11 +26,21 @@ app.use((req, res, next) => {
         // Inject build info
         const buildInfo = `
   <div style="position:fixed;bottom:0;left:0;right:0;background:rgba(15,23,42,0.95);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.1);padding:12px 24px;font-size:12px;color:#94a3b8;z-index:9999;display:flex;justify-content:space-between;align-items:center;">
-    <span>Build: <a href="https://github.com/saltyprojects/agent-control-panel/commit/${COMMIT_SHA}" target="_blank" style="color:#10b981;text-decoration:none;font-weight:600;">${COMMIT_SHORT}</a> • 
-    ${BUILD_TIME}
-    </span>
+    <span>Build: <a href="https://github.com/saltyprojects/agent-control-panel/commit/${COMMIT_SHA}" target="_blank" style="color:#10b981;text-decoration:none;font-weight:600;">${COMMIT_SHORT}</a> • <span id="build-time"></span></span>
     <span>${COMMIT_MESSAGE.substring(0, 60)}${COMMIT_MESSAGE.length > 60 ? '...' : ''}</span>
-  </div>`;
+  </div>
+  <script>
+    // Update time to browser local timezone
+    const timeEl = document.getElementById('build-time');
+    if (timeEl) {
+      const updateTime = () => {
+        const now = new Date();
+        timeEl.textContent = now.toLocaleString();
+      };
+      updateTime();
+      setInterval(updateTime, 1000); // Update every second
+    }
+  </script>`;
         
         html = html.replace('</body>', `${buildInfo}\n</body>`);
         res.send(html);
