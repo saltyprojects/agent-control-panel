@@ -309,10 +309,50 @@
       border-top: 1px solid #222;
     }
     
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       h1 { font-size: 36px; }
+      .subtitle { font-size: 18px; }
+      h2 { font-size: 32px !important; }
+      h3 { font-size: 24px !important; }
+      
       .email-form { flex-direction: column; }
       .email-form button { width: 100%; }
+      
+      .problem-grid, .features, .faq-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+      }
+      
+      .hero { padding: 60px 20px 40px; }
+      .problems, .solution, .faq { padding: 60px 20px; }
+      
+      .demo-placeholder { padding: 40px 20px; }
+      .demo-placeholder > div { grid-template-columns: 1fr !important; }
+      
+      .cost-savings > .container > div {
+        padding: 30px 20px !important;
+      }
+      .cost-savings > .container > div > div[style*="display:grid"] {
+        grid-template-columns: 1fr !important;
+      }
+      
+      .security-wake-up .container > div {
+        grid-template-columns: 1fr !important;
+      }
+      
+      .self-hosted .container > div[style*="display:grid"] {
+        grid-template-columns: 1fr !important;
+      }
+      
+      .early-adopters .problem-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      h1 { font-size: 28px; }
+      .badge { font-size: 12px; padding: 6px 12px; }
+      .cta-box { padding: 30px 20px; }
     }
   </style>
 </head>

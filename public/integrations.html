@@ -127,6 +127,28 @@
     .btn:hover { background: #00dd77; transform: translateY(-2px); }
     
     footer { padding: 40px; text-align: center; color: #666; font-size: 14px; }
+    
+    @media (max-width: 768px) {
+      .hero h2 { font-size: 36px; }
+      .grid { grid-template-columns: 1fr !important; }
+      .steps { flex-direction: column; align-items: center; }
+      
+      /* Featured section */
+      div[style*="grid-template-columns:auto 1fr"] {
+        grid-template-columns: 1fr !important;
+        text-align: center !important;
+      }
+      div[style*="display:flex"][style*="gap:15px"] {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero h2 { font-size: 28px; }
+      .hero p { font-size: 16px; }
+      .card { padding: 20px; }
+    }
   </style>
 </head>
 <body>
