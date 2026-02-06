@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00ccff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Shield background -->
+  <path d="M50 10 L85 25 L85 50 Q85 75 50 90 Q15 75 15 50 L15 25 Z" fill="url(#grad)" opacity="0.2"/>
+  <path d="M50 10 L85 25 L85 50 Q85 75 50 90 Q15 75 15 50 L15 25 Z" fill="none" stroke="url(#grad)" stroke-width="3"/>
+  
+  <!-- Control panel icon -->
+  <circle cx="50" cy="35" r="6" fill="#00ff88"/>
+  <circle cx="35" cy="55" r="6" fill="#00ff88"/>
+  <circle cx="65" cy="55" r="6" fill="#00ff88"/>
+  <circle cx="50" cy="70" r="6" fill="#00ff88"/>
+  
+  <!-- Connecting lines -->
+  <line x1="50" y1="35" x2="35" y2="55" stroke="#00ff88" stroke-width="2" opacity="0.6"/>
+  <line x1="50" y1="35" x2="65" y2="55" stroke="#00ff88" stroke-width="2" opacity="0.6"/>
+  <line x1="35" y1="55" x2="50" y2="70" stroke="#00ff88" stroke-width="2" opacity="0.6"/>
+  <line x1="65" y1="55" x2="50" y2="70" stroke="#00ff88" stroke-width="2" opacity="0.6"/>
+</svg>
