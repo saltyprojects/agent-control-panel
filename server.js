@@ -75,6 +75,31 @@ app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Admin panel
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+// Admin API - get waitlist
+app.get('/api/admin/waitlist', async (req, res) => {
+  try {
+    if (dbReady) {
+      const emails = await db.getWaitlist();
+      res.json({ emails });
+    } else {
+      const emails = waitlist.map((email, i) => ({
+        email,
+        created_at: null,
+        source: 'landing'
+      }));
+      res.json({ emails });
+    }
+  } catch (err) {
+    console.error('Admin waitlist error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Static files
 app.use(express.static('public'));
 

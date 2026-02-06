@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Agent Control Panel</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #f1f5f9;
+      padding: 20px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    h1 { margin-bottom: 30px; color: #10b981; }
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+    h2 { margin-bottom: 20px; font-size: 20px; color: #00ff88; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    th {
+      color: #94a3b8;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+    .stat {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      padding: 8px 16px;
+      border-radius: 8px;
+      margin: 10px 10px 10px 0;
+      font-weight: 600;
+    }
+    .btn {
+      padding: 10px 20px;
+      background: #10b981;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn:hover { background: #059669; }
+    .error { color: #ff3366; }
+    .success { color: #10b981; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🛡️ Admin Panel</h1>
+    
+    <div class="card">
+      <h2>📊 Stats</h2>
+      <div class="stat">Waitlist: <span id="waitlist-count">-</span></div>
+      <div class="stat">Database: <span id="db-status">-</span></div>
+    </div>
+
+    <div class="card">
+      <h2>📧 Waitlist Signups</h2>
+      <button class="btn" onclick="loadWaitlist()">Refresh</button>
+      <div id="waitlist-container" style="margin-top: 20px;"></div>
+    </div>
+
+    <div class="card">
+      <h2>🔌 Database Connection</h2>
+      <p>To connect the app to PostgreSQL:</p>
+      <ol style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+        <li>Go to <a href="https://railway.app/project/43a7422e-842f-476e-a6bb-f5214e9a74a8" target="_blank" style="color: #10b981;">Railway Dashboard</a></li>
+        <li>Click "agent-control-panel" service</li>
+        <li>Go to "Variables" tab</li>
+        <li>Add variable: <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">DATABASE_PRIVATE_URL</code></li>
+        <li>Type: Reference → Service: postgres → Variable: DATABASE_URL</li>
+        <li>Redeploy the service</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h2>🔐 Admin Credentials</h2>
+      <p><strong>Username:</strong> root</p>
+      <p><strong>Password:</strong> root</p>
+      <p style="margin-top: 10px; color: #94a3b8; font-size: 14px;">⚠️ Change these in production! This is for development only.</p>
+    </div>
+  </div>
+
+  <script>
+    // Simple auth check
+    const authUser = sessionStorage.getItem('admin_user');
+    if (!authUser) {
+      const user = prompt('Username:');
+      const pass = prompt('Password:');
+      if (user === 'root' && pass === 'root') {
+        sessionStorage.setItem('admin_user', 'root');
+      } else {
+        alert('Invalid credentials');
+        window.location.href = '/';
+      }
+    }
+
+    // Load stats
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/waitlist/count');
+        const data = await res.json();
+        document.getElementById('waitlist-count').textContent = data.count;
+        document.getElementById('db-status').textContent = 'Connected';
+        document.getElementById('db-status').className = 'success';
+      } catch (err) {
+        document.getElementById('db-status').textContent = 'Disconnected';
+        document.getElementById('db-status').className = 'error';
+      }
+    }
+
+    // Load waitlist
+    async function loadWaitlist() {
+      try {
+        const res = await fetch('/api/admin/waitlist');
+        const data = await res.json();
+        
+        if (data.emails && data.emails.length > 0) {
+          const html = `
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Email</th>
+                  <th>Signed Up</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${data.emails.map((item, i) => `
+                  <tr>
+                    <td>${i + 1}</td>
+                    <td>${item.email}</td>
+                    <td>${item.created_at ? new Date(item.created_at).toLocaleString() : 'N/A'}</td>
+                    <td>${item.source || 'landing'}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+          document.getElementById('waitlist-container').innerHTML = html;
+        } else {
+          document.getElementById('waitlist-container').innerHTML = '<p style="color: #94a3b8;">No signups yet.</p>';
+        }
+      } catch (err) {
+        document.getElementById('waitlist-container').innerHTML = '<p class="error">Error loading waitlist: ' + err.message + '</p>';
+      }
+    }
+
+    // Initial load
+    loadStats();
+    loadWaitlist();
+  </script>
+</body>
+</html>
