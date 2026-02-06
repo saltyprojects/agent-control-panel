@@ -100,7 +100,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'public']
+
+# Serve React frontend build + legacy public files
+STATICFILES_DIRS = [
+    BASE_DIR / 'frontend' / 'dist',  # React build
+    BASE_DIR / 'public',              # Legacy static files
+]
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type

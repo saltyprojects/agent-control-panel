@@ -9,7 +9,7 @@ env/
 ENV/
 *.egg
 *.egg-info/
-dist/
+# dist/ - allow frontend/dist/
 build/
 
 # Django
