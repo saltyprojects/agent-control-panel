@@ -1,0 +1,12 @@
+# Force Python-only build, explicitly disable Node.js
+[providers]
+python = "3.12"
+
+[phases.setup]
+nixPkgs = ['python312']
+
+[phases.install]
+cmds = ['pip install -r requirements.txt']
+
+[start]
+cmd = './start.sh'

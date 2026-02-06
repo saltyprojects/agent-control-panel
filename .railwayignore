@@ -1,5 +1,16 @@
-# Ignore frontend development files (keep dist/ for Django)
+# Ignore ALL frontend source files (we only need dist/ which is in git)
+frontend/package.json
+frontend/package-lock.json
 frontend/node_modules/
+frontend/src/
+frontend/tsconfig.json
+frontend/tsconfig.node.json
+frontend/vite.config.ts
+frontend/tailwind.config.js
+frontend/postcss.config.js
+frontend/vercel.json
+frontend/index.html
+frontend/.gitignore
 
 # Ignore legacy code
 legacy/
