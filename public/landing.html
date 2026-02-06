@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Control Panel - Stop Your AI Agents Before They Go Rogue</title>
+  <meta name="description" content="Visual dashboard for managing AI agent teams. See what they're doing, control permissions, track costs, and kill runaway agents instantly.">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      line-height: 1.7;
+    }
+    
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    }
+    
+    .badge {
+      background: rgba(255, 51, 102, 0.2);
+      color: #ff3366;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 30px;
+      border: 1px solid rgba(255, 51, 102, 0.3);
+    }
+    
+    h1 {
+      font-size: 56px;
+      font-weight: 800;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      max-width: 800px;
+    }
+    
+    .subtitle {
+      font-size: 24px;
+      color: #888;
+      max-width: 600px;
+      margin-bottom: 40px;
+    }
+    
+    .cta-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+    }
+    
+    .cta-box h3 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    
+    .email-form {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .email-form input {
+      flex: 1;
+      padding: 16px 20px;
+      border: 2px solid #333;
+      border-radius: 8px;
+      background: #1a1a1a;
+      color: #fff;
+      font-size: 16px;
+    }
+    
+    .email-form input:focus {
+      outline: none;
+      border-color: #00ff88;
+    }
+    
+    .email-form button {
+      padding: 16px 32px;
+      background: #00ff88;
+      color: #0a0a0a;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .email-form button:hover {
+      background: #00dd77;
+      transform: translateY(-2px);
+    }
+    
+    .social-proof {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .problems {
+      padding: 100px 20px;
+      background: #0f0f0f;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .problems h2 {
+      font-size: 42px;
+      text-align: center;
+      margin-bottom: 60px;
+      color: #fff;
+    }
+    
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+    
+    .problem-card {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 30px;
+    }
+    
+    .problem-card .icon {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+    
+    .problem-card h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: #ff3366;
+    }
+    
+    .problem-card p {
+      color: #888;
+    }
+    
+    .solution {
+      padding: 100px 20px;
+      background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+    }
+    
+    .solution h2 {
+      font-size: 42px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00ff88;
+    }
+    
+    .solution .subtitle {
+      text-align: center;
+      margin: 0 auto 60px;
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+    
+    .feature {
+      text-align: center;
+      padding: 30px;
+    }
+    
+    .feature .icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+    
+    .feature h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    
+    .feature p {
+      color: #888;
+      font-size: 15px;
+    }
+    
+    .demo {
+      padding: 100px 20px;
+      background: #0a0a0a;
+      text-align: center;
+    }
+    
+    .demo h2 {
+      font-size: 36px;
+      margin-bottom: 40px;
+      color: #fff;
+    }
+    
+    .demo-image {
+      max-width: 900px;
+      margin: 0 auto;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid #333;
+      box-shadow: 0 20px 60px rgba(0, 255, 136, 0.1);
+    }
+    
+    .demo-image img {
+      width: 100%;
+      display: block;
+    }
+    
+    .demo-placeholder {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 60px;
+      color: #00ff88;
+      font-family: monospace;
+    }
+    
+    .final-cta {
+      padding: 100px 20px;
+      background: linear-gradient(135deg, #0a0a0a 0%, #16213e 100%);
+      text-align: center;
+    }
+    
+    .final-cta h2 {
+      font-size: 42px;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    
+    .final-cta p {
+      font-size: 20px;
+      color: #888;
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+    
+    footer {
+      padding: 40px 20px;
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+      background: #0a0a0a;
+      border-top: 1px solid #222;
+    }
+    
+    @media (max-width: 600px) {
+      h1 { font-size: 36px; }
+      .email-form { flex-direction: column; }
+      .email-form button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="badge">⚠️ AI agents with full system access = security nightmare</div>
+    <h1>Stop Your AI Agents Before They Go Rogue</h1>
+    <p class="subtitle">Visual dashboard for managing AI agent teams. See what they're doing, control permissions, track costs, and kill runaway agents instantly.</p>
+    
+    <div class="cta-box">
+      <h3>Get early access</h3>
+      <form class="email-form" id="waitlist-form">
+        <input type="email" placeholder="you@company.com" required id="email-input">
+        <button type="submit">Join Waitlist</button>
+      </form>
+      <p class="social-proof">Join 0 others waiting for launch</p>
+    </div>
+  </div>
+
+  <div class="problems">
+    <div class="container">
+      <h2>The Problem With AI Agents</h2>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="icon">👻</div>
+          <h3>No Visibility</h3>
+          <p>Your agents are running, but what are they actually doing? Reading sensitive files? Making API calls? You have no idea.</p>
+        </div>
+        <div class="problem-card">
+          <div class="icon">💸</div>
+          <h3>Cost Blindness</h3>
+          <p>Each agent burns tokens. Multiply by 10 agents running for hours. Your bill is a mystery until it arrives.</p>
+        </div>
+        <div class="problem-card">
+          <div class="icon">🔓</div>
+          <h3>No Permission Control</h3>
+          <p>Most agent setups give full system access by default. One prompt injection away from disaster.</p>
+        </div>
+        <div class="problem-card">
+          <div class="icon">🚨</div>
+          <h3>No Kill Switch</h3>
+          <p>Agent goes rogue at 3am? Better hope you can find the terminal window. Or that it hasn't deleted your SSH keys.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="solution">
+    <div class="container">
+      <h2>The Solution</h2>
+      <p class="subtitle">A real-time control panel for your AI agent fleet. Like Docker Desktop, but for agents.</p>
+      
+      <div class="features">
+        <div class="feature">
+          <div class="icon">📊</div>
+          <h3>Real-time Dashboard</h3>
+          <p>See all running agents, their status, current activity, and resource usage at a glance.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">🛡️</div>
+          <h3>Security Scores</h3>
+          <p>Each agent gets a security rating. Know which ones are accessing sensitive files or making suspicious calls.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">📋</div>
+          <h3>Audit Logs</h3>
+          <p>Every file read, every tool call, every network request. Searchable, exportable, compliance-ready.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">💰</div>
+          <h3>Cost Tracking</h3>
+          <p>Real-time token usage and cost per agent. Set budgets and get alerts before you blow through them.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">🔐</div>
+          <h3>Permission Control</h3>
+          <p>Fine-grained permissions per agent. Sandbox file access, limit tools, restrict network calls.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">⚡</div>
+          <h3>Emergency Stop</h3>
+          <p>One-click kill switch for all agents. Because sometimes you just need to pull the plug.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <h2>See It In Action</h2>
+    <div class="demo-image">
+      <div class="demo-placeholder">
+        <p>[ Live demo available at /index.html ]</p>
+        <p style="margin-top:20px;color:#888;">Interactive dashboard with mock agents showing security monitoring in action</p>
+      </div>
+    </div>
+    <p style="margin-top:30px;"><a href="/index.html" style="color:#00ff88;">Try the interactive demo →</a></p>
+  </div>
+
+  <div class="final-cta">
+    <h2>Built for the AI Agent Era</h2>
+    <p>Claude Opus 4.6, GPT-5.3-Codex, agent teams building C compilers... The future is multi-agent. Make sure you're in control.</p>
+    <div class="cta-box" style="margin:0 auto;">
+      <h3>Be first to know when we launch</h3>
+      <form class="email-form" id="waitlist-form-2">
+        <input type="email" placeholder="you@company.com" required>
+        <button type="submit">Join Waitlist</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>Agent Control Panel © 2026 · Built with 🧂</p>
+  </footer>
+
+  <script>
+    // Load current waitlist count
+    fetch('/api/waitlist/count')
+      .then(r => r.json())
+      .then(data => {
+        document.querySelectorAll('.social-proof').forEach(el => {
+          el.textContent = `Join ${data.count} others waiting for launch`;
+        });
+      });
+
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = form.querySelector('input');
+        const email = input.value;
+        const button = form.querySelector('button');
+        
+        button.textContent = 'Joining...';
+        button.disabled = true;
+        
+        try {
+          const res = await fetch('/api/waitlist', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+          const data = await res.json();
+          
+          if (data.success) {
+            button.textContent = '✓ You\'re in!';
+            button.style.background = '#00cc66';
+            input.value = '';
+            document.querySelectorAll('.social-proof').forEach(el => {
+              el.textContent = `Join ${data.count} others waiting for launch`;
+            });
+          }
+        } catch (err) {
+          button.textContent = 'Try again';
+          button.disabled = false;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

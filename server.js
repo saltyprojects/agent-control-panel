@@ -1,10 +1,54 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+
+// Waitlist storage (simple file-based for MVP)
+const WAITLIST_FILE = './waitlist.json';
+let waitlist = [];
+try {
+  if (fs.existsSync(WAITLIST_FILE)) {
+    waitlist = JSON.parse(fs.readFileSync(WAITLIST_FILE, 'utf8'));
+  }
+} catch (e) {
+  waitlist = [];
+}
+
+// Serve landing page as homepage
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'landing.html'));
+});
+
+// Serve dashboard at /dashboard
+app.get('/dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Static files
 app.use(express.static('public'));
+
+// Waitlist signup
+app.post('/api/waitlist', (req, res) => {
+  const { email } = req.body;
+  if (!email || !email.includes('@')) {
+    return res.status(400).json({ error: 'Invalid email' });
+  }
+  
+  if (!waitlist.includes(email)) {
+    waitlist.push(email);
+    fs.writeFileSync(WAITLIST_FILE, JSON.stringify(waitlist, null, 2));
+    console.log(`New signup: ${email} (total: ${waitlist.length})`);
+  }
+  
+  res.json({ success: true, count: waitlist.length });
+});
+
+app.get('/api/waitlist/count', (req, res) => {
+  res.json({ count: waitlist.length });
+});
 
 // Mock data with security features
 const mockAgents = [
@@ -55,7 +99,6 @@ const mockAgents = [
   }
 ];
 
-// Security audit log
 const auditLog = [
   { time: '00:42:31', agent: 'Data Analyzer', action: 'FILE_READ', target: '/etc/passwd', status: 'BLOCKED' },
   { time: '00:41:15', agent: 'Data Analyzer', action: 'FILE_READ', target: '~/.ssh/config', status: 'FLAGGED' },
@@ -92,33 +135,11 @@ app.get('/api/audit', (req, res) => {
   res.json({ log: auditLog });
 });
 
-app.get('/api/alerts', (req, res) => {
-  const alerts = auditLog.filter(l => l.status !== 'ALLOWED');
-  res.json({ alerts });
-});
-
 app.post('/api/agents/:id/kill', (req, res) => {
   const agent = mockAgents.find(a => a.id === req.params.id);
   if (agent) {
     agent.status = 'stopped';
-    auditLog.unshift({
-      time: new Date().toTimeString().split(' ')[0],
-      agent: agent.name,
-      action: 'TERMINATED',
-      target: 'Process killed by user',
-      status: 'ALLOWED'
-    });
     res.json({ success: true, message: `Agent ${agent.name} stopped` });
-  } else {
-    res.status(404).json({ error: 'Agent not found' });
-  }
-});
-
-app.post('/api/agents/:id/audit', (req, res) => {
-  const agent = mockAgents.find(a => a.id === req.params.id);
-  if (agent) {
-    const agentLogs = auditLog.filter(l => l.agent === agent.name);
-    res.json({ agent: agent.name, logs: agentLogs });
   } else {
     res.status(404).json({ error: 'Agent not found' });
   }
@@ -142,33 +163,12 @@ app.post('/api/agents/spawn', (req, res) => {
     alerts: 0
   };
   mockAgents.push(newAgent);
-  auditLog.unshift({
-    time: new Date().toTimeString().split(' ')[0],
-    agent: newAgent.name,
-    action: 'SPAWNED',
-    target: `Model: ${newAgent.model}`,
-    status: 'ALLOWED'
-  });
   res.json({ success: true, agent: newAgent });
-});
-
-app.post('/api/emergency-stop', (req, res) => {
-  mockAgents.forEach(a => {
-    if (a.status === 'running') {
-      a.status = 'stopped';
-      auditLog.unshift({
-        time: new Date().toTimeString().split(' ')[0],
-        agent: a.name,
-        action: 'EMERGENCY_STOP',
-        target: 'All agents terminated',
-        status: 'ALLOWED'
-      });
-    }
-  });
-  res.json({ success: true, message: 'All agents terminated' });
 });
 
 app.listen(PORT, () => {
   console.log(`Agent Control Panel running on port ${PORT}`);
-  console.log(`Security monitoring enabled`);
+  console.log(`Landing page: /`);
+  console.log(`Dashboard: /dashboard`);
+  console.log(`Waitlist signups: ${waitlist.length}`);
 });
