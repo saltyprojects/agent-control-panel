@@ -1,21 +1,11 @@
-# Ignore frontend source (but keep dist/ for Django to serve)
-frontend/src/
+# Ignore frontend development files (keep dist/ for Django)
 frontend/node_modules/
-frontend/package.json
-frontend/package-lock.json
-frontend/tsconfig*.json
-frontend/vite.config.ts
-frontend/tailwind.config.js
-frontend/postcss.config.js
-frontend/vercel.json
-frontend/.gitignore
-frontend/index.html
 
-# Ignore legacy Node.js code
+# Ignore legacy code
 legacy/
 
-# Ignore development files
+# Ignore docs
 *.md
-.git/
-.github/
+
+# Ignore logs
 *.log
