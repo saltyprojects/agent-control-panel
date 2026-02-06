@@ -68,10 +68,19 @@ Visit the [live demo](https://agent-control-panel-production.up.railway.app/) to
 
 ### Self-Hosted Deployment
 
-**Docker:**
+**Docker Compose (Recommended):**
 ```bash
 git clone https://github.com/saltyprojects/agent-control-panel.git
 cd agent-control-panel
+cp .env.example .env  # Configure your environment
+docker-compose up -d
+# Visit http://localhost:3000/landing.html
+```
+
+Includes PostgreSQL database for future backend. See [DEPLOY.md](DEPLOY.md) for full guide.
+
+**Docker (Manual):**
+```bash
 docker build -t agent-control-panel .
 docker run -p 3000:3000 agent-control-panel
 ```
@@ -84,8 +93,10 @@ npm start
 ```
 
 **Environment Variables:**
+See `.env.example` for all options. Minimum configuration:
 ```bash
-PORT=3000  # Server port (optional, defaults to 3000)
+PORT=3000
+DB_PASSWORD=your_secure_password  # For Docker Compose deployments
 ```
 
 ---
