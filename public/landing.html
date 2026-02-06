@@ -235,6 +235,52 @@
       font-family: monospace;
     }
     
+    .faq {
+      padding: 100px 20px;
+      background: #0f0f0f;
+    }
+    
+    .faq h2 {
+      font-size: 42px;
+      text-align: center;
+      margin-bottom: 60px;
+      color: #fff;
+    }
+    
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
+    
+    .faq-item {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 30px;
+      transition: all 0.2s;
+    }
+    
+    .faq-item:hover {
+      border-color: #00ff88;
+      transform: translateY(-4px);
+    }
+    
+    .faq-item h3 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      color: #00ff88;
+    }
+    
+    .faq-item p {
+      color: #ccc;
+      line-height: 1.7;
+    }
+    
+    .faq-item a {
+      text-decoration: underline;
+    }
+    
     .final-cta {
       padding: 100px 20px;
       background: linear-gradient(135deg, #0a0a0a 0%, #16213e 100%);
@@ -363,6 +409,38 @@
       </div>
     </div>
     <p style="margin-top:30px;"><a href="/index.html" style="color:#00ff88;">Try the interactive demo →</a></p>
+  </div>
+
+  <div class="faq">
+    <div class="container">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h3>How does this integrate with my existing agents?</h3>
+          <p>Agent Control Panel works with popular frameworks like LangChain, AutoGPT, Claude Code, OpenClaw, and custom agent implementations. Simple SDK integration takes ~5 minutes.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does this slow down my agents?</h3>
+          <p>No. Monitoring adds &lt;10ms overhead per tool call. Agents run at full speed while you get real-time visibility into what they're doing.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What about privacy? Where does data go?</h3>
+          <p>Self-hosted option available. Your agent data never leaves your infrastructure. Cloud version uses end-to-end encryption. You own your data.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can I use this for production workloads?</h3>
+          <p>Yes. Designed for production from day one. Handles hundreds of concurrent agents. Battle-tested security controls. SOC2 compliant (coming Q2 2026).</p>
+        </div>
+        <div class="faq-item">
+          <h3>How much does it cost?</h3>
+          <p>Free tier for up to 3 agents. Pro starts at $49/month for 10 agents. Enterprise pricing for larger deployments. See <a href="/pricing.html" style="color:#00ff88;">pricing</a>.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What if an agent goes rogue right now?</h3>
+          <p>Emergency kill switch stops all agents in &lt;100ms. Individual agent termination with one click. Rollback file changes, block network access, revoke permissions instantly.</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="final-cta">
