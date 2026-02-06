@@ -62,24 +62,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('PGDATABASE', 'agentcontrol'),
-        'USER': os.getenv('PGUSER', 'agentcontrol'),
-        'PASSWORD': os.getenv('PGPASSWORD', ''),
-        'HOST': os.getenv('PGHOST', 'localhost'),
-        'PORT': os.getenv('PGPORT', '5432'),
-    }
-}
-
-# Use DATABASE_URL if available (Railway format)
+# Use PostgreSQL if DATABASE_URL is available, otherwise SQLite (for testing)
 if os.getenv('DATABASE_URL') or os.getenv('DATABASE_PRIVATE_URL'):
     import dj_database_url
-    DATABASES['default'] = dj_database_url.config(
-        default=os.getenv('DATABASE_PRIVATE_URL') or os.getenv('DATABASE_URL'),
-        conn_max_age=600
-    )
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.getenv('DATABASE_PRIVATE_URL') or os.getenv('DATABASE_URL'),
+            conn_max_age=600
+        )
+    }
+else:
+    # Fallback to SQLite for development/testing
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Custom user model
 AUTH_USER_MODEL = 'core.User'
