@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Control Panel - Manage Your AI Agent Teams</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+      background: #0f0f0f;
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 30px;
+      border-bottom: 2px solid #00ff88;
+    }
+    
+    .header h1 {
+      font-size: 32px;
+      color: #00ff88;
+      margin-bottom: 8px;
+    }
+    
+    .header .tagline {
+      color: #888;
+      font-size: 14px;
+    }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 30px;
+      background: #1a1a1a;
+    }
+    
+    .stat-card {
+      background: #252525;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid #00ff88;
+    }
+    
+    .stat-card .label {
+      color: #888;
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    
+    .stat-card .value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #00ff88;
+    }
+    
+    .controls {
+      padding: 30px;
+      display: flex;
+      gap: 15px;
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-primary {
+      background: #00ff88;
+      color: #0f0f0f;
+    }
+    
+    .btn-primary:hover {
+      background: #00dd77;
+      transform: translateY(-2px);
+    }
+    
+    .btn-danger {
+      background: #ff3366;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background: #dd2255;
+    }
+    
+    .agents-grid {
+      padding: 0 30px 30px;
+      display: grid;
+      gap: 20px;
+    }
+    
+    .agent-card {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.2s;
+    }
+    
+    .agent-card:hover {
+      border-color: #00ff88;
+      box-shadow: 0 4px 20px rgba(0, 255, 136, 0.1);
+    }
+    
+    .agent-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .agent-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }
+    
+    .status {
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .status.running {
+      background: rgba(0, 255, 136, 0.2);
+      color: #00ff88;
+    }
+    
+    .status.idle {
+      background: rgba(255, 193, 7, 0.2);
+      color: #ffc107;
+    }
+    
+    .status.stopped {
+      background: rgba(255, 51, 102, 0.2);
+      color: #ff3366;
+    }
+    
+    .agent-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    
+    .detail {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .detail-label {
+      font-size: 11px;
+      color: #666;
+      text-transform: uppercase;
+    }
+    
+    .detail-value {
+      font-size: 14px;
+      color: #ccc;
+      font-weight: 600;
+    }
+    
+    .activity {
+      background: #0f0f0f;
+      padding: 12px;
+      border-radius: 6px;
+      border-left: 3px solid #00ff88;
+      margin: 16px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #00ff88;
+    }
+    
+    .permissions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    
+    .permission-badge {
+      background: #252525;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      color: #888;
+      border: 1px solid #333;
+    }
+    
+    .agent-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    
+    .btn-small {
+      padding: 8px 16px;
+      font-size: 12px;
+    }
+    
+    .hero-cta {
+      background: #16213e;
+      padding: 60px 30px;
+      text-align: center;
+      margin-top: 40px;
+    }
+    
+    .hero-cta h2 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: #00ff88;
+    }
+    
+    .hero-cta p {
+      font-size: 18px;
+      color: #888;
+      margin-bottom: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>⚡ Agent Control Panel</h1>
+    <p class="tagline">Orchestrate, monitor, and control your AI agent teams in real-time</p>
+  </div>
+
+  <div class="stats" id="stats">
+    <div class="stat-card">
+      <div class="label">Total Agents</div>
+      <div class="value" id="total-agents">-</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Running Now</div>
+      <div class="value" id="running-agents">-</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Total Cost</div>
+      <div class="value" id="total-cost">$-</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Tokens Used</div>
+      <div class="value" id="total-tokens">-</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-primary" onclick="spawnAgent()">+ Spawn New Agent</button>
+    <button class="btn btn-danger" onclick="killAllAgents()">⚠ Kill All Agents</button>
+  </div>
+
+  <div class="agents-grid" id="agents-grid">
+    <!-- Agents will be loaded here -->
+  </div>
+
+  <div class="hero-cta">
+    <h2>Stop Flying Blind</h2>
+    <p>Running multiple AI agents without a control panel is like managing a data center with no monitoring. You need visibility, control, and safety.</p>
+    <button class="btn btn-primary">Get Early Access →</button>
+  </div>
+
+  <script>
+    async function loadAgents() {
+      try {
+        const response = await fetch('/api/agents');
+        const data = await response.json();
+        renderAgents(data.agents);
+      } catch (error) {
+        console.error('Error loading agents:', error);
+      }
+    }
+
+    async function loadStats() {
+      try {
+        const response = await fetch('/api/stats');
+        const stats = await response.json();
+        document.getElementById('total-agents').textContent = stats.totalAgents;
+        document.getElementById('running-agents').textContent = stats.runningAgents;
+        document.getElementById('total-cost').textContent = '$' + stats.totalCost;
+        document.getElementById('total-tokens').textContent = stats.totalTokens.toLocaleString();
+      } catch (error) {
+        console.error('Error loading stats:', error);
+      }
+    }
+
+    function renderAgents(agents) {
+      const grid = document.getElementById('agents-grid');
+      grid.innerHTML = agents.map(agent => `
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-name">${agent.name}</div>
+            <div class="status ${agent.status}">${agent.status.toUpperCase()}</div>
+          </div>
+          
+          <div class="agent-details">
+            <div class="detail">
+              <div class="detail-label">Model</div>
+              <div class="detail-value">${agent.model}</div>
+            </div>
+            <div class="detail">
+              <div class="detail-label">Uptime</div>
+              <div class="detail-value">${agent.uptime}</div>
+            </div>
+            <div class="detail">
+              <div class="detail-label">Tokens</div>
+              <div class="detail-value">${agent.tokensUsed.toLocaleString()}</div>
+            </div>
+            <div class="detail">
+              <div class="detail-label">Cost</div>
+              <div class="detail-value">$${agent.cost.toFixed(2)}</div>
+            </div>
+          </div>
+
+          <div class="activity">
+            > ${agent.lastActivity}
+          </div>
+
+          <div class="permissions">
+            ${agent.permissions.map(p => `<span class="permission-badge">${p}</span>`).join('')}
+          </div>
+
+          <div class="agent-actions">
+            <button class="btn btn-primary btn-small" onclick="viewLogs('${agent.id}')">View Logs</button>
+            <button class="btn btn-danger btn-small" onclick="killAgent('${agent.id}')">Kill</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function killAgent(id) {
+      try {
+        await fetch(`/api/agents/${id}/kill`, { method: 'POST' });
+        loadAgents();
+        loadStats();
+      } catch (error) {
+        console.error('Error killing agent:', error);
+      }
+    }
+
+    function spawnAgent() {
+      const name = prompt('Agent name:', 'New Agent');
+      if (!name) return;
+      
+      fetch('/api/agents/spawn', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, model: 'claude-sonnet-4', permissions: ['read', 'write'] })
+      }).then(() => {
+        loadAgents();
+        loadStats();
+      });
+    }
+
+    function killAllAgents() {
+      if (confirm('Are you sure you want to kill all running agents?')) {
+        alert('Emergency stop triggered! (Demo only)');
+      }
+    }
+
+    function viewLogs(id) {
+      alert(`Opening logs for agent ${id}... (Demo only)`);
+    }
+
+    // Load data on page load
+    loadAgents();
+    loadStats();
+
+    // Refresh every 5 seconds
+    setInterval(() => {
+      loadAgents();
+      loadStats();
+    }, 5000);
+  </script>
+</body>
+</html>
