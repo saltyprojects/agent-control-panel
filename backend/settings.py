@@ -109,7 +109,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings
 CORS_ALLOW_ALL_ORIGINS = DEBUG
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ORIGINS', '').split(',') if not DEBUG else []
+cors_origins = os.getenv('CORS_ORIGINS', '')
+CORS_ALLOWED_ORIGINS = [o.strip() for o in cors_origins.split(',') if o.strip()] if not DEBUG else []
 
 # REST Framework
 REST_FRAMEWORK = {
