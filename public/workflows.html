@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workflow Monitor - Agent Control Panel</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 20px 30px;
+      border-bottom: 2px solid #00ff88;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .header h1 {
+      font-size: 24px;
+      color: #00ff88;
+    }
+    
+    .header nav a {
+      color: #888;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+    
+    .header nav a:hover {
+      color: #00ff88;
+    }
+    
+    .workflow-header {
+      padding: 30px;
+      background: #0f0f0f;
+      border-bottom: 1px solid #222;
+    }
+    
+    .workflow-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .workflow-title h2 {
+      font-size: 28px;
+      color: #fff;
+    }
+    
+    .workflow-status {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    
+    .status-badge {
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .status-badge.running {
+      background: rgba(0, 255, 136, 0.2);
+      color: #00ff88;
+    }
+    
+    .status-badge.failed {
+      background: rgba(255, 51, 102, 0.2);
+      color: #ff3366;
+    }
+    
+    .workflow-stats {
+      display: flex;
+      gap: 40px;
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #00ff88;
+    }
+    
+    .stat-value.warning {
+      color: #ffc107;
+    }
+    
+    .stat-value.danger {
+      color: #ff3366;
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+    }
+    
+    .pipeline {
+      padding: 40px 30px;
+      overflow-x: auto;
+    }
+    
+    .pipeline-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      min-width: max-content;
+    }
+    
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 200px;
+    }
+    
+    .step-box {
+      background: #1a1a1a;
+      border: 2px solid #333;
+      border-radius: 12px;
+      padding: 20px;
+      width: 180px;
+      text-align: center;
+      position: relative;
+      transition: all 0.3s;
+    }
+    
+    .step-box.success {
+      border-color: #00ff88;
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+    }
+    
+    .step-box.failed {
+      border-color: #ff3366;
+      box-shadow: 0 0 20px rgba(255, 51, 102, 0.2);
+    }
+    
+    .step-box.running {
+      border-color: #00ccff;
+      animation: pulse 2s infinite;
+    }
+    
+    .step-box.pending {
+      opacity: 0.5;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(0, 204, 255, 0.2); }
+      50% { box-shadow: 0 0 30px rgba(0, 204, 255, 0.4); }
+    }
+    
+    .step-icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    
+    .step-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    
+    .step-time {
+      font-size: 12px;
+      color: #888;
+    }
+    
+    .step-status {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    
+    .step-status.success {
+      background: #00ff88;
+      color: #0a0a0a;
+    }
+    
+    .step-status.failed {
+      background: #ff3366;
+      color: #fff;
+    }
+    
+    .step-status.running {
+      background: #00ccff;
+      color: #0a0a0a;
+    }
+    
+    .step-status.pending {
+      background: #333;
+      color: #888;
+    }
+    
+    .arrow {
+      display: flex;
+      align-items: center;
+      color: #333;
+      font-size: 24px;
+      padding: 0 10px;
+      margin-top: 30px;
+    }
+    
+    .arrow.active {
+      color: #00ff88;
+    }
+    
+    .step-details {
+      margin-top: 15px;
+      padding: 15px;
+      background: #0f0f0f;
+      border-radius: 8px;
+      width: 180px;
+      font-size: 12px;
+    }
+    
+    .step-details .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 4px 0;
+    }
+    
+    .step-details .label {
+      color: #666;
+    }
+    
+    .step-details .value {
+      color: #ccc;
+    }
+    
+    .step-details .value.success {
+      color: #00ff88;
+    }
+    
+    .step-details .value.failed {
+      color: #ff3366;
+    }
+    
+    .section {
+      padding: 30px;
+      border-top: 1px solid #222;
+    }
+    
+    .section h3 {
+      font-size: 20px;
+      color: #fff;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .checklist {
+      display: grid;
+      gap: 12px;
+    }
+    
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 20px;
+      background: #1a1a1a;
+      border-radius: 8px;
+      border-left: 4px solid #333;
+    }
+    
+    .check-item.success {
+      border-left-color: #00ff88;
+    }
+    
+    .check-item.failed {
+      border-left-color: #ff3366;
+    }
+    
+    .check-icon {
+      font-size: 20px;
+    }
+    
+    .check-text {
+      flex: 1;
+    }
+    
+    .check-text .title {
+      font-weight: 600;
+      color: #fff;
+    }
+    
+    .check-text .subtitle {
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .check-time {
+      font-size: 12px;
+      color: #888;
+    }
+    
+    .optimizations {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .opt-card {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    
+    .opt-card h4 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    
+    .opt-card p {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 15px;
+    }
+    
+    .opt-card .impact {
+      font-size: 12px;
+      padding: 6px 12px;
+      background: rgba(0, 255, 136, 0.1);
+      color: #00ff88;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .history-table th, .history-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #222;
+    }
+    
+    .history-table th {
+      color: #888;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    .btn-primary {
+      background: #00ff88;
+      color: #0a0a0a;
+    }
+    
+    .btn-secondary {
+      background: #333;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🔄 Workflow Monitor</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/workflows.html" style="color:#00ff88;">Workflows</a>
+    </nav>
+  </div>
+
+  <div class="workflow-header">
+    <div class="workflow-title">
+      <h2>📈 Crypto Trading Bot</h2>
+      <div class="workflow-status">
+        <span class="status-badge running">🔄 Running</span>
+        <button class="btn btn-secondary">⏸️ Pause</button>
+        <button class="btn btn-primary">▶️ Run Now</button>
+      </div>
+    </div>
+    
+    <div class="workflow-stats">
+      <div class="stat">
+        <div class="stat-value">847</div>
+        <div class="stat-label">Total Runs</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">98.2%</div>
+        <div class="stat-label">Success Rate</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value warning">15</div>
+        <div class="stat-label">Failures (24h)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">34.2s</div>
+        <div class="stat-label">Avg Duration</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$2.34</div>
+        <div class="stat-label">Cost (24h)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pipeline">
+    <div class="pipeline-container">
+      <div class="step">
+        <div class="step-box success">
+          <div class="step-status success">✓</div>
+          <div class="step-icon">🏦</div>
+          <div class="step-name">1. Check Wallets</div>
+          <div class="step-time">0.3s</div>
+        </div>
+        <div class="step-details">
+          <div class="detail-row">
+            <span class="label">Base:</span>
+            <span class="value success">$72.04</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Arbitrum:</span>
+            <span class="value success">$0.00</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="arrow active">→</div>
+      
+      <div class="step">
+        <div class="step-box success">
+          <div class="step-status success">✓</div>
+          <div class="step-icon">📊</div>
+          <div class="step-name">2. Fetch Prices</div>
+          <div class="step-time">12.4s</div>
+        </div>
+        <div class="step-details">
+          <div class="detail-row">
+            <span class="label">Tokens:</span>
+            <span class="value">77</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Data points:</span>
+            <span class="value">10,900</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="arrow active">→</div>
+      
+      <div class="step">
+        <div class="step-box success">
+          <div class="step-status success">✓</div>
+          <div class="step-icon">🧮</div>
+          <div class="step-name">3. Calculate Signals</div>
+          <div class="step-time">2.1s</div>
+        </div>
+        <div class="step-details">
+          <div class="detail-row">
+            <span class="label">Z-scores:</span>
+            <span class="value">77</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Signals:</span>
+            <span class="value success">2 found</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="arrow active">→</div>
+      
+      <div class="step">
+        <div class="step-box failed">
+          <div class="step-status failed">✗</div>
+          <div class="step-icon">🔌</div>
+          <div class="step-name">4. Connect Exchange</div>
+          <div class="step-time">FAILED</div>
+        </div>
+        <div class="step-details">
+          <div class="detail-row">
+            <span class="label">Error:</span>
+            <span class="value failed">API timeout</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Retries:</span>
+            <span class="value">3/3</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="arrow">→</div>
+      
+      <div class="step">
+        <div class="step-box pending">
+          <div class="step-status pending">⏸</div>
+          <div class="step-icon">💱</div>
+          <div class="step-name">5. Execute Trade</div>
+          <div class="step-time">waiting...</div>
+        </div>
+        <div class="step-details">
+          <div class="detail-row">
+            <span class="label">Status:</span>
+            <span class="value">Blocked</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>✅ Health Checklist (Last Run: 2 min ago)</h3>
+    <div class="checklist">
+      <div class="check-item success">
+        <span class="check-icon">✅</span>
+        <div class="check-text">
+          <div class="title">Wallet connectivity</div>
+          <div class="subtitle">Base wallet accessible, balance $72.04</div>
+        </div>
+        <span class="check-time">0.3s</span>
+      </div>
+      <div class="check-item success">
+        <span class="check-icon">✅</span>
+        <div class="check-text">
+          <div class="title">Price feed active</div>
+          <div class="subtitle">77 tokens, 10,900 data points loaded</div>
+        </div>
+        <span class="check-time">12.4s</span>
+      </div>
+      <div class="check-item success">
+        <span class="check-icon">✅</span>
+        <div class="check-text">
+          <div class="title">Signal calculation working</div>
+          <div class="subtitle">2 signals detected (SAND +2.3σ, MANA +1.8σ)</div>
+        </div>
+        <span class="check-time">2.1s</span>
+      </div>
+      <div class="check-item failed">
+        <span class="check-icon">❌</span>
+        <div class="check-text">
+          <div class="title">Exchange connection</div>
+          <div class="subtitle">API timeout after 3 retries - check rate limits</div>
+        </div>
+        <span class="check-time">30.0s</span>
+      </div>
+      <div class="check-item" style="border-left-color:#666;">
+        <span class="check-icon">⏸️</span>
+        <div class="check-text">
+          <div class="title">Trade execution</div>
+          <div class="subtitle">Blocked - waiting for exchange connection</div>
+        </div>
+        <span class="check-time">-</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>💡 Optimization Suggestions</h3>
+    <div class="optimizations">
+      <div class="opt-card">
+        <h4>🚀 Speed</h4>
+        <p>Step 2 (Fetch Prices) takes 12.4s. Enable price caching with 30s TTL to reduce to ~0.5s for repeat runs.</p>
+        <span class="impact">Save 12s per run</span>
+      </div>
+      <div class="opt-card">
+        <h4>💰 Cost</h4>
+        <p>Currently fetching all 77 tokens. Filter to only tokens with sufficient liquidity to reduce API calls by 60%.</p>
+        <span class="impact">Save $0.08/day</span>
+      </div>
+      <div class="opt-card">
+        <h4>📈 Reliability</h4>
+        <p>Exchange connection failed 15 times in 24h. Add fallback to backup API endpoint or increase timeout to 60s.</p>
+        <span class="impact">+3% success rate</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>📜 Run History</h3>
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Duration</th>
+          <th>Steps</th>
+          <th>Result</th>
+          <th>Signals</th>
+          <th>Trades</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>02:15:00</td>
+          <td>45.2s</td>
+          <td>4/5</td>
+          <td style="color:#ff3366;">❌ Failed at Step 4</td>
+          <td>2</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>02:10:00</td>
+          <td>34.1s</td>
+          <td>5/5</td>
+          <td style="color:#00ff88;">✅ Success</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>02:05:00</td>
+          <td>38.7s</td>
+          <td>5/5</td>
+          <td style="color:#00ff88;">✅ Success</td>
+          <td>1</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>02:00:00</td>
+          <td>33.2s</td>
+          <td>5/5</td>
+          <td style="color:#00ff88;">✅ Success</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>01:55:00</td>
+          <td>35.8s</td>
+          <td>5/5</td>
+          <td style="color:#00ff88;">✅ Success</td>
+          <td>2</td>
+          <td>0</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>
