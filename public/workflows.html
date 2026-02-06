@@ -401,6 +401,223 @@
 
   <div class="workflow-header">
     <div class="workflow-title">
+      <h2>🤖 Multi-Agent Software Team</h2>
+      <div class="workflow-status">
+        <span class="status-badge running">🔄 Active</span>
+        <button class="btn btn-secondary">⏸️ Pause All</button>
+        <button class="btn btn-primary">📊 View Dashboard</button>
+      </div>
+    </div>
+    
+    <div class="workflow-stats">
+      <div class="stat">
+        <div class="stat-value">8</div>
+        <div class="stat-label">Active Agents</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">23h 15m</div>
+        <div class="stat-label">Total Runtime</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value warning">2</div>
+        <div class="stat-label">Security Alerts</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$45.30</div>
+        <div class="stat-label">Total Cost</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pipeline">
+    <div class="pipeline-container">
+      <div class="step">
+        <div class="step-box success">
+          <div class="step-status success">✓</div>
+          <div class="step-icon">🗄️</div>
+          <div class="step-name">Database Schema</div>
+          <div class="step-time">4h 15m</div>
+        </div>
+        <div class="step-details">
+          <div class="detail-row">
+            <span class="label">Agent:</span>
+            <span class="value success">Schema Designer</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Status:</span>
+            <span class="value">Complete, awaiting review</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Cost:</span>
+            <span class="value">$1.71</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="arrow">→</div>
+      
+      <div class="step">
+        <div class="step-box running">
+          <div class="step-status running">⏳</div>
+          <div class="step-icon">⚙️</div>
+          <div class="step-name">Backend API</div>
+          <div class="step-time">2h 58m</div>
+        </div>
+        <div class="step-details">
+          <div class="detail-row">
+            <span class="label">Agent:</span>
+            <span class="value">Backend Builder</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Activity:</span>
+            <span class="value">GraphQL resolvers (78% done)</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Alerts:</span>
+            <span class="value warning">1 (unknown endpoint)</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="arrow">→</div>
+      
+      <div class="step">
+        <div class="step-box running">
+          <div class="step-status running">⏳</div>
+          <div class="step-icon">🎨</div>
+          <div class="step-name">Frontend UI</div>
+          <div class="step-time">3h 22m</div>
+        </div>
+        <div class="step-details">
+          <div class="detail-row">
+            <span class="label">Agent:</span>
+            <span class="value">Frontend Builder</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Activity:</span>
+            <span class="value">React components (12/18 done)</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Cost:</span>
+            <span class="value">$12.54</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="arrow">→</div>
+      
+      <div class="step">
+        <div class="step-box running">
+          <div class="step-status running">⏳</div>
+          <div class="step-icon">🛡️</div>
+          <div class="step-name">Security Audit</div>
+          <div class="step-time">1h 44m</div>
+        </div>
+        <div class="step-details">
+          <div class="detail-row">
+            <span class="label">Agent:</span>
+            <span class="value">Security Auditor</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Activity:</span>
+            <span class="value">XSS vulnerability scan</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Files:</span>
+            <span class="value">923 scanned</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="arrow">→</div>
+      
+      <div class="step">
+        <div class="step-box pending">
+          <div class="step-status pending">⏸</div>
+          <div class="step-icon">🚀</div>
+          <div class="step-name">Deploy</div>
+          <div class="step-time">waiting...</div>
+        </div>
+        <div class="step-details">
+          <div class="detail-row">
+            <span class="label">Agent:</span>
+            <span class="value">DevOps Deploy</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Status:</span>
+            <span class="value">Waiting for tests</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>👥 Team Activity (Last 10 minutes)</h3>
+    <div class="checklist">
+      <div class="check-item success">
+        <span class="check-icon">🎨</span>
+        <div class="check-text">
+          <div class="title">Frontend Builder</div>
+          <div class="subtitle">Created DashboardCard.tsx component (234 lines)</div>
+        </div>
+        <span class="check-time">2m ago</span>
+      </div>
+      <div class="check-item success">
+        <span class="check-icon">⚙️</span>
+        <div class="check-text">
+          <div class="title">Backend Builder</div>
+          <div class="subtitle">Implemented getUserStats resolver</div>
+        </div>
+        <span class="check-time">4m ago</span>
+      </div>
+      <div class="check-item failed">
+        <span class="check-icon">⚙️</span>
+        <div class="check-text">
+          <div class="title">Backend Builder</div>
+          <div class="subtitle">⚠️ Attempted network call to unknown endpoint - BLOCKED</div>
+        </div>
+        <span class="check-time">7m ago</span>
+      </div>
+      <div class="check-item success">
+        <span class="check-icon">📝</span>
+        <div class="check-text">
+          <div class="title">Documentation Writer</div>
+          <div class="subtitle">Updated API docs with 3 new endpoints</div>
+        </div>
+        <span class="check-time">9m ago</span>
+      </div>
+      <div class="check-item success">
+        <span class="check-icon">🧪</span>
+        <div class="check-text">
+          <div class="title">Integration Tester</div>
+          <div class="subtitle">Ran test suite: 47/50 passed</div>
+        </div>
+        <span class="check-time">10m ago</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" style="margin-bottom: 60px; padding-bottom: 40px; border-bottom: 2px solid #333;">
+    <h3>💡 Team Insights</h3>
+    <div class="optimizations">
+      <div class="opt-card" style="border-left: 4px solid #00ff88;">
+        <h4>✅ High Collaboration</h4>
+        <p>Frontend and Backend agents coordinating well. 12 API contracts agreed upon, zero conflicts.</p>
+      </div>
+      <div class="opt-card" style="border-left: 4px solid #ffc107;">
+        <h4>⚠️ Security Alert</h4>
+        <p>Backend agent attempted 1 unauthorized network call. Blocked and logged. Review recommended.</p>
+      </div>
+      <div class="opt-card" style="border-left: 4px solid #00ccff;">
+        <h4>💰 Cost Trend</h4>
+        <p>Frontend Builder using 28% more tokens than projected. Consider switching to Sonnet 4 for routine tasks.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="workflow-header" style="border-top: 2px solid #333; padding-top: 60px;">
+    <div class="workflow-title">
       <h2>📈 Crypto Trading Bot</h2>
       <div class="workflow-status">
         <span class="status-badge running">🔄 Running</span>
