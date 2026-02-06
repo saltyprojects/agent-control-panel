@@ -8,7 +8,9 @@ const PORT = process.env.PORT || 3000;
 const COMMIT_SHA = process.env.RAILWAY_GIT_COMMIT_SHA || 'unknown';
 const COMMIT_SHORT = COMMIT_SHA.substring(0, 7);
 const COMMIT_MESSAGE = process.env.RAILWAY_GIT_COMMIT_MESSAGE || '';
-const BUILD_TIME = new Date().toISOString();
+//const BUILD_TIME = new Date().toISOString();
+const BUILD_TIME = new Date();
+// ${BUILD_TIME.replace('T', ' ').replace('Z', '')}
 
 app.use(express.json());
 
@@ -24,7 +26,9 @@ app.use((req, res, next) => {
         // Inject build info
         const buildInfo = `
   <div style="position:fixed;bottom:0;left:0;right:0;background:rgba(15,23,42,0.95);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.1);padding:12px 24px;font-size:12px;color:#94a3b8;z-index:9999;display:flex;justify-content:space-between;align-items:center;">
-    <span>Build: <a href="https://github.com/saltyprojects/agent-control-panel/commit/${COMMIT_SHA}" target="_blank" style="color:#10b981;text-decoration:none;font-weight:600;">${COMMIT_SHORT}</a> • ${BUILD_TIME.replace('T', ' ').replace('Z', '')}</span>
+    <span>Build: <a href="https://github.com/saltyprojects/agent-control-panel/commit/${COMMIT_SHA}" target="_blank" style="color:#10b981;text-decoration:none;font-weight:600;">${COMMIT_SHORT}</a> • 
+    ${BUILD_TIME}
+    </span>
     <span>${COMMIT_MESSAGE.substring(0, 60)}${COMMIT_MESSAGE.length > 60 ? '...' : ''}</span>
   </div>`;
         
