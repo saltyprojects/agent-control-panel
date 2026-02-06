@@ -582,6 +582,51 @@
     </div>
   </div>
 
+  <div class="section" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
+    <h3>🧠 What I Learned (Last 24 Hours)</h3>
+    <div class="optimizations" style="margin-bottom: 30px;">
+      <div class="opt-card" style="border: 2px solid #00ff88;">
+        <h4>📊 Strategy Insight</h4>
+        <p><strong>Current:</strong> Rolling 24h window, 2.0σ threshold</p>
+        <p><strong>Finding:</strong> I ran a backtest on last 7 days of data. A <strong>36-hour window with 1.5σ</strong> would have caught 3 more profitable signals while avoiding 2 false positives.</p>
+        <p style="margin-top: 15px; padding: 12px; background: rgba(0,255,136,0.1); border-radius: 6px;">
+          <strong>Projected improvement:</strong> +$18.40 profit over 7 days
+        </p>
+        <div style="margin-top: 15px; display: flex; gap: 10px;">
+          <button class="btn btn-primary" onclick="alert('This would update the strategy - needs your approval')">✅ Apply Change</button>
+          <button class="btn btn-secondary" onclick="alert('Showing detailed backtest results...')">📊 See Backtest</button>
+          <button class="btn btn-secondary" onclick="alert('Dismissed')">❌ Dismiss</button>
+        </div>
+      </div>
+      
+      <div class="opt-card" style="border: 2px solid #00ccff;">
+        <h4>🔄 DEX Opportunity</h4>
+        <p><strong>Finding:</strong> You're currently monitoring 77 tokens on Uniswap. I checked Aerodrome and found <strong>23 additional tokens</strong> with sufficient liquidity that match your criteria.</p>
+        <p style="margin-top: 15px; padding: 12px; background: rgba(0,204,255,0.1); border-radius: 6px;">
+          <strong>Opportunity:</strong> +30% more trading opportunities
+        </p>
+        <div style="margin-top: 15px; display: flex; gap: 10px;">
+          <button class="btn btn-primary" onclick="alert('This would add Aerodrome tokens - needs your approval')">✅ Add Tokens</button>
+          <button class="btn btn-secondary" onclick="alert('Showing token list...')">📋 View List</button>
+          <button class="btn btn-secondary">❌ Dismiss</button>
+        </div>
+      </div>
+      
+      <div class="opt-card" style="border: 2px solid #ffc107;">
+        <h4>⚠️ Risk Alert</h4>
+        <p><strong>Observation:</strong> SAND has triggered signals 4 times in 24h but price keeps moving against us. This token may be in a trend, not mean-reverting.</p>
+        <p style="margin-top: 15px; padding: 12px; background: rgba(255,193,7,0.1); border-radius: 6px;">
+          <strong>Suggestion:</strong> Add trend filter - skip tokens with 7-day momentum > 15%
+        </p>
+        <div style="margin-top: 15px; display: flex; gap: 10px;">
+          <button class="btn btn-primary" onclick="alert('This would add trend filter - needs your approval')">✅ Add Filter</button>
+          <button class="btn btn-secondary" onclick="alert('Showing SAND analysis...')">📊 Analyze</button>
+          <button class="btn btn-secondary">❌ Dismiss</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="section">
     <h3>💡 Optimization Suggestions</h3>
     <div class="optimizations">
