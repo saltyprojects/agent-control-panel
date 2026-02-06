@@ -1,0 +1,11 @@
+# Ignore frontend - deployed separately to Vercel
+frontend/
+
+# Ignore legacy Node.js code
+legacy/
+
+# Ignore development files
+*.md
+.git/
+.github/
+*.log

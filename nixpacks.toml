@@ -1,8 +1,12 @@
 [phases.setup]
 nixPkgs = ['python312', 'postgresql']
+aptPkgs = []
 
 [phases.install]
 cmds = ['pip install -r requirements.txt']
+
+[phases.build]
+# No build phase needed for Django backend
 
 [start]
 cmd = './start.sh'
