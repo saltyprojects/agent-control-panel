@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing - Agent Control Panel</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      line-height: 1.7;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 20px 30px;
+      border-bottom: 2px solid #00ff88;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .header h1 {
+      font-size: 24px;
+      color: #00ff88;
+    }
+    
+    .header nav a {
+      color: #888;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+    
+    .header nav a:hover { color: #00ff88; }
+    
+    .hero {
+      text-align: center;
+      padding: 80px 20px 60px;
+    }
+    
+    .hero h2 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    
+    .hero p {
+      font-size: 20px;
+      color: #888;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    
+    .plan {
+      background: #1a1a1a;
+      border: 2px solid #333;
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    
+    .plan:hover {
+      border-color: #00ff88;
+      transform: translateY(-5px);
+    }
+    
+    .plan.featured {
+      border-color: #00ff88;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      position: relative;
+    }
+    
+    .plan.featured::before {
+      content: 'MOST POPULAR';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #00ff88;
+      color: #0a0a0a;
+      padding: 4px 16px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    
+    .plan-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    
+    .plan-desc {
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+    
+    .plan-price {
+      font-size: 48px;
+      font-weight: 800;
+      color: #00ff88;
+      margin-bottom: 5px;
+    }
+    
+    .plan-price span {
+      font-size: 18px;
+      color: #888;
+      font-weight: 400;
+    }
+    
+    .plan-period {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+    
+    .features {
+      text-align: left;
+      margin-bottom: 30px;
+    }
+    
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #222;
+    }
+    
+    .feature:last-child { border-bottom: none; }
+    
+    .feature .icon { font-size: 18px; }
+    .feature .icon.yes { color: #00ff88; }
+    .feature .icon.no { color: #666; }
+    
+    .feature .text { color: #ccc; font-size: 14px; }
+    .feature .text.disabled { color: #666; }
+    
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-primary {
+      background: #00ff88;
+      color: #0a0a0a;
+    }
+    
+    .btn-primary:hover {
+      background: #00dd77;
+    }
+    
+    .btn-secondary {
+      background: #333;
+      color: #fff;
+    }
+    
+    .btn-secondary:hover {
+      background: #444;
+    }
+    
+    .faq {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+    
+    .faq h3 {
+      font-size: 32px;
+      text-align: center;
+      margin-bottom: 40px;
+      color: #fff;
+    }
+    
+    .faq-item {
+      background: #1a1a1a;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+    
+    .faq-q {
+      padding: 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: #fff;
+    }
+    
+    .faq-a {
+      padding: 0 20px 20px;
+      color: #888;
+      display: none;
+    }
+    
+    .faq-item.open .faq-a { display: block; }
+    
+    .cta {
+      text-align: center;
+      padding: 80px 20px;
+      background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+    }
+    
+    .cta h3 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    
+    .cta p {
+      font-size: 18px;
+      color: #888;
+      margin-bottom: 30px;
+    }
+    
+    footer {
+      padding: 40px 20px;
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🛡️ Agent Control Panel</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/workflows.html">Workflows</a>
+      <a href="/pricing.html" style="color:#00ff88;">Pricing</a>
+    </nav>
+  </div>
+
+  <div class="hero">
+    <h2>Simple, Transparent Pricing</h2>
+    <p>Start free. Scale as your agent fleet grows. No hidden fees.</p>
+  </div>
+
+  <div class="pricing-grid">
+    <div class="plan">
+      <div class="plan-name">Starter</div>
+      <div class="plan-desc">For individual developers</div>
+      <div class="plan-price">$0</div>
+      <div class="plan-period">forever</div>
+      
+      <div class="features">
+        <div class="feature">
+          <span class="icon yes">✓</span>
+          <span class="text">Up to 3 agents</span>
+        </div>
+        <div class="feature">
+          <span class="icon yes">✓</span>
+          <span class="text">Basic dashboard</span>
+        </div>
+        <div class="feature">
+          <span class="icon yes">✓</span>
+          <span class="text">7-day audit logs</span>
+        </div>
+        <div class="feature">
+          <span class="icon no">✗</span>
+          <span class="text disabled">Workflow automation</span>
+        </div>
+        <div class="feature">
+          <span class="icon no">✗</span>
+          <span class="text disabled">AI recommendations</span>
+        </div>
+        <div class="feature">
+          <span class="icon no">✗</span>
+          <span class="text disabled">Team features</span>
+        </div>
+      </div>
+      
+      <button class="btn btn-secondary" onclick="joinWaitlist('starter')">Join Waitlist</button>
+    </div>
+
+    <div class="plan featured">
+      <div class="plan-name">Pro</div>
+      <div class="plan-desc">For power users & small teams</div>
+      <div class="plan-price">$19<span>/mo</span></div>
+      <div class="plan-period">per user, billed monthly</div>
+      
+      <div class="features">
+        <div class="feature">
+          <span class="icon yes">✓</span>
+          <span class="text">Unlimited agents</span>
+        </div>
+        <div class="feature">
+          <span class="icon yes">✓</span>
+          <span class="text">Full dashboard + security scores</span>
+        </div>
+        <div class="feature">
+          <span class="icon yes">✓</span>
+          <span class="text">90-day audit logs</span>
+        </div>
+        <div class="feature">
+          <span class="icon yes">✓</span>
+          <span class="text">Workflow automation</span>
+        </div>
+        <div class="feature">
+          <span class="icon yes">✓</span>
+          <span class="text">AI recommendations</span>
+        </div>
+        <div class="feature">
+          <span class="icon no">✗</span>
+          <span class="text disabled">Team features</span>
+        </div>
+      </div>
+      
+      <button class="btn btn-primary" onclick="joinWaitlist('pro')">Join Waitlist</button>
+    </div>
+
+    <div class="plan">
+      <div class="plan-name">Team</div>
+      <div class="plan-desc">For organizations</div>
+      <div class="plan-price">$49<span>/mo</span></div>
+      <div class="plan-period">per user, billed monthly</div>
+      
+      <div class="features">
+        <div class="feature">
+          <span class="icon yes">✓</span>
+          <span class="text">Everything in Pro</span>
+        </div>
+        <div class="feature">
+          <span class="icon yes">✓</span>
+          <span class="text">Unlimited team members</span>
+        </div>
+        <div class="feature">
+          <span class="icon yes">✓</span>
+          <span class="text">1-year audit logs</span>
+        </div>
+        <div class="feature">
+          <span class="icon yes">✓</span>
+          <span class="text">SSO / SAML</span>
+        </div>
+        <div class="feature">
+          <span class="icon yes">✓</span>
+          <span class="text">Role-based access</span>
+        </div>
+        <div class="feature">
+          <span class="icon yes">✓</span>
+          <span class="text">Priority support</span>
+        </div>
+      </div>
+      
+      <button class="btn btn-secondary" onclick="joinWaitlist('team')">Join Waitlist</button>
+    </div>
+  </div>
+
+  <div class="faq">
+    <h3>Frequently Asked Questions</h3>
+    
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">What counts as an "agent"? <span>+</span></div>
+      <div class="faq-a">Any AI agent session that Agent Control Panel monitors. This includes Claude Code sessions, OpenClaw agents, custom agents using our SDK, etc.</div>
+    </div>
+    
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Is there a free trial? <span>+</span></div>
+      <div class="faq-a">The Starter plan is free forever. For Pro and Team, we offer a 14-day free trial with no credit card required.</div>
+    </div>
+    
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">What integrations do you support? <span>+</span></div>
+      <div class="faq-a">We support OpenClaw, Claude Code, and any agent that can use our REST API or SDK. More integrations coming soon.</div>
+    </div>
+    
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Can I self-host? <span>+</span></div>
+      <div class="faq-a">Enterprise self-hosting is available. Contact us for pricing.</div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <h3>Ready to take control?</h3>
+    <p>Join the waitlist and be first to know when we launch.</p>
+    <button class="btn btn-primary" style="max-width:300px;margin:0 auto;" onclick="window.location='/'">Join Waitlist →</button>
+  </div>
+
+  <footer>
+    <p>Agent Control Panel © 2026 · Built with 🧂</p>
+  </footer>
+
+  <script>
+    function joinWaitlist(plan) {
+      window.location = '/?plan=' + plan;
+    }
+  </script>
+</body>
+</html>
