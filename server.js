@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const db = require('./db');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -47,16 +48,22 @@ app.use((req, res, next) => {
   next();
 });
 
-// Waitlist storage (simple file-based for MVP)
-const WAITLIST_FILE = './waitlist.json';
-let waitlist = [];
-try {
-  if (fs.existsSync(WAITLIST_FILE)) {
-    waitlist = JSON.parse(fs.readFileSync(WAITLIST_FILE, 'utf8'));
-  }
-} catch (e) {
-  waitlist = [];
+// Initialize database connection
+let dbReady = false;
+if (process.env.DATABASE_URL || process.env.DATABASE_PRIVATE_URL) {
+  db.initDatabase()
+    .then(() => {
+      dbReady = true;
+      console.log('✓ Database ready');
+    })
+    .catch(err => {
+      console.error('Database initialization failed:', err);
+      console.log('⚠️  Falling back to in-memory storage');
+    });
 }
+
+// Fallback in-memory storage
+let waitlist = [];
 
 // Serve landing page as homepage
 app.get('/', (req, res) => {
@@ -72,23 +79,45 @@ app.get('/dashboard', (req, res) => {
 app.use(express.static('public'));
 
 // Waitlist signup
-app.post('/api/waitlist', (req, res) => {
+app.post('/api/waitlist', async (req, res) => {
   const { email } = req.body;
   if (!email || !email.includes('@')) {
     return res.status(400).json({ error: 'Invalid email' });
   }
   
-  if (!waitlist.includes(email)) {
-    waitlist.push(email);
-    fs.writeFileSync(WAITLIST_FILE, JSON.stringify(waitlist, null, 2));
-    console.log(`New signup: ${email} (total: ${waitlist.length})`);
+  try {
+    if (dbReady) {
+      // Use database
+      await db.addToWaitlist(email, 'landing');
+      const count = await db.getWaitlistCount();
+      console.log(`New signup: ${email} (total: ${count})`);
+      res.json({ success: true, count });
+    } else {
+      // Fallback to in-memory
+      if (!waitlist.includes(email)) {
+        waitlist.push(email);
+      }
+      console.log(`New signup: ${email} (total: ${waitlist.length})`);
+      res.json({ success: true, count: waitlist.length });
+    }
+  } catch (err) {
+    console.error('Waitlist signup error:', err);
+    res.status(500).json({ error: 'Signup failed' });
   }
-  
-  res.json({ success: true, count: waitlist.length });
 });
 
-app.get('/api/waitlist/count', (req, res) => {
-  res.json({ count: waitlist.length });
+app.get('/api/waitlist/count', async (req, res) => {
+  try {
+    if (dbReady) {
+      const count = await db.getWaitlistCount();
+      res.json({ count });
+    } else {
+      res.json({ count: waitlist.length });
+    }
+  } catch (err) {
+    console.error('Get count error:', err);
+    res.json({ count: 0 });
+  }
 });
 
 // Mock data with security features
