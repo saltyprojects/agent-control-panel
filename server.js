@@ -24,7 +24,7 @@ app.use((req, res, next) => {
         // Inject build info
         const buildInfo = `
   <div style="position:fixed;bottom:0;left:0;right:0;background:rgba(15,23,42,0.95);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.1);padding:12px 24px;font-size:12px;color:#94a3b8;z-index:9999;display:flex;justify-content:space-between;align-items:center;">
-    <span>Build: <a href="https://github.com/saltyprojects/agent-control-panel/commit/${COMMIT_SHA}" target="_blank" style="color:#10b981;text-decoration:none;font-weight:600;">${COMMIT_SHORT}</a> • ${BUILD_TIME.split('T')[0]}</span>
+    <span>Build: <a href="https://github.com/saltyprojects/agent-control-panel/commit/${COMMIT_SHA}" target="_blank" style="color:#10b981;text-decoration:none;font-weight:600;">${COMMIT_SHORT}</a> • ${BUILD_TIME.replace('T', ' ').replace('Z', '')}</span>
     <span>${COMMIT_MESSAGE.substring(0, 60)}${COMMIT_MESSAGE.length > 60 ? '...' : ''}</span>
   </div>`;
         
