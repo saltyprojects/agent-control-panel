@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Integrations - Agent Control Panel</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      line-height: 1.7;
+    }
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 20px 30px;
+      border-bottom: 2px solid #00ff88;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 { font-size: 24px; color: #00ff88; }
+    .header nav a { color: #888; text-decoration: none; margin-left: 20px; }
+    .header nav a:hover { color: #00ff88; }
+    
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+    }
+    .hero h2 { font-size: 48px; margin-bottom: 20px; color: #fff; }
+    .hero p { font-size: 20px; color: #888; max-width: 600px; margin: 0 auto; }
+    
+    .integrations {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+    .section-title {
+      font-size: 28px;
+      color: #00ff88;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-bottom: 60px;
+    }
+    .card {
+      background: #1a1a1a;
+      border: 2px solid #333;
+      border-radius: 12px;
+      padding: 30px;
+      transition: all 0.2s;
+    }
+    .card:hover {
+      border-color: #00ff88;
+      transform: translateY(-3px);
+    }
+    .card.coming-soon { opacity: 0.6; }
+    .card-icon { font-size: 40px; margin-bottom: 15px; }
+    .card-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .card-desc { font-size: 14px; color: #888; margin-bottom: 15px; }
+    .card-status {
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+    .card-status.ready { background: rgba(0,255,136,0.2); color: #00ff88; }
+    .card-status.beta { background: rgba(0,204,255,0.2); color: #00ccff; }
+    .card-status.soon { background: rgba(255,193,7,0.2); color: #ffc107; }
+    
+    .how-it-works {
+      background: #0f0f0f;
+      padding: 60px 20px;
+    }
+    .how-it-works h3 { text-align: center; font-size: 32px; margin-bottom: 40px; color: #fff; }
+    .steps {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .step {
+      text-align: center;
+      max-width: 250px;
+    }
+    .step-num {
+      width: 50px;
+      height: 50px;
+      background: #00ff88;
+      color: #0a0a0a;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 auto 15px;
+    }
+    .step h4 { color: #fff; margin-bottom: 10px; }
+    .step p { font-size: 14px; color: #888; }
+    
+    .cta {
+      text-align: center;
+      padding: 80px 20px;
+    }
+    .cta h3 { font-size: 32px; margin-bottom: 20px; color: #fff; }
+    .btn {
+      display: inline-block;
+      padding: 16px 32px;
+      background: #00ff88;
+      color: #0a0a0a;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+    .btn:hover { background: #00dd77; transform: translateY(-2px); }
+    
+    footer { padding: 40px; text-align: center; color: #666; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🛡️ Agent Control Panel</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/workflows.html">Workflows</a>
+      <a href="/pricing.html">Pricing</a>
+      <a href="/integrations.html" style="color:#00ff88;">Integrations</a>
+    </nav>
+  </div>
+
+  <div class="hero">
+    <h2>Works With Your Stack</h2>
+    <p>Connect Agent Control Panel to the AI tools you already use. One dashboard to rule them all.</p>
+  </div>
+
+  <div class="integrations">
+    <h3 class="section-title">🤖 AI Agent Platforms</h3>
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon">🦎</div>
+        <div class="card-title">OpenClaw</div>
+        <div class="card-desc">Native integration. Monitor sessions, control permissions, track costs across all your OpenClaw agents.</div>
+        <span class="card-status ready">✓ Ready</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <div class="card-title">Claude Code</div>
+        <div class="card-desc">Track Claude Code sessions, monitor file access, set project-level permissions.</div>
+        <span class="card-status beta">Beta</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">💻</div>
+        <div class="card-title">Codex CLI</div>
+        <div class="card-desc">OpenAI's coding agent. Full visibility into what Codex is doing in your codebase.</div>
+        <span class="card-status beta">Beta</span>
+      </div>
+      <div class="card coming-soon">
+        <div class="card-icon">🤖</div>
+        <div class="card-title">Custom Agents</div>
+        <div class="card-desc">REST API + SDK to connect any custom agent. Python, Node, Go SDKs available.</div>
+        <span class="card-status soon">Coming Soon</span>
+      </div>
+    </div>
+
+    <h3 class="section-title">🔧 Developer Tools</h3>
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon">🐙</div>
+        <div class="card-title">GitHub</div>
+        <div class="card-desc">See which repos agents are accessing. Audit commits made by AI. Block sensitive repos.</div>
+        <span class="card-status ready">✓ Ready</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <div class="card-title">npm / PyPI</div>
+        <div class="card-desc">Monitor package installations. Alert on suspicious dependencies. Block known malware.</div>
+        <span class="card-status beta">Beta</span>
+      </div>
+      <div class="card coming-soon">
+        <div class="card-icon">🐳</div>
+        <div class="card-title">Docker</div>
+        <div class="card-desc">Track container access. Sandbox agents in isolated environments.</div>
+        <span class="card-status soon">Coming Soon</span>
+      </div>
+      <div class="card coming-soon">
+        <div class="card-icon">☁️</div>
+        <div class="card-title">AWS / GCP / Azure</div>
+        <div class="card-desc">Monitor cloud API calls. Set spend limits. Block destructive operations.</div>
+        <span class="card-status soon">Coming Soon</span>
+      </div>
+    </div>
+
+    <h3 class="section-title">📊 Observability</h3>
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <div class="card-title">Datadog</div>
+        <div class="card-desc">Export metrics to Datadog. Build custom dashboards. Set up alerts.</div>
+        <span class="card-status beta">Beta</span>
+      </div>
+      <div class="card coming-soon">
+        <div class="card-icon">🔍</div>
+        <div class="card-title">Splunk</div>
+        <div class="card-desc">Send audit logs to Splunk. Correlate with other security events.</div>
+        <span class="card-status soon">Coming Soon</span>
+      </div>
+      <div class="card coming-soon">
+        <div class="card-icon">📋</div>
+        <div class="card-title">PagerDuty</div>
+        <div class="card-desc">Alert on-call when agents go rogue. Automatic incident creation.</div>
+        <span class="card-status soon">Coming Soon</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="how-it-works">
+    <h3>How Integration Works</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h4>Install Agent</h4>
+        <p>Add our lightweight agent to your environment. One line of code.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h4>Connect Tools</h4>
+        <p>Link your AI platforms, dev tools, and observability stack.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h4>Set Policies</h4>
+        <p>Define what agents can and can't do. We enforce it.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h4>Monitor & Control</h4>
+        <p>See everything in real-time. Kill agents with one click.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <h3>Ready to connect?</h3>
+    <a href="/" class="btn">Join Waitlist →</a>
+  </div>
+
+  <footer>Agent Control Panel © 2026 · Built with 🧂</footer>
+</body>
+</html>
