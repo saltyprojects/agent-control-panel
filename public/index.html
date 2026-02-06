@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agent Control Panel - Manage Your AI Agent Teams</title>
+  <title>Agent Control Panel - Secure AI Agent Orchestration</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
@@ -31,9 +31,39 @@
       font-size: 14px;
     }
     
+    .security-alert {
+      background: linear-gradient(135deg, #2d1f1f 0%, #1f1a1a 100%);
+      border-left: 4px solid #ff3366;
+      padding: 16px 30px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .security-alert.ok {
+      background: linear-gradient(135deg, #1f2d1f 0%, #1a1f1a 100%);
+      border-left-color: #00ff88;
+    }
+    
+    .security-alert .icon {
+      font-size: 24px;
+    }
+    
+    .security-alert .text {
+      flex: 1;
+    }
+    
+    .security-alert .text strong {
+      color: #ff3366;
+    }
+    
+    .security-alert.ok .text strong {
+      color: #00ff88;
+    }
+    
     .stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 20px;
       padding: 30px;
       background: #1a1a1a;
@@ -44,6 +74,14 @@
       padding: 20px;
       border-radius: 8px;
       border-left: 4px solid #00ff88;
+    }
+    
+    .stat-card.warning {
+      border-left-color: #ffc107;
+    }
+    
+    .stat-card.danger {
+      border-left-color: #ff3366;
     }
     
     .stat-card .label {
@@ -59,10 +97,19 @@
       color: #00ff88;
     }
     
+    .stat-card.warning .value {
+      color: #ffc107;
+    }
+    
+    .stat-card.danger .value {
+      color: #ff3366;
+    }
+    
     .controls {
       padding: 30px;
       display: flex;
       gap: 15px;
+      flex-wrap: wrap;
     }
     
     .btn {
@@ -84,6 +131,15 @@
       transform: translateY(-2px);
     }
     
+    .btn-secondary {
+      background: #333;
+      color: #fff;
+    }
+    
+    .btn-secondary:hover {
+      background: #444;
+    }
+    
     .btn-danger {
       background: #ff3366;
       color: white;
@@ -91,6 +147,19 @@
     
     .btn-danger:hover {
       background: #dd2255;
+    }
+    
+    .section-title {
+      padding: 0 30px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .section-title h2 {
+      font-size: 20px;
+      color: #fff;
     }
     
     .agents-grid {
@@ -112,6 +181,14 @@
       box-shadow: 0 4px 20px rgba(0, 255, 136, 0.1);
     }
     
+    .agent-card.security-warning {
+      border-color: #ffc107;
+    }
+    
+    .agent-card.security-alert {
+      border-color: #ff3366;
+    }
+    
     .agent-header {
       display: flex;
       justify-content: space-between;
@@ -123,6 +200,11 @@
       font-size: 20px;
       font-weight: 700;
       color: #fff;
+    }
+    
+    .agent-badges {
+      display: flex;
+      gap: 8px;
     }
     
     .status {
@@ -147,9 +229,31 @@
       color: #ff3366;
     }
     
+    .security-score {
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .security-score.good {
+      background: rgba(0, 255, 136, 0.2);
+      color: #00ff88;
+    }
+    
+    .security-score.medium {
+      background: rgba(255, 193, 7, 0.2);
+      color: #ffc107;
+    }
+    
+    .security-score.bad {
+      background: rgba(255, 51, 102, 0.2);
+      color: #ff3366;
+    }
+    
     .agent-details {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
       gap: 16px;
       margin: 16px 0;
     }
@@ -172,6 +276,14 @@
       font-weight: 600;
     }
     
+    .detail-value.warning {
+      color: #ffc107;
+    }
+    
+    .detail-value.danger {
+      color: #ff3366;
+    }
+    
     .activity {
       background: #0f0f0f;
       padding: 12px;
@@ -181,6 +293,38 @@
       font-family: 'Courier New', monospace;
       font-size: 13px;
       color: #00ff88;
+    }
+    
+    .security-log {
+      background: #0f0f0f;
+      padding: 12px;
+      border-radius: 6px;
+      border-left: 3px solid #ffc107;
+      margin: 8px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+    }
+    
+    .security-log.alert {
+      border-left-color: #ff3366;
+    }
+    
+    .log-entry {
+      display: flex;
+      gap: 10px;
+      margin: 4px 0;
+    }
+    
+    .log-time {
+      color: #666;
+    }
+    
+    .log-action {
+      color: #ffc107;
+    }
+    
+    .log-action.danger {
+      color: #ff3366;
     }
     
     .permissions {
@@ -199,6 +343,11 @@
       border: 1px solid #333;
     }
     
+    .permission-badge.dangerous {
+      border-color: #ff3366;
+      color: #ff3366;
+    }
+    
     .agent-actions {
       display: flex;
       gap: 10px;
@@ -208,6 +357,46 @@
     .btn-small {
       padding: 8px 16px;
       font-size: 12px;
+    }
+    
+    .audit-section {
+      padding: 30px;
+      background: #1a1a1a;
+      margin-top: 20px;
+    }
+    
+    .audit-section h3 {
+      color: #fff;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .audit-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .audit-table th, .audit-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #333;
+    }
+    
+    .audit-table th {
+      color: #888;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    
+    .audit-table td {
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+    
+    .audit-table tr:hover {
+      background: #252525;
     }
     
     .hero-cta {
@@ -227,16 +416,51 @@
       font-size: 18px;
       color: #888;
       margin-bottom: 30px;
-      max-width: 600px;
+      max-width: 700px;
       margin-left: auto;
       margin-right: auto;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1000px;
+      margin: 40px auto;
+      text-align: left;
+    }
+    
+    .feature {
+      background: rgba(0, 255, 136, 0.05);
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 255, 136, 0.2);
+    }
+    
+    .feature h4 {
+      color: #00ff88;
+      margin-bottom: 10px;
+    }
+    
+    .feature p {
+      font-size: 14px;
+      color: #888;
+      margin: 0;
     }
   </style>
 </head>
 <body>
   <div class="header">
-    <h1>⚡ Agent Control Panel</h1>
-    <p class="tagline">Orchestrate, monitor, and control your AI agent teams in real-time</p>
+    <h1>🛡️ Agent Control Panel</h1>
+    <p class="tagline">Secure orchestration, monitoring, and control for AI agent teams</p>
+  </div>
+
+  <div class="security-alert" id="security-banner">
+    <span class="icon">⚠️</span>
+    <div class="text">
+      <strong>2 Security Alerts</strong> — Agent "Data Analyzer" accessed sensitive file outside sandbox
+    </div>
+    <button class="btn btn-small btn-secondary" onclick="viewAlerts()">View Alerts</button>
   </div>
 
   <div class="stats" id="stats">
@@ -248,62 +472,205 @@
       <div class="label">Running Now</div>
       <div class="value" id="running-agents">-</div>
     </div>
+    <div class="stat-card warning">
+      <div class="label">Security Alerts</div>
+      <div class="value" id="security-alerts">2</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Files Accessed</div>
+      <div class="value" id="files-accessed">847</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Tool Calls</div>
+      <div class="value" id="tool-calls">2.4k</div>
+    </div>
     <div class="stat-card">
       <div class="label">Total Cost</div>
       <div class="value" id="total-cost">$-</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">Tokens Used</div>
-      <div class="value" id="total-tokens">-</div>
     </div>
   </div>
 
   <div class="controls">
     <button class="btn btn-primary" onclick="spawnAgent()">+ Spawn New Agent</button>
-    <button class="btn btn-danger" onclick="killAllAgents()">⚠ Kill All Agents</button>
+    <button class="btn btn-secondary" onclick="viewAuditLog()">📋 Audit Log</button>
+    <button class="btn btn-secondary" onclick="exportReport()">📊 Export Report</button>
+    <button class="btn btn-danger" onclick="killAllAgents()">⚠ Emergency Stop</button>
+  </div>
+
+  <div class="section-title">
+    <h2>🤖 Active Agents</h2>
   </div>
 
   <div class="agents-grid" id="agents-grid">
     <!-- Agents will be loaded here -->
   </div>
 
+  <div class="audit-section">
+    <h3>📋 Recent Security Events</h3>
+    <table class="audit-table">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Agent</th>
+          <th>Action</th>
+          <th>Target</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="audit-log">
+        <tr>
+          <td style="color:#666">00:42:31</td>
+          <td>Data Analyzer</td>
+          <td style="color:#ff3366">FILE_READ</td>
+          <td>/etc/passwd</td>
+          <td style="color:#ff3366">⛔ BLOCKED</td>
+        </tr>
+        <tr>
+          <td style="color:#666">00:41:15</td>
+          <td>Data Analyzer</td>
+          <td style="color:#ffc107">FILE_READ</td>
+          <td>~/.ssh/config</td>
+          <td style="color:#ffc107">⚠️ FLAGGED</td>
+        </tr>
+        <tr>
+          <td style="color:#666">00:40:22</td>
+          <td>Code Generator</td>
+          <td style="color:#00ff88">EXEC</td>
+          <td>npm install</td>
+          <td style="color:#00ff88">✓ ALLOWED</td>
+        </tr>
+        <tr>
+          <td style="color:#666">00:39:08</td>
+          <td>Code Generator</td>
+          <td style="color:#00ff88">FILE_WRITE</td>
+          <td>./src/component.tsx</td>
+          <td style="color:#00ff88">✓ ALLOWED</td>
+        </tr>
+        <tr>
+          <td style="color:#666">00:38:45</td>
+          <td>QA Tester</td>
+          <td style="color:#00ff88">WEB_FETCH</td>
+          <td>api.github.com</td>
+          <td style="color:#00ff88">✓ ALLOWED</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <div class="hero-cta">
-    <h2>Stop Flying Blind</h2>
-    <p>Running multiple AI agents without a control panel is like managing a data center with no monitoring. You need visibility, control, and safety.</p>
-    <button class="btn btn-primary">Get Early Access →</button>
+    <h2>AI Agents Need Guardrails</h2>
+    <p>When AI agents have full system access, security isn't optional. Know what your agents are doing, what they're accessing, and stop them before they go rogue.</p>
+    
+    <div class="features-grid">
+      <div class="feature">
+        <h4>🔒 Permission Control</h4>
+        <p>Fine-grained permissions per agent. Sandbox file access, limit network calls, restrict tool usage.</p>
+      </div>
+      <div class="feature">
+        <h4>📊 Real-time Audit</h4>
+        <p>Every file read, every tool call, every network request — logged and searchable.</p>
+      </div>
+      <div class="feature">
+        <h4>🚨 Anomaly Detection</h4>
+        <p>AI-powered detection of suspicious behavior. Get alerted before damage is done.</p>
+      </div>
+      <div class="feature">
+        <h4>⚡ Emergency Stop</h4>
+        <p>One-click kill switch for all agents. Because sometimes you need to pull the plug.</p>
+      </div>
+    </div>
+    
+    <button class="btn btn-primary" style="margin-top:30px;">Get Early Access →</button>
   </div>
 
   <script>
-    async function loadAgents() {
-      try {
-        const response = await fetch('/api/agents');
-        const data = await response.json();
-        renderAgents(data.agents);
-      } catch (error) {
-        console.error('Error loading agents:', error);
+    const mockAgents = [
+      {
+        id: 'agent-1',
+        name: 'Code Generator',
+        status: 'running',
+        model: 'claude-sonnet-4',
+        uptime: '2h 34m',
+        tokensUsed: 45231,
+        cost: 2.34,
+        permissions: ['read', 'write', 'exec'],
+        lastActivity: 'Building React component...',
+        securityScore: 'A',
+        filesAccessed: 234,
+        toolCalls: 892,
+        alerts: 0
+      },
+      {
+        id: 'agent-2',
+        name: 'Data Analyzer',
+        status: 'running',
+        model: 'claude-opus-4.6',
+        uptime: '45m',
+        tokensUsed: 89012,
+        cost: 8.90,
+        permissions: ['read', 'web_search'],
+        lastActivity: 'Analyzing dataset patterns...',
+        securityScore: 'C',
+        filesAccessed: 567,
+        toolCalls: 1203,
+        alerts: 2,
+        recentAlerts: ['Attempted access to /etc/passwd', 'Read ~/.ssh/config']
+      },
+      {
+        id: 'agent-3',
+        name: 'QA Tester',
+        status: 'idle',
+        model: 'gpt-5.3-codex',
+        uptime: '1h 12m',
+        tokensUsed: 12400,
+        cost: 0.62,
+        permissions: ['read', 'exec'],
+        lastActivity: 'Waiting for tasks...',
+        securityScore: 'A+',
+        filesAccessed: 46,
+        toolCalls: 312,
+        alerts: 0
       }
+    ];
+
+    function getSecurityScoreClass(score) {
+      if (score === 'A+' || score === 'A') return 'good';
+      if (score === 'B' || score === 'C') return 'medium';
+      return 'bad';
     }
 
-    async function loadStats() {
-      try {
-        const response = await fetch('/api/stats');
-        const stats = await response.json();
-        document.getElementById('total-agents').textContent = stats.totalAgents;
-        document.getElementById('running-agents').textContent = stats.runningAgents;
-        document.getElementById('total-cost').textContent = '$' + stats.totalCost;
-        document.getElementById('total-tokens').textContent = stats.totalTokens.toLocaleString();
-      } catch (error) {
-        console.error('Error loading stats:', error);
-      }
+    function getCardClass(agent) {
+      if (agent.alerts > 0) return 'security-alert';
+      if (agent.securityScore === 'C' || agent.securityScore === 'D') return 'security-warning';
+      return '';
+    }
+
+    function loadAgents() {
+      renderAgents(mockAgents);
+    }
+
+    function loadStats() {
+      const totalAgents = mockAgents.length;
+      const runningAgents = mockAgents.filter(a => a.status === 'running').length;
+      const totalCost = mockAgents.reduce((sum, a) => sum + a.cost, 0);
+      
+      document.getElementById('total-agents').textContent = totalAgents;
+      document.getElementById('running-agents').textContent = runningAgents;
+      document.getElementById('total-cost').textContent = '$' + totalCost.toFixed(2);
     }
 
     function renderAgents(agents) {
       const grid = document.getElementById('agents-grid');
       grid.innerHTML = agents.map(agent => `
-        <div class="agent-card">
+        <div class="agent-card ${getCardClass(agent)}">
           <div class="agent-header">
             <div class="agent-name">${agent.name}</div>
-            <div class="status ${agent.status}">${agent.status.toUpperCase()}</div>
+            <div class="agent-badges">
+              <div class="security-score ${getSecurityScoreClass(agent.securityScore)}">
+                🛡️ ${agent.securityScore}
+              </div>
+              <div class="status ${agent.status}">${agent.status.toUpperCase()}</div>
+            </div>
           </div>
           
           <div class="agent-details">
@@ -316,8 +683,16 @@
               <div class="detail-value">${agent.uptime}</div>
             </div>
             <div class="detail">
-              <div class="detail-label">Tokens</div>
-              <div class="detail-value">${agent.tokensUsed.toLocaleString()}</div>
+              <div class="detail-label">Files Accessed</div>
+              <div class="detail-value ${agent.filesAccessed > 400 ? 'warning' : ''}">${agent.filesAccessed}</div>
+            </div>
+            <div class="detail">
+              <div class="detail-label">Tool Calls</div>
+              <div class="detail-value">${agent.toolCalls.toLocaleString()}</div>
+            </div>
+            <div class="detail">
+              <div class="detail-label">Alerts</div>
+              <div class="detail-value ${agent.alerts > 0 ? 'danger' : ''}">${agent.alerts}</div>
             </div>
             <div class="detail">
               <div class="detail-label">Cost</div>
@@ -329,25 +704,32 @@
             > ${agent.lastActivity}
           </div>
 
+          ${agent.recentAlerts ? `
+            <div class="security-log alert">
+              <div style="color:#ff3366;margin-bottom:8px;font-weight:bold;">⚠️ Recent Security Alerts:</div>
+              ${agent.recentAlerts.map(a => `<div class="log-entry"><span class="log-action danger">• ${a}</span></div>`).join('')}
+            </div>
+          ` : ''}
+
           <div class="permissions">
-            ${agent.permissions.map(p => `<span class="permission-badge">${p}</span>`).join('')}
+            ${agent.permissions.map(p => `<span class="permission-badge ${p === 'exec' ? 'dangerous' : ''}">${p}</span>`).join('')}
           </div>
 
           <div class="agent-actions">
             <button class="btn btn-primary btn-small" onclick="viewLogs('${agent.id}')">View Logs</button>
+            <button class="btn btn-secondary btn-small" onclick="auditAgent('${agent.id}')">Audit</button>
             <button class="btn btn-danger btn-small" onclick="killAgent('${agent.id}')">Kill</button>
           </div>
         </div>
       `).join('');
     }
 
-    async function killAgent(id) {
-      try {
-        await fetch(`/api/agents/${id}/kill`, { method: 'POST' });
+    function killAgent(id) {
+      const agent = mockAgents.find(a => a.id === id);
+      if (agent) {
+        agent.status = 'stopped';
         loadAgents();
         loadStats();
-      } catch (error) {
-        console.error('Error killing agent:', error);
       }
     }
 
@@ -355,25 +737,39 @@
       const name = prompt('Agent name:', 'New Agent');
       if (!name) return;
       
-      fetch('/api/agents/spawn', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, model: 'claude-sonnet-4', permissions: ['read', 'write'] })
-      }).then(() => {
-        loadAgents();
-        loadStats();
+      mockAgents.push({
+        id: `agent-${Date.now()}`,
+        name: name,
+        status: 'running',
+        model: 'claude-sonnet-4',
+        uptime: '0m',
+        tokensUsed: 0,
+        cost: 0,
+        permissions: ['read'],
+        lastActivity: 'Initializing...',
+        securityScore: 'A',
+        filesAccessed: 0,
+        toolCalls: 0,
+        alerts: 0
       });
+      loadAgents();
+      loadStats();
     }
 
     function killAllAgents() {
-      if (confirm('Are you sure you want to kill all running agents?')) {
-        alert('Emergency stop triggered! (Demo only)');
+      if (confirm('⚠️ EMERGENCY STOP\\n\\nThis will immediately terminate ALL running agents.\\n\\nAre you sure?')) {
+        mockAgents.forEach(a => a.status = 'stopped');
+        loadAgents();
+        loadStats();
+        alert('All agents terminated.');
       }
     }
 
-    function viewLogs(id) {
-      alert(`Opening logs for agent ${id}... (Demo only)`);
-    }
+    function viewLogs(id) { alert(`Opening logs for agent ${id}...`); }
+    function viewAlerts() { alert('Opening security alerts panel...'); }
+    function viewAuditLog() { alert('Opening full audit log...'); }
+    function exportReport() { alert('Generating security report...'); }
+    function auditAgent(id) { alert(`Opening security audit for agent ${id}...`); }
 
     // Load data on page load
     loadAgents();
