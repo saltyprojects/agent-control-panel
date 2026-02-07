@@ -723,11 +723,61 @@
       return '';
     }
 
-    function loadAgents() {
-      renderAgents(mockAgents);
+    async function loadAgents() {
+      try {
+        const response = await fetch('/api/simulate/agents/?count=8');
+        const data = await response.json();
+        
+        // Convert API format to dashboard format
+        const agents = data.agents.map(a => ({
+          id: a.id,
+          name: a.name,
+          status: a.status,
+          model: a.model,
+          uptime: formatUptime(a.uptime_seconds),
+          tokensUsed: a.metadata.tokens_used,
+          cost: a.total_cost,
+          permissions: ['read', 'write'],
+          lastActivity: `${a.metadata.last_action} (${a.tasks_completed} tasks completed)`,
+          securityScore: scoreToGrade(a.security_score),
+          filesAccessed: a.metadata.files_accessed,
+          toolCalls: a.metadata.api_calls,
+          alerts: a.status === 'failed' ? 1 : 0,
+          recentAlerts: a.status === 'failed' ? ['Agent stopped with errors'] : null
+        }));
+        
+        renderAgents(agents);
+        updateDashboardStats(data.stats);
+      } catch (error) {
+        console.error('Failed to load agents:', error);
+        // Fallback to mock data
+        renderAgents(mockAgents);
+        loadStatsFallback();
+      }
     }
 
-    function loadStats() {
+    function formatUptime(seconds) {
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      if (hours > 0) return `${hours}h ${minutes}m`;
+      return `${minutes}m`;
+    }
+
+    function scoreToGrade(score) {
+      if (score >= 95) return 'A+';
+      if (score >= 90) return 'A';
+      if (score >= 80) return 'B';
+      if (score >= 70) return 'C';
+      return 'D';
+    }
+
+    function updateDashboardStats(stats) {
+      document.getElementById('total-agents').textContent = stats.total_agents;
+      document.getElementById('running-agents').textContent = stats.active_agents;
+      document.getElementById('total-cost').textContent = '$' + stats.total_cost;
+    }
+
+    function loadStatsFallback() {
       const totalAgents = mockAgents.length;
       const runningAgents = mockAgents.filter(a => a.status === 'running').length;
       const totalCost = mockAgents.reduce((sum, a) => sum + a.cost, 0);
@@ -851,13 +901,11 @@
 
     // Load data on page load
     loadAgents();
-    loadStats();
 
-    // Refresh every 5 seconds
+    // Refresh every 30 seconds (realistic agent data)
     setInterval(() => {
       loadAgents();
-      loadStats();
-    }, 5000);
+    }, 30000);
   </script>
   
       <!-- Build: e6d1d21 | 2026-02-06 13:36:58 +0000 | https://github.com/saltyprojects/agent-control-panel/commit/e6d1d21a54c8e6e9f374b14a5a2e7a849c93755b -->
