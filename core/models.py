@@ -43,6 +43,16 @@ class Agent(models.Model):
     last_active_at = models.DateTimeField(null=True, blank=True)
     metadata = models.JSONField(default=dict, blank=True)
     
+    # Enhanced metrics
+    tasks_completed = models.IntegerField(default=0)
+    tasks_failed = models.IntegerField(default=0)
+    total_cost = models.DecimalField(max_digits=10, decimal_places=4, default=0)
+    uptime_seconds = models.IntegerField(default=0)
+    
+    # Security scoring
+    security_score = models.IntegerField(default=100)  # 0-100
+    last_security_check = models.DateTimeField(null=True, blank=True)
+    
     class Meta:
         db_table = 'agents'
         ordering = ['-created_at']
