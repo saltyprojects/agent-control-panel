@@ -117,6 +117,23 @@ CORS_ALLOW_ALL_ORIGINS = DEBUG
 cors_origins = os.getenv('CORS_ORIGINS', '')
 CORS_ALLOWED_ORIGINS = [o.strip() for o in cors_origins.split(',') if o.strip()] if not DEBUG else []
 
+# CSRF settings for Railway deployment
+CSRF_TRUSTED_ORIGINS = [
+    'https://agent-control-panel-production.up.railway.app',
+    'https://*.up.railway.app',  # Allow all Railway domains
+]
+
+# Add any custom origins from environment
+csrf_origins = os.getenv('CSRF_TRUSTED_ORIGINS', '')
+if csrf_origins:
+    CSRF_TRUSTED_ORIGINS.extend([o.strip() for o in csrf_origins.split(',') if o.strip()])
+
+# Secure cookies for production (HTTPS)
+if not DEBUG:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = False  # Railway handles SSL termination
+
 # REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
