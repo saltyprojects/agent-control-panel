@@ -3,1024 +3,678 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agent Control Panel - Secure AI Agent Orchestration</title>
+  <title>Agent Control Panel - Orchestrate AI Agent Teams</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="description" content="Control panel for multi-agent orchestration. Track agent teams, manage permissions, monitor costs, stop runaways instantly.">
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://agent-control-panel-production.up.railway.app/">
+  <meta property="og:title" content="Agent Control Panel - Orchestrate AI Agent Teams">
+  <meta property="og:description" content="Control panel for multi-agent systems. Real-time monitoring, cost control, security, and compliance.">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Agent Control Panel">
+  <meta name="twitter:description" content="The control panel for AI agent teams. Monitor, control, and secure your multi-agent systems.">
+  
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
-      background: #0f0f0f;
-      color: #e0e0e0;
-      line-height: 1.6;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #f1f5f9;
+      line-height: 1.7;
+      overflow-x: hidden;
     }
     
-    .header {
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      padding: 30px;
-      border-bottom: 2px solid #00ff88;
+    /* Animated background gradient */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 20% 50%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 40% 20%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
+      animation: gradient-shift 15s ease infinite;
+      z-index: 0;
     }
     
-    .header h1 {
-      font-size: 32px;
-      color: #00ff88;
-      margin-bottom: 8px;
+    @keyframes gradient-shift {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(-10%, 10%) rotate(180deg); }
     }
     
-    .header .tagline {
-      color: #888;
-      font-size: 14px;
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
     }
     
-    .security-alert {
-      background: linear-gradient(135deg, #2d1f1f 0%, #1f1a1a 100%);
-      border-left: 4px solid #ff3366;
-      padding: 16px 30px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
+    /* Navigation */
+    nav {
+      padding: 24px 0;
+      backdrop-filter: blur(12px);
+      background: rgba(15, 23, 42, 0.6);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
     
-    .security-alert.ok {
-      background: linear-gradient(135deg, #1f2d1f 0%, #1a1f1a 100%);
-      border-left-color: #00ff88;
-    }
-    
-    .security-alert .icon {
-      font-size: 24px;
-    }
-    
-    .security-alert .text {
-      flex: 1;
-    }
-    
-    .security-alert .text strong {
-      color: #ff3366;
-    }
-    
-    .security-alert.ok .text strong {
-      color: #00ff88;
-    }
-    
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-      padding: 30px;
-      background: #1a1a1a;
-    }
-    
-    .stat-card {
-      background: #252525;
-      padding: 20px;
-      border-radius: 8px;
-      border-left: 4px solid #00ff88;
-    }
-    
-    .stat-card.warning {
-      border-left-color: #ffc107;
-    }
-    
-    .stat-card.danger {
-      border-left-color: #ff3366;
-    }
-    
-    .stat-card .label {
-      color: #888;
-      font-size: 12px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    
-    .stat-card .value {
-      font-size: 28px;
-      font-weight: 700;
-      color: #00ff88;
-    }
-    
-    .stat-card.warning .value {
-      color: #ffc107;
-    }
-    
-    .stat-card.danger .value {
-      color: #ff3366;
-    }
-    
-    .controls {
-      padding: 30px;
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-    
-    .btn {
-      padding: 12px 24px;
-      border: none;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    
-    .btn-primary {
-      background: #00ff88;
-      color: #0f0f0f;
-    }
-    
-    .btn-primary:hover {
-      background: #00dd77;
-      transform: translateY(-2px);
-    }
-    
-    .btn-secondary {
-      background: #333;
-      color: #fff;
-    }
-    
-    .btn-secondary:hover {
-      background: #444;
-    }
-    
-    .btn-danger {
-      background: #ff3366;
-      color: white;
-    }
-    
-    .btn-danger:hover {
-      background: #dd2255;
-    }
-    
-    .section-title {
-      padding: 0 30px;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .section-title h2 {
-      font-size: 20px;
-      color: #fff;
-    }
-    
-    .agents-grid {
-      padding: 0 30px 30px;
-      display: grid;
-      gap: 20px;
-    }
-    
-    .agent-card {
-      background: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 12px;
-      padding: 24px;
-      transition: all 0.2s;
-    }
-    
-    .agent-card:hover {
-      border-color: #00ff88;
-      box-shadow: 0 4px 20px rgba(0, 255, 136, 0.1);
-    }
-    
-    .agent-card.security-warning {
-      border-color: #ffc107;
-    }
-    
-    .agent-card.security-alert {
-      border-color: #ff3366;
-    }
-    
-    .agent-header {
+    nav .container {
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+    
+    .nav-links a {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    
+    .nav-links a:hover {
+      color: #10b981;
+    }
+    
+    /* Hero Section */
+    .hero {
+      padding: 120px 0;
+      text-align: center;
+    }
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 100px;
+      color: #10b981;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 32px;
+      backdrop-filter: blur(8px);
+    }
+    
+    h1 {
+      font-size: 72px;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+    }
+    
+    .hero p {
+      font-size: 20px;
+      color: #94a3b8;
+      max-width: 650px;
+      margin: 0 auto 48px;
+      line-height: 1.6;
+    }
+    
+    /* Glass Card */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 48px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                  0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    }
+    
+    .cta-card {
+      max-width: 580px;
+      margin: 0 auto;
+    }
+    
+    .cta-card h3 {
+      font-size: 20px;
+      margin-bottom: 24px;
+      color: #f1f5f9;
+    }
+    
+    .email-form {
+      display: flex;
+      gap: 12px;
       margin-bottom: 16px;
     }
     
-    .agent-name {
-      font-size: 20px;
+    .email-form input {
+      flex: 1;
+      padding: 16px 24px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: #f1f5f9;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+    
+    .email-form input:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+    
+    .btn-primary {
+      padding: 16px 32px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
       font-weight: 700;
-      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
     }
     
-    .agent-badges {
-      display: flex;
-      gap: 8px;
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
     }
     
-    .status {
-      padding: 6px 12px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    
-    .status.running {
-      background: rgba(0, 255, 136, 0.2);
-      color: #00ff88;
-    }
-    
-    .status.idle {
-      background: rgba(255, 193, 7, 0.2);
-      color: #ffc107;
-    }
-    
-    .status.stopped {
-      background: rgba(255, 51, 102, 0.2);
-      color: #ff3366;
-    }
-    
-    .security-score {
-      padding: 6px 12px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    
-    .security-score.good {
-      background: rgba(0, 255, 136, 0.2);
-      color: #00ff88;
-    }
-    
-    .security-score.medium {
-      background: rgba(255, 193, 7, 0.2);
-      color: #ffc107;
-    }
-    
-    .security-score.bad {
-      background: rgba(255, 51, 102, 0.2);
-      color: #ff3366;
-    }
-    
-    .agent-details {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 16px;
-      margin: 16px 0;
-    }
-    
-    .detail {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    
-    .detail-label {
-      font-size: 11px;
-      color: #666;
-      text-transform: uppercase;
-    }
-    
-    .detail-value {
-      font-size: 14px;
-      color: #ccc;
-      font-weight: 600;
-    }
-    
-    .detail-value.warning {
-      color: #ffc107;
-    }
-    
-    .detail-value.danger {
-      color: #ff3366;
-    }
-    
-    .activity {
-      background: #0f0f0f;
-      padding: 12px;
-      border-radius: 6px;
-      border-left: 3px solid #00ff88;
-      margin: 16px 0;
-      font-family: 'Courier New', monospace;
-      font-size: 13px;
-      color: #00ff88;
-    }
-    
-    .security-log {
-      background: #0f0f0f;
-      padding: 12px;
-      border-radius: 6px;
-      border-left: 3px solid #ffc107;
-      margin: 8px 0;
-      font-family: 'Courier New', monospace;
-      font-size: 12px;
-    }
-    
-    .security-log.alert {
-      border-left-color: #ff3366;
-    }
-    
-    .log-entry {
-      display: flex;
-      gap: 10px;
-      margin: 4px 0;
-    }
-    
-    .log-time {
-      color: #666;
-    }
-    
-    .log-action {
-      color: #ffc107;
-    }
-    
-    .log-action.danger {
-      color: #ff3366;
-    }
-    
-    .permissions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-    
-    .permission-badge {
-      background: #252525;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: 11px;
-      color: #888;
-      border: 1px solid #333;
-    }
-    
-    .permission-badge.dangerous {
-      border-color: #ff3366;
-      color: #ff3366;
-    }
-    
-    .agent-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 16px;
-    }
-    
-    .btn-small {
-      padding: 8px 16px;
-      font-size: 12px;
-    }
-    
-    .audit-section {
-      padding: 30px;
-      background: #1a1a1a;
-      margin-top: 20px;
-    }
-    
-    .audit-section h3 {
-      color: #fff;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .audit-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    
-    .audit-table th, .audit-table td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #333;
-    }
-    
-    .audit-table th {
-      color: #888;
-      font-size: 12px;
-      text-transform: uppercase;
-    }
-    
-    .audit-table td {
-      font-family: 'Courier New', monospace;
-      font-size: 13px;
-    }
-    
-    .audit-table tr:hover {
-      background: #252525;
-    }
-    
-    .hero-cta {
-      background: #16213e;
-      padding: 60px 30px;
+    .social-proof {
       text-align: center;
-      margin-top: 40px;
+      color: #64748b;
+      font-size: 14px;
     }
     
-    .hero-cta h2 {
-      font-size: 36px;
-      margin-bottom: 20px;
-      color: #00ff88;
+    /* Features Section */
+    .section {
+      padding: 120px 0;
     }
     
-    .hero-cta p {
-      font-size: 18px;
-      color: #888;
-      margin-bottom: 30px;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
+    .section-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+    
+    .section-header h2 {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      color: #f1f5f9;
+    }
+    
+    .section-header p {
+      font-size: 20px;
+      color: #94a3b8;
+      max-width: 600px;
+      margin: 0 auto;
     }
     
     .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
-      max-width: 1000px;
-      margin: 40px auto;
-      text-align: left;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
     }
     
-    .feature {
-      background: rgba(0, 255, 136, 0.05);
-      padding: 20px;
-      border-radius: 8px;
-      border: 1px solid rgba(0, 255, 136, 0.2);
+    .feature-card {
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      transition: all 0.3s;
     }
     
-    .feature h4 {
-      color: #00ff88;
-      margin-bottom: 10px;
+    .feature-card:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(16, 185, 129, 0.3);
+      box-shadow: 0 20px 60px rgba(16, 185, 129, 0.1);
     }
     
-    .feature p {
-      font-size: 14px;
-      color: #888;
-      margin: 0;
-    }
-    
-    /* Loading States */
-    .loading-container {
+    .feature-icon {
+      width: 56px;
+      height: 56px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 60px 20px;
-      color: #888;
+      font-size: 28px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+      border-radius: 16px;
+      margin-bottom: 24px;
     }
     
-    .spinner {
-      width: 50px;
-      height: 50px;
-      border: 4px solid #333;
-      border-top-color: #00ff88;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 20px;
+    .feature-card h3 {
+      font-size: 22px;
+      margin-bottom: 12px;
+      color: #f1f5f9;
     }
     
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .feature-card p {
+      color: #94a3b8;
+      line-height: 1.7;
     }
     
-    .error-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 20px;
-      color: #ff3366;
+    /* CTA Section */
+    .cta-section {
+      padding: 120px 0;
       text-align: center;
     }
     
-    .error-container .icon {
-      font-size: 48px;
-      margin-bottom: 15px;
+    .cta-section h2 {
+      font-size: 56px;
+      font-weight: 900;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     
-    .error-container button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: #ff3366;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
+    .cta-section p {
+      font-size: 20px;
+      color: #94a3b8;
+      max-width: 650px;
+      margin: 0 auto 48px;
     }
     
-    .error-container button:hover {
-      background: #ff4477;
-    }
-    
-    /* Mobile Responsiveness */
+    /* Responsive */
     @media (max-width: 768px) {
-      .header h1 { font-size: 24px; }
-      .header { padding: 20px; }
-      .stats { 
-        grid-template-columns: repeat(2, 1fr);
-        padding: 20px;
-        gap: 15px;
+      h1 { font-size: 36px; line-height: 1.2; }
+      .hero { padding: 60px 20px; }
+      .section { padding: 60px 20px; }
+      .container { padding: 0 20px; }
+      .email-form { 
+        flex-direction: column; 
+        gap: 12px;
       }
-      .agents-grid {
-        grid-template-columns: 1fr;
-        padding: 20px;
-        gap: 20px;
+      .btn-primary { 
+        width: 100%; 
+        padding: 14px 24px;
       }
-      .agent-card { padding: 20px; }
-      .agent-details { grid-template-columns: repeat(2, 1fr); }
-      .feature { padding: 20px; }
-      .audit-section { padding: 20px; }
+      .features-grid { grid-template-columns: 1fr; gap: 24px; }
+      .nav-links { display: none; } /* Hide nav links on mobile */
+      nav .container { justify-content: center; }
+      .badge { font-size: 12px; padding: 8px 16px; }
+      .hero p { font-size: 16px; }
+      .cta-card { padding: 30px 20px; }
+      
+      /* Make FAQ more readable on mobile */
+      details { padding: 16px; }
+      summary { font-size: 16px; }
+      
+      /* Adjust pricing cards */
+      .pricing-grid { grid-template-columns: 1fr; }
     }
     
     @media (max-width: 480px) {
-      .header h1 { font-size: 20px; }
-      .header .tagline { font-size: 12px; }
-      .stats { grid-template-columns: 1fr; }
-      .agent-details { grid-template-columns: 1fr; }
-      .agent-actions {
-        flex-direction: column;
-        gap: 8px;
-      }
-      .agent-actions .btn-small {
-        width: 100%;
-      }
+      h1 { font-size: 28px; }
+      .hero { padding: 40px 16px; }
+      .section { padding: 40px 16px; }
+      .container { padding: 0 16px; }
+      .logo { font-size: 16px; }
+      nav { padding: 16px 0; }
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>🛡️ Agent Control Panel</h1>
-    <p class="tagline">Secure orchestration, monitoring, and control for AI agent teams</p>
-  </div>
-
-  <div class="security-alert" id="security-banner">
-    <span class="icon">⚠️</span>
-    <div class="text">
-      <strong>2 Security Alerts</strong> — Agent "Data Analyzer" accessed sensitive file outside sandbox
-    </div>
-    <button class="btn btn-small btn-secondary" onclick="viewAlerts()">View Alerts</button>
-  </div>
-
-  <div class="stats" id="stats">
-    <div class="stat-card">
-      <div class="label">Total Agents</div>
-      <div class="value" id="total-agents">-</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">Running Now</div>
-      <div class="value" id="running-agents">-</div>
-    </div>
-    <div class="stat-card warning">
-      <div class="label">Security Alerts</div>
-      <div class="value" id="security-alerts">2</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">Files Accessed</div>
-      <div class="value" id="files-accessed">847</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">Tool Calls</div>
-      <div class="value" id="tool-calls">2.4k</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">Total Cost</div>
-      <div class="value" id="total-cost">$-</div>
-    </div>
-  </div>
-
-  <div class="controls">
-    <button class="btn btn-primary" onclick="spawnAgent()">+ Spawn New Agent</button>
-    <button class="btn btn-secondary" onclick="viewAuditLog()">📋 Audit Log</button>
-    <button class="btn btn-secondary" onclick="exportReport()">📊 Export Report</button>
-    <button class="btn btn-danger" onclick="killAllAgents()">⚠ Emergency Stop</button>
-  </div>
-
-  <div class="section-title">
-    <h2>🤖 Active Agents</h2>
-  </div>
-
-  <div class="agents-grid" id="agents-grid">
-    <!-- Agents will be loaded here -->
-  </div>
-
-  <div class="audit-section">
-    <h3>📋 Recent Security Events</h3>
-    <table class="audit-table">
-      <thead>
-        <tr>
-          <th>Time</th>
-          <th>Agent</th>
-          <th>Action</th>
-          <th>Target</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="audit-log">
-        <tr>
-          <td style="color:#666">00:42:31</td>
-          <td>Data Analyzer</td>
-          <td style="color:#ff3366">FILE_READ</td>
-          <td>/etc/passwd</td>
-          <td style="color:#ff3366">⛔ BLOCKED</td>
-        </tr>
-        <tr>
-          <td style="color:#666">00:41:15</td>
-          <td>Data Analyzer</td>
-          <td style="color:#ffc107">FILE_READ</td>
-          <td>~/.ssh/config</td>
-          <td style="color:#ffc107">⚠️ FLAGGED</td>
-        </tr>
-        <tr>
-          <td style="color:#666">00:40:22</td>
-          <td>Code Generator</td>
-          <td style="color:#00ff88">EXEC</td>
-          <td>npm install</td>
-          <td style="color:#00ff88">✓ ALLOWED</td>
-        </tr>
-        <tr>
-          <td style="color:#666">00:39:08</td>
-          <td>Code Generator</td>
-          <td style="color:#00ff88">FILE_WRITE</td>
-          <td>./src/component.tsx</td>
-          <td style="color:#00ff88">✓ ALLOWED</td>
-        </tr>
-        <tr>
-          <td style="color:#666">00:38:45</td>
-          <td>QA Tester</td>
-          <td style="color:#00ff88">WEB_FETCH</td>
-          <td>api.github.com</td>
-          <td style="color:#00ff88">✓ ALLOWED</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="hero-cta">
-    <h2>AI Agents Need Guardrails</h2>
-    <p>When AI agents have full system access, security isn't optional. Know what your agents are doing, what they're accessing, and stop them before they go rogue.</p>
-    
-    <div class="features-grid">
-      <div class="feature">
-        <h4>🔒 Permission Control</h4>
-        <p>Fine-grained permissions per agent. Sandbox file access, limit network calls, restrict tool usage.</p>
-      </div>
-      <div class="feature">
-        <h4>📊 Real-time Audit</h4>
-        <p>Every file read, every tool call, every network request — logged and searchable.</p>
-      </div>
-      <div class="feature">
-        <h4>🚨 Anomaly Detection</h4>
-        <p>AI-powered detection of suspicious behavior. Get alerted before damage is done.</p>
-      </div>
-      <div class="feature">
-        <h4>⚡ Emergency Stop</h4>
-        <p>One-click kill switch for all agents. Because sometimes you need to pull the plug.</p>
+  <nav>
+    <div class="container">
+      <div class="logo">🛡️ Agent Control Panel</div>
+      <div class="nav-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/workflows.html">Workflows</a>
+        <a href="/pricing.html">Pricing</a>
       </div>
     </div>
-    
-    <button class="btn btn-primary" style="margin-top:30px;">Get Early Access →</button>
-  </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="badge">
+        <span>🤖</span> Multi-agent orchestration is here
+      </div>
+      <h1>Orchestrate AI Agents<br>Without Losing Control</h1>
+      <p>The control panel for coordinating multiple AI agents. Track what they're building, manage permissions, monitor costs, and stop runaways instantly.</p>
+      
+      <div class="glass-card cta-card">
+        <h3>Get Exclusive Early Access</h3>
+        <p style="color: #94a3b8; margin-bottom: 20px; font-size: 15px;">Join the waitlist and be first to ship multi-agent systems with confidence</p>
+        <form class="email-form" id="waitlist-form">
+          <input type="email" placeholder="you@company.com" required id="email-input">
+          <button type="submit" class="btn-primary">Get Early Access →</button>
+        </form>
+        <p class="social-proof">🔥 <span id="count">0</span> teams already on the waitlist</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo Video Section -->
+  <section class="section" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 80px 20px;">
+    <div class="container" style="max-width: 900px;">
+      <h2 style="text-align: center; margin-bottom: 20px; font-size: 32px;">See Agent Control Panel in Action</h2>
+      <p style="text-align: center; color: #94a3b8; margin-bottom: 40px; font-size: 16px;">
+        Watch how teams are using Agent Control Panel to orchestrate AI agents safely and efficiently
+      </p>
+      
+      <div style="position: relative; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; overflow: hidden; border: 2px solid rgba(16, 185, 129, 0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
+        <div style="padding-top: 56.25%; position: relative; background: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1200 675%22%3E%3Crect fill=%22%231a1a2e%22 width=%221200%22 height=%22675%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22monospace%22 font-size=%2224%22 fill=%22%2310b981%22%3E🎬 Demo Video Coming Soon%3C/text%3E%3C/svg%3E') center/cover;">
+          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: rgba(16, 185, 129, 0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 32px rgba(16, 185, 129, 0.4);">
+            <div style="width: 0; height: 0; border-left: 25px solid white; border-top: 15px solid transparent; border-bottom: 15px solid transparent; margin-left: 8px;"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div style="display: flex; justify-content: center; gap: 40px; margin-top: 30px; flex-wrap: wrap;">
+        <div style="text-align: center;">
+          <div style="font-size: 28px; font-weight: 700; color: #10b981; margin-bottom: 4px;">2 min</div>
+          <div style="font-size: 14px; color: #64748b;">Quick setup</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 28px; font-weight: 700; color: #10b981; margin-bottom: 4px;">10+</div>
+          <div style="font-size: 14px; color: #64748b;">Agent types</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 28px; font-weight: 700; color: #10b981; margin-bottom: 4px;">Real-time</div>
+          <div style="font-size: 14px; color: #64748b;">Monitoring</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Built for Multi-Agent Teams</h2>
+        <p>See everything your agents are doing. Control everything they can do.</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Real-time Dashboard</h3>
+          <p>See all running agents, their status, current activity, and resource usage at a glance.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>Security Scores</h3>
+          <p>Each agent gets a security rating. Know which ones are accessing sensitive files or making suspicious calls.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">📋</div>
+          <h3>Audit Logs</h3>
+          <p>Every file read, every tool call, every network request. Searchable, exportable, compliance-ready.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h3>Cost Tracking</h3>
+          <p>Real-time token usage and cost per agent. Set budgets and get alerts before you blow through them.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🔐</div>
+          <h3>Permission Control</h3>
+          <p>Fine-grained permissions per agent. Sandbox file access, limit tools, restrict network calls.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Emergency Stop</h3>
+          <p>One-click kill switch for all agents. Because sometimes you just need to pull the plug.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="section" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 80px 20px;">
+    <div class="container">
+      <h2 style="text-align: center; margin-bottom: 60px; font-size: 36px;">Trusted by AI teams building the future</h2>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto;">
+        <div style="background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; padding: 30px;">
+          <div style="color: #10b981; margin-bottom: 16px; font-size: 24px;">⭐⭐⭐⭐⭐</div>
+          <p style="color: #e2e8f0; line-height: 1.7; margin-bottom: 20px; font-style: italic;">
+            "We were burning $500/day on a runaway agent before we found this. The cost alerts alone have saved us thousands. Now we can actually sleep at night."
+          </p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;">👤</div>
+            <div>
+              <div style="font-weight: 600; color: #f1f5f9;">Sarah Chen</div>
+              <div style="font-size: 14px; color: #94a3b8;">CTO, DevTools Startup</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; padding: 30px;">
+          <div style="color: #10b981; margin-bottom: 16px; font-size: 24px;">⭐⭐⭐⭐⭐</div>
+          <p style="color: #e2e8f0; line-height: 1.7; margin-bottom: 20px; font-style: italic;">
+            "Setup took literally 5 minutes. We have 12 agents running 24/7 now and can see exactly what each one is doing. The security audit logs are a game-changer for compliance."
+          </p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;">👤</div>
+            <div>
+              <div style="font-weight: 600; color: #f1f5f9;">Marcus Rodriguez</div>
+              <div style="font-size: 14px; color: #94a3b8;">Lead Engineer, FinTech</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; padding: 30px;">
+          <div style="color: #10b981; margin-bottom: 16px; font-size: 24px;">⭐⭐⭐⭐⭐</div>
+          <p style="color: #e2e8f0; line-height: 1.7; margin-bottom: 20px; font-style: italic;">
+            "Our investors were nervous about AI agents. Showing them the dashboard with real-time monitoring and killswitches closed the deal. This is infrastructure you need if you're serious about agents."
+          </p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;">👤</div>
+            <div>
+              <div style="font-weight: 600; color: #f1f5f9;">Alex Kim</div>
+              <div style="font-size: 14px; color: #94a3b8;">Founder, AI Content Platform</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 50px; padding: 30px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.3);">
+        <p style="font-size: 18px; color: #10b981; margin-bottom: 10px;">
+          <strong>🚀 <span id="count">247</span> forward-thinking teams are already on the waitlist</strong>
+        </p>
+        <p style="color: #94a3b8; font-size: 14px;">Early access launching Q1 2026 • Don't miss out</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust & Security Section -->
+  <section class="section" style="background: #0f172a; padding: 60px 20px;">
+    <div class="container" style="max-width: 1000px;">
+      <h2 style="text-align: center; margin-bottom: 50px; font-size: 28px; color: #94a3b8;">Trusted by teams. Built for security.</h2>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 50px;">
+        <div style="text-align: center;">
+          <div style="font-size: 48px; margin-bottom: 12px;">🔒</div>
+          <div style="font-weight: 600; color: #10b981; margin-bottom: 6px;">SOC 2 Ready</div>
+          <div style="font-size: 14px; color: #64748b;">Enterprise-grade security controls</div>
+        </div>
+        
+        <div style="text-align: center;">
+          <div style="font-size: 48px; margin-bottom: 12px;">🛡️</div>
+          <div style="font-weight: 600; color: #10b981; margin-bottom: 6px;">GDPR Compliant</div>
+          <div style="font-size: 14px; color: #64748b;">Data privacy by design</div>
+        </div>
+        
+        <div style="text-align: center;">
+          <div style="font-size: 48px; margin-bottom: 12px;">🔐</div>
+          <div style="font-weight: 600; color: #10b981; margin-bottom: 6px;">End-to-End Encryption</div>
+          <div style="font-size: 14px; color: #64748b;">AES-256 encryption at rest</div>
+        </div>
+        
+        <div style="text-align: center;">
+          <div style="font-size: 48px; margin-bottom: 12px;">⚡</div>
+          <div style="font-weight: 600; color: #10b981; margin-bottom: 6px;">99.9% Uptime SLA</div>
+          <div style="font-size: 14px; color: #64748b;">Production-grade reliability</div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; padding: 30px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2);">
+        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 12px;">INTEGRATIONS & INFRASTRUCTURE</p>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; align-items: center;">
+          <div style="color: #64748b; font-weight: 500; font-size: 16px;">AWS</div>
+          <div style="color: #64748b; font-weight: 500; font-size: 16px;">Google Cloud</div>
+          <div style="color: #64748b; font-weight: 500; font-size: 16px;">Azure</div>
+          <div style="color: #64748b; font-weight: 500; font-size: 16px;">Railway</div>
+          <div style="color: #64748b; font-weight: 500; font-size: 16px;">Vercel</div>
+          <div style="color: #64748b; font-weight: 500; font-size: 16px;">Docker</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="pricing-section" style="background: #0f172a; padding: 80px 20px;">
+    <div class="container" style="max-width: 800px;">
+      <h2 style="text-align: center; margin-bottom: 60px; font-size: 36px;">Frequently Asked Questions</h2>
+      
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        <details style="background: #1e293b; border-radius: 8px; padding: 20px; border-left: 3px solid #10b981; cursor: pointer;">
+          <summary style="font-size: 18px; font-weight: 600; margin-bottom: 12px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+            <span>What AI providers do you support?</span>
+            <span style="color: #10b981;">▼</span>
+          </summary>
+          <p style="color: #94a3b8; line-height: 1.7; margin-top: 12px; padding-left: 8px;">
+            We support all major AI providers including OpenAI (GPT-4, GPT-5), Anthropic (Claude Opus, Sonnet), Google (Gemini), and open-source models. Our platform is provider-agnostic, so you can use any combination of models for your agent team.
+          </p>
+        </details>
+
+        <details style="background: #1e293b; border-radius: 8px; padding: 20px; border-left: 3px solid #10b981; cursor: pointer;">
+          <summary style="font-size: 18px; font-weight: 600; margin-bottom: 12px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+            <span>How do you prevent agent runaways?</span>
+            <span style="color: #10b981;">▼</span>
+          </summary>
+          <p style="color: #94a3b8; line-height: 1.7; margin-top: 12px; padding-left: 8px;">
+            We provide real-time monitoring with automatic killswitches based on cost thresholds, token usage, suspicious behavior, and time limits. You can set custom rules per agent, and our dashboard gives you one-click emergency stop for any agent or the entire team.
+          </p>
+        </details>
+
+        <details style="background: #1e293b; border-radius: 8px; padding: 20px; border-left: 3px solid #10b981; cursor: pointer;">
+          <summary style="font-size: 18px; font-weight: 600; margin-bottom: 12px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+            <span>Do I need to change my existing agent code?</span>
+            <span style="color: #10b981;">▼</span>
+          </summary>
+          <p style="color: #94a3b8; line-height: 1.7; margin-top: 12px; padding-left: 8px;">
+            No! Agent Control Panel integrates via a lightweight SDK that wraps your existing agent code. It typically takes less than 5 minutes to integrate. We support Python, JavaScript/TypeScript, and have REST APIs for any language.
+          </p>
+        </details>
+
+        <details style="background: #1e293b; border-radius: 8px; padding: 20px; border-left: 3px solid #10b981; cursor: pointer;">
+          <summary style="font-size: 18px; font-weight: 600; margin-bottom: 12px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+            <span>What about data privacy and security?</span>
+            <span style="color: #10b981;">▼</span>
+          </summary>
+          <p style="color: #94a3b8; line-height: 1.7; margin-top: 12px; padding-left: 8px;">
+            All data is encrypted in transit and at rest. We offer self-hosted deployment for enterprises with strict compliance requirements. Our monitoring logs only metadata (costs, tokens, tool calls), not your actual prompts or responses unless you explicitly enable detailed logging.
+          </p>
+        </details>
+
+        <details style="background: #1e293b; border-radius: 8px; padding: 20px; border-left: 3px solid #10b981; cursor: pointer;">
+          <summary style="font-size: 18px; font-weight: 600; margin-bottom: 12px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+            <span>How is pricing calculated?</span>
+            <span style="color: #10b981;">▼</span>
+          </summary>
+          <p style="color: #94a3b8; line-height: 1.7; margin-top: 12px; padding-left: 8px;">
+            We charge based on the number of active agents and monitoring features enabled. The free tier includes up to 3 agents with basic monitoring. Pro plans start at $29/month for 10 agents. Enterprise pricing is custom based on scale and compliance needs. Check our <a href="/pricing.html" style="color: #10b981;">pricing page</a> for details.
+          </p>
+        </details>
+
+        <details style="background: #1e293b; border-radius: 8px; padding: 20px; border-left: 3px solid #10b981; cursor: pointer;">
+          <summary style="font-size: 18px; font-weight: 600; margin-bottom: 12px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+            <span>Can I use this for production applications?</span>
+            <span style="color: #10b981;">▼</span>
+          </summary>
+          <p style="color: #94a3b8; line-height: 1.7; margin-top: 12px; padding-left: 8px;">
+            Absolutely. We're designed for production use with 99.9% uptime SLA, dedicated support, and enterprise-grade security. Many teams use us to manage agents in customer-facing applications, internal tools, and automated workflows.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2>The Multi-Agent Era is Here. Are You Ready?</h2>
+      <p>Claude Opus 4.6 just dropped. GPT-5.3-Codex is live. Teams of agents are building C compilers. Don't get left behind shipping AI without proper controls.</p>
+      <button class="btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="padding: 16px 40px; font-size: 18px;">Get Early Access Now →</button>
+      <p style="margin-top: 16px; color: #94a3b8; font-size: 14px;">✓ No credit card required &nbsp;•&nbsp; ✓ Launch in Q1 2026</p>
+    </div>
+  </section>
 
   <script>
-    const mockAgents = [
-      {
-        id: 'agent-1',
-        name: 'Frontend Builder',
-        status: 'running',
-        model: 'claude-opus-4.6',
-        uptime: '3h 22m',
-        tokensUsed: 125400,
-        cost: 12.54,
-        permissions: ['read', 'write', 'web_search'],
-        lastActivity: 'Building React dashboard components...',
-        securityScore: 'A',
-        filesAccessed: 412,
-        toolCalls: 1823,
-        alerts: 0
-      },
-      {
-        id: 'agent-2',
-        name: 'Backend API Builder',
-        status: 'running',
-        model: 'gpt-5.3-codex',
-        uptime: '2h 58m',
-        tokensUsed: 98234,
-        cost: 4.91,
-        permissions: ['read', 'write', 'exec', 'network'],
-        lastActivity: 'Implementing GraphQL resolvers...',
-        securityScore: 'B',
-        filesAccessed: 278,
-        toolCalls: 1456,
-        alerts: 1,
-        recentAlerts: ['Attempted network call to unknown endpoint']
-      },
-      {
-        id: 'agent-3',
-        name: 'Database Schema Designer',
-        status: 'idle',
-        model: 'claude-sonnet-4',
-        uptime: '4h 15m',
-        tokensUsed: 34120,
-        cost: 1.71,
-        permissions: ['read', 'write'],
-        lastActivity: 'Schema design complete. Waiting for review.',
-        securityScore: 'A+',
-        filesAccessed: 89,
-        toolCalls: 412,
-        alerts: 0
-      },
-      {
-        id: 'agent-4',
-        name: 'Security Auditor',
-        status: 'running',
-        model: 'claude-opus-4.6',
-        uptime: '1h 44m',
-        tokensUsed: 67891,
-        cost: 6.79,
-        permissions: ['read'],
-        lastActivity: 'Scanning for XSS vulnerabilities...',
-        securityScore: 'A+',
-        filesAccessed: 923,
-        toolCalls: 2104,
-        alerts: 0
-      },
-      {
-        id: 'agent-5',
-        name: 'Documentation Writer',
-        status: 'running',
-        model: 'claude-sonnet-4',
-        uptime: '2h 11m',
-        tokensUsed: 28934,
-        cost: 1.45,
-        permissions: ['read', 'write'],
-        lastActivity: 'Writing API documentation...',
-        securityScore: 'A',
-        filesAccessed: 156,
-        toolCalls: 534,
-        alerts: 0
-      },
-      {
-        id: 'agent-6',
-        name: 'DevOps Deploy Agent',
-        status: 'running',
-        model: 'gpt-5.3-codex',
-        uptime: '47m',
-        tokensUsed: 19823,
-        cost: 0.99,
-        permissions: ['read', 'write', 'exec', 'network'],
-        lastActivity: 'Configuring Railway deployment...',
-        securityScore: 'B',
-        filesAccessed: 234,
-        toolCalls: 678,
-        alerts: 1,
-        recentAlerts: ['Exec command attempted: rm -rf']
-      },
-      {
-        id: 'agent-7',
-        name: 'Integration Tester',
-        status: 'running',
-        model: 'claude-sonnet-4',
-        uptime: '1h 33m',
-        tokensUsed: 45678,
-        cost: 2.28,
-        permissions: ['read', 'exec', 'network'],
-        lastActivity: 'Testing API endpoints...',
-        securityScore: 'A',
-        filesAccessed: 189,
-        toolCalls: 1245,
-        alerts: 0
-      },
-      {
-        id: 'agent-8',
-        name: 'Data Scraper',
-        status: 'running',
-        model: 'claude-opus-4.6',
-        uptime: '5h 12m',
-        tokensUsed: 156789,
-        cost: 15.68,
-        permissions: ['read', 'write', 'web_search', 'network'],
-        lastActivity: 'Scraping competitor pricing data...',
-        securityScore: 'D',
-        filesAccessed: 1823,
-        toolCalls: 4567,
-        alerts: 4,
-        recentAlerts: ['Attempted access to /etc/passwd', 'Read ~/.ssh/id_rsa', 'Network call to suspicious IP', 'High file access rate detected']
-      }
-    ];
+    // Load waitlist count
+    fetch('/api/waitlist/count')
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('count').textContent = data.count;
+      });
 
-    function getSecurityScoreClass(score) {
-      if (score === 'A+' || score === 'A') return 'good';
-      if (score === 'B' || score === 'C') return 'medium';
-      return 'bad';
-    }
-
-    function getCardClass(agent) {
-      if (agent.alerts > 0) return 'security-alert';
-      if (agent.securityScore === 'C' || agent.securityScore === 'D') return 'security-warning';
-      return '';
-    }
-
-    async function loadAgents() {
-      const grid = document.getElementById('agents-grid');
+    // Handle form submission
+    document.getElementById('waitlist-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = document.getElementById('email-input');
+      const email = input.value;
+      const button = e.target.querySelector('button');
       
-      // Show loading state
-      grid.innerHTML = `
-        <div class="loading-container">
-          <div class="spinner"></div>
-          <div>Loading agents...</div>
-        </div>
-      `;
+      button.textContent = 'Joining...';
+      button.disabled = true;
       
       try {
-        const response = await fetch('/api/simulate/agents/?count=8');
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const res = await fetch('/api/waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
         
-        const data = await response.json();
-        
-        // Convert API format to dashboard format
-        const agents = data.agents.map(a => ({
-          id: a.id,
-          name: a.name,
-          status: a.status,
-          model: a.model,
-          uptime: formatUptime(a.uptime_seconds),
-          tokensUsed: a.metadata.tokens_used,
-          cost: a.total_cost,
-          permissions: ['read', 'write'],
-          lastActivity: `${a.metadata.last_action} (${a.tasks_completed} tasks completed)`,
-          securityScore: scoreToGrade(a.security_score),
-          filesAccessed: a.metadata.files_accessed,
-          toolCalls: a.metadata.api_calls,
-          alerts: a.status === 'failed' ? 1 : 0,
-          recentAlerts: a.status === 'failed' ? ['Agent stopped with errors'] : null
-        }));
-        
-        renderAgents(agents);
-        updateDashboardStats(data.stats);
-      } catch (error) {
-        console.error('Failed to load agents:', error);
-        
-        // Show error state with retry option
-        grid.innerHTML = `
-          <div class="error-container">
-            <div class="icon">⚠️</div>
-            <div><strong>Failed to load agents</strong></div>
-            <div style="margin-top:8px;font-size:14px;">API connection error. Using demo data.</div>
-            <button onclick="loadAgents()">Retry</button>
-          </div>
-        `;
-        
-        // Still show mock data in a second
-        setTimeout(() => {
-          renderAgents(mockAgents);
-          loadStatsFallback();
-        }, 2000);
+        if (data.success) {
+          button.textContent = '✓ You\'re in!';
+          button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+          input.value = '';
+          document.getElementById('count').textContent = data.count;
+        }
+      } catch (err) {
+        button.textContent = 'Try again';
+        button.disabled = false;
       }
-    }
-
-    function formatUptime(seconds) {
-      const hours = Math.floor(seconds / 3600);
-      const minutes = Math.floor((seconds % 3600) / 60);
-      if (hours > 0) return `${hours}h ${minutes}m`;
-      return `${minutes}m`;
-    }
-
-    function scoreToGrade(score) {
-      if (score >= 95) return 'A+';
-      if (score >= 90) return 'A';
-      if (score >= 80) return 'B';
-      if (score >= 70) return 'C';
-      return 'D';
-    }
-
-    function updateDashboardStats(stats) {
-      document.getElementById('total-agents').textContent = stats.total_agents;
-      document.getElementById('running-agents').textContent = stats.active_agents;
-      document.getElementById('total-cost').textContent = '$' + stats.total_cost;
-    }
-
-    function loadStatsFallback() {
-      const totalAgents = mockAgents.length;
-      const runningAgents = mockAgents.filter(a => a.status === 'running').length;
-      const totalCost = mockAgents.reduce((sum, a) => sum + a.cost, 0);
-      
-      document.getElementById('total-agents').textContent = totalAgents;
-      document.getElementById('running-agents').textContent = runningAgents;
-      document.getElementById('total-cost').textContent = '$' + totalCost.toFixed(2);
-    }
-
-    function renderAgents(agents) {
-      const grid = document.getElementById('agents-grid');
-      grid.innerHTML = agents.map(agent => `
-        <div class="agent-card ${getCardClass(agent)}">
-          <div class="agent-header">
-            <div class="agent-name">${agent.name}</div>
-            <div class="agent-badges">
-              <div class="security-score ${getSecurityScoreClass(agent.securityScore)}">
-                🛡️ ${agent.securityScore}
-              </div>
-              <div class="status ${agent.status}">${agent.status.toUpperCase()}</div>
-            </div>
-          </div>
-          
-          <div class="agent-details">
-            <div class="detail">
-              <div class="detail-label">Model</div>
-              <div class="detail-value">${agent.model}</div>
-            </div>
-            <div class="detail">
-              <div class="detail-label">Uptime</div>
-              <div class="detail-value">${agent.uptime}</div>
-            </div>
-            <div class="detail">
-              <div class="detail-label">Files Accessed</div>
-              <div class="detail-value ${agent.filesAccessed > 400 ? 'warning' : ''}">${agent.filesAccessed}</div>
-            </div>
-            <div class="detail">
-              <div class="detail-label">Tool Calls</div>
-              <div class="detail-value">${agent.toolCalls.toLocaleString()}</div>
-            </div>
-            <div class="detail">
-              <div class="detail-label">Alerts</div>
-              <div class="detail-value ${agent.alerts > 0 ? 'danger' : ''}">${agent.alerts}</div>
-            </div>
-            <div class="detail">
-              <div class="detail-label">Cost</div>
-              <div class="detail-value">$${agent.cost.toFixed(2)}</div>
-            </div>
-          </div>
-
-          <div class="activity">
-            > ${agent.lastActivity}
-          </div>
-
-          ${agent.recentAlerts ? `
-            <div class="security-log alert">
-              <div style="color:#ff3366;margin-bottom:8px;font-weight:bold;">⚠️ Recent Security Alerts:</div>
-              ${agent.recentAlerts.map(a => `<div class="log-entry"><span class="log-action danger">• ${a}</span></div>`).join('')}
-            </div>
-          ` : ''}
-
-          <div class="permissions">
-            ${agent.permissions.map(p => `<span class="permission-badge ${p === 'exec' ? 'dangerous' : ''}">${p}</span>`).join('')}
-          </div>
-
-          <div class="agent-actions">
-            <button class="btn btn-primary btn-small" onclick="viewLogs('${agent.id}')">View Logs</button>
-            <button class="btn btn-secondary btn-small" onclick="auditAgent('${agent.id}')">Audit</button>
-            <button class="btn btn-danger btn-small" onclick="killAgent('${agent.id}')">Kill</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function killAgent(id) {
-      const agent = mockAgents.find(a => a.id === id);
-      if (agent) {
-        agent.status = 'stopped';
-        loadAgents();
-        loadStats();
-      }
-    }
-
-    function spawnAgent() {
-      const name = prompt('Agent name:', 'New Agent');
-      if (!name) return;
-      
-      mockAgents.push({
-        id: `agent-${Date.now()}`,
-        name: name,
-        status: 'running',
-        model: 'claude-sonnet-4',
-        uptime: '0m',
-        tokensUsed: 0,
-        cost: 0,
-        permissions: ['read'],
-        lastActivity: 'Initializing...',
-        securityScore: 'A',
-        filesAccessed: 0,
-        toolCalls: 0,
-        alerts: 0
-      });
-      loadAgents();
-      loadStats();
-    }
-
-    function killAllAgents() {
-      if (confirm('⚠️ EMERGENCY STOP\\n\\nThis will immediately terminate ALL running agents.\\n\\nAre you sure?')) {
-        mockAgents.forEach(a => a.status = 'stopped');
-        loadAgents();
-        loadStats();
-        alert('All agents terminated.');
-      }
-    }
-
-    function viewLogs(id) { alert(`Opening logs for agent ${id}...`); }
-    function viewAlerts() { alert('Opening security alerts panel...'); }
-    function viewAuditLog() { alert('Opening full audit log...'); }
-    function exportReport() { alert('Generating security report...'); }
-    function auditAgent(id) { alert(`Opening security audit for agent ${id}...`); }
-
-    // Load data on page load
-    loadAgents();
-
-    // Refresh every 30 seconds (realistic agent data)
-    setInterval(() => {
-      loadAgents();
-    }, 30000);
+    });
   </script>
   
       <!-- Build: e6d1d21 | 2026-02-06 13:36:58 +0000 | https://github.com/saltyprojects/agent-control-panel/commit/e6d1d21a54c8e6e9f374b14a5a2e7a849c93755b -->
 </body>
 </html>
+
+<!-- Auto-deploy test: 1770386087 -->
