@@ -180,18 +180,26 @@ def simulate_agents(request):
         "CustomerSupport-AI", "DataAnalyzer-Pro", "CodeReviewer-v2",
         "ContentGenerator", "SecurityScanner", "EmailAssistant",
         "SocialMediaBot", "ResearchAgent", "TaskAutomation",
-        "ChatModerator", "DocumentProcessor", "LeadQualifier"
+        "ChatModerator", "DocumentProcessor", "LeadQualifier",
+        "SQLQueryOptimizer", "UnitTestWriter", "BugHunter",
+        "APIDocGenerator", "LogAnalyzer", "PerformanceMonitor",
+        "ComplianceAuditor", "PricingAnalyzer", "UserFeedbackBot",
+        "DeploymentAgent", "BackupScheduler", "CacheWarmer"
     ]
     
     models = [
-        "claude-opus-4-5", "claude-sonnet-4-5", "gpt-4-turbo",
-        "gpt-4o", "gemini-pro", "claude-3-opus"
+        "claude-opus-4-5", "claude-opus-4-6", "claude-sonnet-4-5",
+        "gpt-4-turbo", "gpt-4o", "gpt-5.3-codex",
+        "gemini-pro", "gemini-ultra", "llama-3-70b",
+        "mistral-large", "deepseek-coder-v2"
     ]
     
     statuses = ['running', 'idle', 'running', 'running', 'stopped']
     actions = [
         'file_read', 'file_write', 'api_call', 'database_query',
-        'email_send', 'slack_post', 'web_scrape', 'data_analysis'
+        'email_send', 'slack_post', 'web_scrape', 'data_analysis',
+        'code_review', 'test_execution', 'log_parsing', 'cache_update',
+        'metric_collection', 'backup_creation', 'security_scan', 'docs_update'
     ]
     
     agents = []
