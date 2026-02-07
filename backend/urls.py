@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import RedirectView
 from rest_framework.routers import DefaultRouter
 from core import views
 from core.api import (
@@ -19,7 +20,8 @@ router.register(r'agents', AgentViewSet, basename='agent')
 router.register(r'logs', AgentLogViewSet, basename='agentlog')
 
 urlpatterns = [
-    # Admin
+    # Admin (redirect /admin to /admin/ for proper Django admin routing)
+    path('admin', RedirectView.as_view(url='/admin/', permanent=True)),
     path('admin/', admin.site.urls),
     
     # Health check (before API router)
