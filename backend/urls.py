@@ -13,6 +13,7 @@ from core.api import (
     simulate_agents, simulate_activity
 )
 from core.react_views import ReactAppView
+from core.debug_views import debug_auth
 
 # DRF Router for viewsets
 router = DefaultRouter()
@@ -26,6 +27,9 @@ urlpatterns = [
     
     # Health check (before API router)
     path('api/health/', health_check, name='health-check'),
+    
+    # Debug endpoint (temporary - check auth status)
+    path('api/debug/auth/', debug_auth, name='debug-auth'),
     
     # Dashboard stats
     path('api/dashboard/stats/', dashboard_stats, name='dashboard-stats'),
