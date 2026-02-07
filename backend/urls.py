@@ -7,7 +7,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from core import views
-from core.api import AgentViewSet, AgentLogViewSet, dashboard_stats, health_check
+from core.api import (
+    AgentViewSet, AgentLogViewSet, dashboard_stats, health_check,
+    simulate_agents, simulate_activity
+)
 from core.react_views import ReactAppView
 
 # DRF Router for viewsets
@@ -24,6 +27,10 @@ urlpatterns = [
     
     # Dashboard stats
     path('api/dashboard/stats/', dashboard_stats, name='dashboard-stats'),
+    
+    # Simulation endpoints (for demo/testing)
+    path('api/simulate/agents/', simulate_agents, name='simulate-agents'),
+    path('api/simulate/activity/', simulate_activity, name='simulate-activity'),
     
     # Waitlist endpoints
     path('api/waitlist', views.waitlist_signup, name='waitlist-signup'),

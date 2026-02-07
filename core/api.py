@@ -1,6 +1,6 @@
 """
 Agent Control Panel - REST API Endpoints
-Build #17: Full agent CRUD + dashboard stats
+Build #19: Real-time agent simulation API
 """
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view, action
@@ -9,6 +9,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.db.models import Sum, Avg, Count, Q
 from django.utils import timezone
 from datetime import timedelta
+import random
+import uuid
 
 from .models import Agent, AgentLog, AgentMetric
 from .serializers import (
@@ -161,4 +163,152 @@ def health_check(request):
         'status': 'healthy',
         'timestamp': timezone.now().isoformat(),
         'version': '0.2.0'
+    })
+
+
+@api_view(['GET'])
+def simulate_agents(request):
+    """
+    GET /api/simulate/agents/?count=5
+    Generate simulated agent data for demo/testing
+    Returns realistic agent status, metrics, and activity
+    """
+    count = min(int(request.query_params.get('count', 5)), 20)
+    now = timezone.now()
+    
+    agent_names = [
+        "CustomerSupport-AI", "DataAnalyzer-Pro", "CodeReviewer-v2",
+        "ContentGenerator", "SecurityScanner", "EmailAssistant",
+        "SocialMediaBot", "ResearchAgent", "TaskAutomation",
+        "ChatModerator", "DocumentProcessor", "LeadQualifier"
+    ]
+    
+    models = [
+        "claude-opus-4-5", "claude-sonnet-4-5", "gpt-4-turbo",
+        "gpt-4o", "gemini-pro", "claude-3-opus"
+    ]
+    
+    statuses = ['running', 'idle', 'running', 'running', 'stopped']
+    actions = [
+        'file_read', 'file_write', 'api_call', 'database_query',
+        'email_send', 'slack_post', 'web_scrape', 'data_analysis'
+    ]
+    
+    agents = []
+    for i in range(count):
+        name = random.choice(agent_names)
+        agent_status = random.choice(statuses)
+        
+        # Simulate activity
+        minutes_ago = random.randint(1, 120)
+        last_active = now - timedelta(minutes=minutes_ago)
+        
+        # Simulate costs and tokens
+        tokens = random.randint(5000, 500000)
+        cost_per_1k = random.uniform(0.002, 0.03)
+        total_cost = (tokens / 1000) * cost_per_1k
+        
+        # Security score (running agents generally higher)
+        if agent_status == 'running':
+            security_score = random.randint(85, 100)
+        else:
+            security_score = random.randint(60, 95)
+        
+        agent_data = {
+            'id': str(uuid.uuid4()),
+            'name': f"{name}-{i+1}",
+            'status': agent_status,
+            'model': random.choice(models),
+            'last_active_at': last_active.isoformat(),
+            'tasks_completed': random.randint(10, 1000),
+            'tasks_failed': random.randint(0, 20),
+            'total_cost': round(total_cost, 4),
+            'security_score': security_score,
+            'uptime_seconds': random.randint(3600, 86400),
+            'metadata': {
+                'tokens_used': tokens,
+                'files_accessed': random.randint(5, 200),
+                'api_calls': random.randint(10, 500),
+                'last_action': random.choice(actions)
+            }
+        }
+        agents.append(agent_data)
+    
+    # Calculate aggregate stats
+    total_cost = sum(a['total_cost'] for a in agents)
+    avg_security = sum(a['security_score'] for a in agents) / len(agents)
+    active_count = sum(1 for a in agents if a['status'] == 'running')
+    
+    return Response({
+        'count': count,
+        'agents': agents,
+        'stats': {
+            'total_agents': count,
+            'active_agents': active_count,
+            'total_cost': round(total_cost, 2),
+            'avg_security_score': round(avg_security, 1),
+            'timestamp': now.isoformat()
+        }
+    })
+
+
+@api_view(['GET'])
+def simulate_activity(request):
+    """
+    GET /api/simulate/activity/?limit=20
+    Generate simulated agent activity logs
+    """
+    limit = min(int(request.query_params.get('limit', 20)), 100)
+    now = timezone.now()
+    
+    actions = [
+        'file_read', 'file_write', 'file_delete', 'api_call',
+        'database_query', 'email_send', 'slack_post', 'web_request',
+        'code_execute', 'data_analysis', 'model_call', 'tool_use'
+    ]
+    
+    targets = [
+        '/etc/passwd', 'user_data.csv', 'config.json',
+        'https://api.stripe.com', 'database://prod',
+        'admin@company.com', '#general', 'payment_processor'
+    ]
+    
+    statuses_weights = [
+        ('allowed', 70), ('flagged', 20), ('blocked', 10)
+    ]
+    
+    logs = []
+    for i in range(limit):
+        minutes_ago = random.randint(0, 180)
+        timestamp = now - timedelta(minutes=minutes_ago)
+        
+        # Weighted random status
+        status_choice = random.choices(
+            [s[0] for s in statuses_weights],
+            weights=[s[1] for s in statuses_weights]
+        )[0]
+        
+        action = random.choice(actions)
+        target = random.choice(targets)
+        
+        log_data = {
+            'id': str(uuid.uuid4()),
+            'timestamp': timestamp.isoformat(),
+            'action': action,
+            'target': target,
+            'status': status_choice,
+            'agent_name': f"Agent-{random.randint(1, 10)}",
+            'metadata': {
+                'duration_ms': random.randint(10, 5000),
+                'tokens': random.randint(100, 10000) if 'model' in action else 0
+            }
+        }
+        logs.append(log_data)
+    
+    # Sort by timestamp desc
+    logs.sort(key=lambda x: x['timestamp'], reverse=True)
+    
+    return Response({
+        'count': len(logs),
+        'logs': logs
     })
