@@ -2,20 +2,36 @@
 URL configuration for Agent Control Panel backend.
 """
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
 from core import views
+from core.api import AgentViewSet, AgentLogViewSet, dashboard_stats, health_check
 from core.react_views import ReactAppView
+
+# DRF Router for viewsets
+router = DefaultRouter()
+router.register(r'agents', AgentViewSet, basename='agent')
+router.register(r'logs', AgentLogViewSet, basename='agentlog')
 
 urlpatterns = [
     # Admin
     path('admin/', admin.site.urls),
     
-    # API endpoints
+    # Health check (before API router)
+    path('api/health/', health_check, name='health-check'),
+    
+    # Dashboard stats
+    path('api/dashboard/stats/', dashboard_stats, name='dashboard-stats'),
+    
+    # Waitlist endpoints
     path('api/waitlist', views.waitlist_signup, name='waitlist-signup'),
     path('api/waitlist/count', views.waitlist_count, name='waitlist-count'),
     path('api/admin/waitlist', views.admin_waitlist, name='admin-waitlist'),
+    
+    # DRF Router (agents, logs)
+    path('api/', include(router.urls)),
     
     # Catch-all: serve React app for all other routes
     # React Router will handle client-side routing
