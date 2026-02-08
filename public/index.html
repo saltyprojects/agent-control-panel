@@ -373,38 +373,162 @@
     </div>
   </section>
 
-  <!-- Demo Video Section -->
+  <!-- Live Agent Dashboard Demo -->
   <section class="section" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 80px 20px;">
-    <div class="container" style="max-width: 900px;">
-      <h2 style="text-align: center; margin-bottom: 20px; font-size: 32px;">See Agent Control Panel in Action</h2>
+    <div class="container" style="max-width: 1000px;">
+      <h2 style="text-align: center; margin-bottom: 8px; font-size: 32px;">Live Dashboard Preview</h2>
       <p style="text-align: center; color: #94a3b8; margin-bottom: 40px; font-size: 16px;">
-        Watch how teams are using Agent Control Panel to orchestrate AI agents safely and efficiently
+        This is what your agent fleet looks like in real-time
       </p>
       
-      <div style="position: relative; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; overflow: hidden; border: 2px solid rgba(16, 185, 129, 0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
-        <div style="padding-top: 56.25%; position: relative; background: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1200 675%22%3E%3Crect fill=%22%231a1a2e%22 width=%221200%22 height=%22675%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22monospace%22 font-size=%2224%22 fill=%22%2310b981%22%3E🎬 Demo Video Coming Soon%3C/text%3E%3C/svg%3E') center/cover;">
-          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: rgba(16, 185, 129, 0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 32px rgba(16, 185, 129, 0.4);">
-            <div style="width: 0; height: 0; border-left: 25px solid white; border-top: 15px solid transparent; border-bottom: 15px solid transparent; margin-left: 8px;"></div>
+      <div id="live-demo" style="background: #0d1117; border-radius: 12px; overflow: hidden; border: 1px solid rgba(16, 185, 129, 0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.5); font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px;">
+        <!-- Title bar -->
+        <div style="background: #161b22; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #30363d;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 12px; height: 12px; border-radius: 50%; background: #f85149;"></div>
+            <div style="width: 12px; height: 12px; border-radius: 50%; background: #d29922;"></div>
+            <div style="width: 12px; height: 12px; border-radius: 50%; background: #3fb950;"></div>
+            <span style="color: #8b949e; margin-left: 12px; font-size: 12px;">Agent Control Panel — Fleet Overview</span>
           </div>
+          <div style="display: flex; gap: 16px; font-size: 12px; color: #8b949e;">
+            <span>⚡ <span style="color: #3fb950;" id="demo-uptime">99.7%</span> uptime</span>
+            <span>💰 $<span id="demo-cost">47.23</span>/hr</span>
+            <span id="demo-clock" style="color: #58a6ff;"></span>
+          </div>
+        </div>
+        <!-- Agent rows -->
+        <div style="padding: 0;">
+          <div style="display: grid; grid-template-columns: 28px 1fr 110px 90px 100px 80px; padding: 8px 16px; color: #484f58; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #21262d;">
+            <span></span><span>Agent</span><span>Task</span><span>Status</span><span>Tokens</span><span>Cost</span>
+          </div>
+          <div id="agent-row-0" class="demo-row" style="display: grid; grid-template-columns: 28px 1fr 110px 90px 100px 80px; padding: 10px 16px; align-items: center; border-bottom: 1px solid #21262d; transition: background 0.3s;">
+            <span style="color: #3fb950;">●</span>
+            <span><span style="color: #f0f6fc; font-weight: 600;">buildy</span> <span style="color: #484f58;">— code-gen</span></span>
+            <span style="color: #8b949e;" class="demo-task">writing API</span>
+            <span><span style="background: #0d4429; color: #3fb950; padding: 2px 8px; border-radius: 10px; font-size: 11px;">running</span></span>
+            <span style="color: #8b949e;" class="demo-tokens">142.3k</span>
+            <span style="color: #8b949e;">$3.21</span>
+          </div>
+          <div id="agent-row-1" class="demo-row" style="display: grid; grid-template-columns: 28px 1fr 110px 90px 100px 80px; padding: 10px 16px; align-items: center; border-bottom: 1px solid #21262d; transition: background 0.3s;">
+            <span style="color: #3fb950;">●</span>
+            <span><span style="color: #f0f6fc; font-weight: 600;">sentry</span> <span style="color: #484f58;">— security</span></span>
+            <span style="color: #8b949e;" class="demo-task">scanning deps</span>
+            <span><span style="background: #0d4429; color: #3fb950; padding: 2px 8px; border-radius: 10px; font-size: 11px;">running</span></span>
+            <span style="color: #8b949e;" class="demo-tokens">89.1k</span>
+            <span style="color: #8b949e;">$1.87</span>
+          </div>
+          <div id="agent-row-2" class="demo-row" style="display: grid; grid-template-columns: 28px 1fr 110px 90px 100px 80px; padding: 10px 16px; align-items: center; border-bottom: 1px solid #21262d; transition: background 0.3s;">
+            <span style="color: #d29922;">●</span>
+            <span><span style="color: #f0f6fc; font-weight: 600;">reviewer</span> <span style="color: #484f58;">— qa</span></span>
+            <span style="color: #8b949e;" class="demo-task">PR #847</span>
+            <span><span style="background: #3d2e00; color: #d29922; padding: 2px 8px; border-radius: 10px; font-size: 11px;">queued</span></span>
+            <span style="color: #8b949e;" class="demo-tokens">0</span>
+            <span style="color: #8b949e;">$0.00</span>
+          </div>
+          <div id="agent-row-3" class="demo-row" style="display: grid; grid-template-columns: 28px 1fr 110px 90px 100px 80px; padding: 10px 16px; align-items: center; border-bottom: 1px solid #21262d; transition: background 0.3s;">
+            <span style="color: #3fb950;">●</span>
+            <span><span style="color: #f0f6fc; font-weight: 600;">deployer</span> <span style="color: #484f58;">— infra</span></span>
+            <span style="color: #8b949e;" class="demo-task">k8s rollout</span>
+            <span><span style="background: #0d4429; color: #3fb950; padding: 2px 8px; border-radius: 10px; font-size: 11px;">running</span></span>
+            <span style="color: #8b949e;" class="demo-tokens">56.8k</span>
+            <span style="color: #8b949e;">$1.14</span>
+          </div>
+          <div id="agent-row-4" class="demo-row" style="display: grid; grid-template-columns: 28px 1fr 110px 90px 100px 80px; padding: 10px 16px; align-items: center; transition: background 0.3s;">
+            <span style="color: #8b949e;">●</span>
+            <span><span style="color: #f0f6fc; font-weight: 600;">writer</span> <span style="color: #484f58;">— content</span></span>
+            <span style="color: #8b949e;" class="demo-task">idle</span>
+            <span><span style="background: #21262d; color: #8b949e; padding: 2px 8px; border-radius: 10px; font-size: 11px;">idle</span></span>
+            <span style="color: #8b949e;" class="demo-tokens">0</span>
+            <span style="color: #8b949e;">$0.00</span>
+          </div>
+        </div>
+        <!-- Activity feed -->
+        <div style="border-top: 1px solid #30363d; padding: 12px 16px; max-height: 120px; overflow: hidden;">
+          <div style="color: #484f58; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Activity Feed</div>
+          <div id="activity-feed" style="display: flex; flex-direction: column; gap: 4px; font-size: 12px;"></div>
         </div>
       </div>
       
       <div style="display: flex; justify-content: center; gap: 40px; margin-top: 30px; flex-wrap: wrap;">
         <div style="text-align: center;">
-          <div style="font-size: 28px; font-weight: 700; color: #10b981; margin-bottom: 4px;">2 min</div>
-          <div style="font-size: 14px; color: #64748b;">Quick setup</div>
+          <div style="font-size: 28px; font-weight: 700; color: #10b981; margin-bottom: 4px;">5</div>
+          <div style="font-size: 14px; color: #64748b;">Agents tracked</div>
         </div>
         <div style="text-align: center;">
-          <div style="font-size: 28px; font-weight: 700; color: #10b981; margin-bottom: 4px;">10+</div>
-          <div style="font-size: 14px; color: #64748b;">Agent types</div>
+          <div style="font-size: 28px; font-weight: 700; color: #10b981; margin-bottom: 4px;">288k</div>
+          <div style="font-size: 14px; color: #64748b;">Tokens/hr</div>
         </div>
         <div style="text-align: center;">
-          <div style="font-size: 28px; font-weight: 700; color: #10b981; margin-bottom: 4px;">Real-time</div>
-          <div style="font-size: 14px; color: #64748b;">Monitoring</div>
+          <div style="font-size: 28px; font-weight: 700; color: #10b981; margin-bottom: 4px;">$6.22</div>
+          <div style="font-size: 14px; color: #64748b;">Total cost/hr</div>
         </div>
       </div>
     </div>
   </section>
+  
+  <script>
+  (function() {
+    const tasks = ['writing API','refactoring','fixing tests','deploying','code review','scanning deps','updating docs','PR #847','k8s rollout','DB migration','lint check','building UI'];
+    const feedMsgs = [
+      ['buildy','committed 3 files to main'],
+      ['sentry','found 0 critical vulnerabilities'],
+      ['deployer','rollout 3/3 pods ready'],
+      ['reviewer','approved PR #847'],
+      ['buildy','API endpoint /agents created'],
+      ['sentry','dependency audit passed'],
+      ['deployer','health check OK — 200'],
+      ['writer','blog draft saved'],
+      ['buildy','wrote 142 lines of code'],
+      ['sentry','no secrets detected in diff'],
+    ];
+    const feed = document.getElementById('activity-feed');
+    let feedCount = 0;
+    function addFeedItem() {
+      const m = feedMsgs[Math.floor(Math.random() * feedMsgs.length)];
+      const el = document.createElement('div');
+      el.style.cssText = 'color: #8b949e; opacity: 0; transition: opacity 0.5s;';
+      const now = new Date();
+      const ts = now.toTimeString().slice(0,8);
+      el.innerHTML = '<span style="color:#484f58;">' + ts + '</span> <span style="color:#58a6ff;">' + m[0] + '</span> ' + m[1];
+      feed.insertBefore(el, feed.firstChild);
+      requestAnimationFrame(() => el.style.opacity = '1');
+      if (feed.children.length > 5) feed.removeChild(feed.lastChild);
+    }
+    // Update clock
+    function updateClock() {
+      const c = document.getElementById('demo-clock');
+      if (c) c.textContent = new Date().toTimeString().slice(0,8) + ' UTC';
+    }
+    // Randomize tasks
+    function shuffleTasks() {
+      document.querySelectorAll('.demo-task').forEach(el => {
+        if (Math.random() > 0.6) el.textContent = tasks[Math.floor(Math.random() * tasks.length)];
+      });
+      // Randomize tokens
+      document.querySelectorAll('.demo-tokens').forEach(el => {
+        const v = parseFloat(el.textContent);
+        if (v > 0) el.textContent = (v + (Math.random() * 2 - 0.5)).toFixed(1) + 'k';
+      });
+      // Cost ticker
+      const costEl = document.getElementById('demo-cost');
+      if (costEl) costEl.textContent = (47 + Math.random() * 3).toFixed(2);
+    }
+    // Row highlight
+    function highlightRow() {
+      const rows = document.querySelectorAll('.demo-row');
+      rows.forEach(r => r.style.background = 'transparent');
+      const r = rows[Math.floor(Math.random() * rows.length)];
+      if (r) r.style.background = 'rgba(16,185,129,0.05)';
+    }
+    // Init
+    addFeedItem(); addFeedItem(); addFeedItem();
+    setInterval(addFeedItem, 3000);
+    setInterval(updateClock, 1000);
+    setInterval(shuffleTasks, 4000);
+    setInterval(highlightRow, 2500);
+    updateClock();
+  })();
+  </script>
 
   <section class="section">
     <div class="container">
