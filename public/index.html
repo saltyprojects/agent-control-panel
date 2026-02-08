@@ -752,6 +752,108 @@
     </div>
   </section>
 
+  <!-- MCP Architecture Section -->
+  <section class="section" style="background: linear-gradient(135deg, #0f172a 0%, #1a0f2e 50%, #0f172a 100%); padding: 80px 20px; overflow: hidden;">
+    <div class="container" style="max-width: 1000px;">
+      <div style="text-align: center; margin-bottom: 12px;">
+        <span style="background: linear-gradient(135deg, #a855f7, #6366f1); padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">MCP Native</span>
+      </div>
+      <h2 style="text-align: center; margin-bottom: 12px; font-size: 36px;">The Control Plane for<br><span style="background: linear-gradient(135deg, #a855f7, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Model Context Protocol</span></h2>
+      <p style="text-align: center; color: #94a3b8; margin-bottom: 60px; font-size: 18px; max-width: 650px; margin-left: auto; margin-right: auto;">
+        MCP is the new standard for connecting AI agents to tools. ACP is the only platform that monitors, secures, and controls MCP connections in real-time.
+      </p>
+
+      <!-- Architecture Diagram -->
+      <div style="position: relative; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 16px; padding: 48px 32px; margin-bottom: 40px;">
+        
+        <!-- Top: Agents -->
+        <div style="display: flex; justify-content: center; gap: 24px; margin-bottom: 32px; flex-wrap: wrap;">
+          <div class="mcp-node" style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 10px; padding: 14px 20px; text-align: center; min-width: 120px;">
+            <div style="font-size: 24px; margin-bottom: 4px;">🤖</div>
+            <div style="font-size: 13px; font-weight: 600; color: #60a5fa;">Claude Agent</div>
+          </div>
+          <div class="mcp-node" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 14px 20px; text-align: center; min-width: 120px;">
+            <div style="font-size: 24px; margin-bottom: 4px;">🤖</div>
+            <div style="font-size: 13px; font-weight: 600; color: #34d399;">GPT Agent</div>
+          </div>
+          <div class="mcp-node" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 10px; padding: 14px 20px; text-align: center; min-width: 120px;">
+            <div style="font-size: 24px; margin-bottom: 4px;">🤖</div>
+            <div style="font-size: 13px; font-weight: 600; color: #fbbf24;">Custom Agent</div>
+          </div>
+        </div>
+
+        <!-- Arrows down -->
+        <div style="text-align: center; margin-bottom: 16px;">
+          <div style="display: inline-flex; gap: 80px;">
+            <span style="color: #475569; font-size: 20px;">↓</span>
+            <span style="color: #475569; font-size: 20px;">↓</span>
+            <span style="color: #475569; font-size: 20px;">↓</span>
+          </div>
+          <div style="color: #64748b; font-size: 11px; margin-top: 4px; letter-spacing: 2px;">MCP PROTOCOL</div>
+        </div>
+
+        <!-- Middle: ACP Control Plane -->
+        <div style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(99, 102, 241, 0.15)); border: 2px solid rgba(168, 85, 247, 0.4); border-radius: 14px; padding: 24px; margin: 0 auto 16px; max-width: 600px; position: relative;">
+          <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #a855f7, #6366f1); padding: 4px 16px; border-radius: 12px; font-size: 11px; font-weight: 700; letter-spacing: 1px;">AGENT CONTROL PANEL</div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; text-align: center;">
+            <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px 8px;">
+              <div style="font-size: 18px;">🔍</div>
+              <div style="font-size: 10px; color: #c4b5fd; margin-top: 4px;">Monitor</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px 8px;">
+              <div style="font-size: 18px;">🛡️</div>
+              <div style="font-size: 10px; color: #c4b5fd; margin-top: 4px;">Secure</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px 8px;">
+              <div style="font-size: 18px;">💰</div>
+              <div style="font-size: 10px; color: #c4b5fd; margin-top: 4px;">Cost Track</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px 8px;">
+              <div style="font-size: 18px;">⚡</div>
+              <div style="font-size: 10px; color: #c4b5fd; margin-top: 4px;">Kill Switch</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Arrows down -->
+        <div style="text-align: center; margin-bottom: 16px;">
+          <div style="display: inline-flex; gap: 60px;">
+            <span style="color: #475569; font-size: 20px;">↓</span>
+            <span style="color: #475569; font-size: 20px;">↓</span>
+            <span style="color: #475569; font-size: 20px;">↓</span>
+            <span style="color: #475569; font-size: 20px;">↓</span>
+          </div>
+          <div style="color: #64748b; font-size: 11px; margin-top: 4px; letter-spacing: 2px;">MCP SERVERS</div>
+        </div>
+
+        <!-- Bottom: MCP Servers -->
+        <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 16px; font-size: 12px; color: #94a3b8;">📁 Filesystem</div>
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 16px; font-size: 12px; color: #94a3b8;">🗄️ Database</div>
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 16px; font-size: 12px; color: #94a3b8;">🌐 APIs</div>
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 16px; font-size: 12px; color: #94a3b8;">🐙 GitHub</div>
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 16px; font-size: 12px; color: #94a3b8;">☁️ Cloud</div>
+        </div>
+      </div>
+
+      <!-- Key differentiators -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+        <div style="background: rgba(168, 85, 247, 0.05); border: 1px solid rgba(168, 85, 247, 0.15); border-radius: 12px; padding: 24px;">
+          <div style="font-size: 14px; font-weight: 700; color: #c4b5fd; margin-bottom: 8px;">🔌 Proxy Mode</div>
+          <p style="color: #94a3b8; font-size: 13px; line-height: 1.6; margin: 0;">ACP sits between agents and MCP servers as a transparent proxy. Zero code changes — just point your MCP config at ACP.</p>
+        </div>
+        <div style="background: rgba(168, 85, 247, 0.05); border: 1px solid rgba(168, 85, 247, 0.15); border-radius: 12px; padding: 24px;">
+          <div style="font-size: 14px; font-weight: 700; color: #c4b5fd; margin-bottom: 8px;">📊 Per-Tool Analytics</div>
+          <p style="color: #94a3b8; font-size: 13px; line-height: 1.6; margin: 0;">See which MCP tools each agent calls, how often, latency, error rates, and costs. Identify bottlenecks instantly.</p>
+        </div>
+        <div style="background: rgba(168, 85, 247, 0.05); border: 1px solid rgba(168, 85, 247, 0.15); border-radius: 12px; padding: 24px;">
+          <div style="font-size: 14px; font-weight: 700; color: #c4b5fd; margin-bottom: 8px;">🚫 Tool Allowlists</div>
+          <p style="color: #94a3b8; font-size: 13px; line-height: 1.6; margin: 0;">Restrict which MCP tools each agent can access. Block dangerous operations, enforce read-only for junior agents.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Use Cases Section -->
   <section class="section" style="background: #0f172a; padding: 80px 20px;">
     <div class="container" style="max-width: 1100px;">
