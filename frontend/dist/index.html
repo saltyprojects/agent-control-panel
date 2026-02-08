@@ -751,6 +751,55 @@
     </div>
   </section>
 
+  <!-- ROI Calculator Section -->
+  <section class="section" style="background: linear-gradient(135deg, #0f172a 0%, #0c2a1f 50%, #0f172a 100%); padding: 80px 20px;">
+    <div class="container" style="max-width: 700px;">
+      <h2 style="text-align: center; margin-bottom: 8px; font-size: 36px;">💰 ROI Calculator</h2>
+      <p style="text-align: center; color: #94a3b8; margin-bottom: 48px; font-size: 18px;">See how much you'll save with Agent Control Panel</p>
+
+      <div style="background: #1e293b; border-radius: 12px; padding: 32px; border: 1px solid #334155;">
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          <div>
+            <label style="color: #e2e8f0; font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">
+              Number of AI agents <span id="roi-agents-val" style="color: #10b981;">5</span>
+            </label>
+            <input type="range" id="roi-agents" min="1" max="50" value="5" style="width: 100%; accent-color: #10b981;">
+          </div>
+          <div>
+            <label style="color: #e2e8f0; font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">
+              Avg cost per agent/day <span id="roi-cost-val" style="color: #10b981;">$25</span>
+            </label>
+            <input type="range" id="roi-cost" min="5" max="200" value="25" step="5" style="width: 100%; accent-color: #10b981;">
+          </div>
+          <div>
+            <label style="color: #e2e8f0; font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">
+              Runaway incidents per month <span id="roi-incidents-val" style="color: #10b981;">3</span>
+            </label>
+            <input type="range" id="roi-incidents" min="0" max="20" value="3" style="width: 100%; accent-color: #10b981;">
+          </div>
+        </div>
+
+        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #334155;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; text-align: center;">
+            <div style="background: #0f172a; border-radius: 8px; padding: 20px;">
+              <div style="color: #94a3b8; font-size: 13px; margin-bottom: 4px;">Monthly spend without ACP</div>
+              <div id="roi-without" style="color: #ef4444; font-size: 28px; font-weight: 700;">$4,500</div>
+            </div>
+            <div style="background: #0f172a; border-radius: 8px; padding: 20px;">
+              <div style="color: #94a3b8; font-size: 13px; margin-bottom: 4px;">Monthly spend with ACP</div>
+              <div id="roi-with" style="color: #10b981; font-size: 28px; font-weight: 700;">$3,150</div>
+            </div>
+          </div>
+          <div style="text-align: center; margin-top: 20px; background: linear-gradient(135deg, #065f46, #064e3b); border-radius: 8px; padding: 20px;">
+            <div style="color: #6ee7b7; font-size: 14px; margin-bottom: 4px;">You save</div>
+            <div id="roi-savings" style="color: #fff; font-size: 36px; font-weight: 800;">$1,350/mo</div>
+            <div id="roi-percent" style="color: #6ee7b7; font-size: 14px; margin-top: 4px;">30% cost reduction</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Ship Log Section -->
   <section class="section" style="background: linear-gradient(180deg, #0f172a 0%, #1a1037 100%); padding: 80px 20px;">
     <div class="container" style="max-width: 900px;">
@@ -1018,6 +1067,34 @@
   
       <!-- Build: e6d1d21 | 2026-02-06 13:36:58 +0000 | https://github.com/saltyprojects/agent-control-panel/commit/e6d1d21a54c8e6e9f374b14a5a2e7a849c93755b -->
 </body>
+<script>
+  // ROI Calculator
+  function updateROI() {
+    const agents = parseInt(document.getElementById('roi-agents').value);
+    const costPerDay = parseInt(document.getElementById('roi-cost').value);
+    const incidents = parseInt(document.getElementById('roi-incidents').value);
+    
+    document.getElementById('roi-agents-val').textContent = agents;
+    document.getElementById('roi-cost-val').textContent = '$' + costPerDay;
+    document.getElementById('roi-incidents-val').textContent = incidents;
+    
+    const monthlyBase = agents * costPerDay * 30;
+    const runawayLoss = incidents * costPerDay * 8; // avg 8x normal cost per incident
+    const withoutACP = monthlyBase + runawayLoss;
+    const savingsPercent = 30;
+    const withACP = Math.round(withoutACP * (1 - savingsPercent / 100));
+    const savings = withoutACP - withACP;
+    
+    document.getElementById('roi-without').textContent = '$' + withoutACP.toLocaleString();
+    document.getElementById('roi-with').textContent = '$' + withACP.toLocaleString();
+    document.getElementById('roi-savings').textContent = '$' + savings.toLocaleString() + '/mo';
+    document.getElementById('roi-percent').textContent = savingsPercent + '% cost reduction';
+  }
+  document.getElementById('roi-agents').addEventListener('input', updateROI);
+  document.getElementById('roi-cost').addEventListener('input', updateROI);
+  document.getElementById('roi-incidents').addEventListener('input', updateROI);
+  updateROI();
+</script>
 </html>
 
 <!-- Auto-deploy test: 1770386087 -->
