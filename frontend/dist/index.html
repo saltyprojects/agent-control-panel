@@ -353,15 +353,25 @@
     </div>
   </nav>
 
+  <!-- Launch Banner -->
+  <div id="launch-banner" style="background: linear-gradient(90deg, #059669, #10b981, #059669); background-size: 200% 100%; animation: shimmer 3s ease infinite; padding: 12px 20px; text-align: center; font-size: 14px; font-weight: 600; color: #fff; position: relative; z-index: 99;">
+    🚀 Early Access is LIVE — Limited spots remaining. <a href="#waitlist" style="color: #fff; text-decoration: underline; margin-left: 4px;">Join now →</a>
+  </div>
+  <style>
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .live-dot { display:inline-block; width:8px; height:8px; background:#10b981; border-radius:50%; animation:pulse-dot 2s ease infinite; margin-right:6px; }
+  </style>
+
   <section class="hero">
     <div class="container">
       <div class="badge">
-        <span>🤖</span> Multi-agent orchestration is here
+        <span class="live-dot"></span> Early Access Now Open — February 2026
       </div>
       <h1>Orchestrate AI Agents<br>Without Losing Control</h1>
       <p>The control panel for coordinating multiple AI agents. Track what they're building, manage permissions, monitor costs, and stop runaways instantly.</p>
       
-      <div class="glass-card cta-card">
+      <div class="glass-card cta-card" id="waitlist">
         <h3>Get Exclusive Early Access</h3>
         <p style="color: #94a3b8; margin-bottom: 20px; font-size: 15px;">Join the waitlist and be first to ship multi-agent systems with confidence</p>
         <form class="email-form" id="waitlist-form">
@@ -506,7 +516,7 @@
         <p style="font-size: 18px; color: #10b981; margin-bottom: 10px;">
           <strong>🚀 <span id="count">247</span> forward-thinking teams are already on the waitlist</strong>
         </p>
-        <p style="color: #94a3b8; font-size: 14px;">Early access launching Q1 2026 • Don't miss out</p>
+        <p style="color: #94a3b8; font-size: 14px;">Early access is live • Spots are limited</p>
       </div>
     </div>
   </section>
@@ -630,7 +640,7 @@
       <h2>The Multi-Agent Era is Here. Are You Ready?</h2>
       <p>Claude Opus 4.6 just dropped. GPT-5.3-Codex is live. Teams of agents are building C compilers. Don't get left behind shipping AI without proper controls.</p>
       <button class="btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="padding: 16px 40px; font-size: 18px;">Get Early Access Now →</button>
-      <p style="margin-top: 16px; color: #94a3b8; font-size: 14px;">✓ No credit card required &nbsp;•&nbsp; ✓ Launch in Q1 2026</p>
+      <p style="margin-top: 16px; color: #94a3b8; font-size: 14px;">✓ No credit card required &nbsp;•&nbsp; ✓ Early access is live now</p>
     </div>
   </section>
 
