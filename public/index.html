@@ -353,15 +353,25 @@
     </div>
   </nav>
 
+  <!-- Launch Banner -->
+  <div id="launch-banner" style="background: linear-gradient(90deg, #059669, #10b981, #059669); background-size: 200% 100%; animation: shimmer 3s ease infinite; padding: 12px 20px; text-align: center; font-size: 14px; font-weight: 600; color: #fff; position: relative; z-index: 99;">
+    🚀 Early Access is LIVE — Limited spots remaining. <a href="#waitlist" style="color: #fff; text-decoration: underline; margin-left: 4px;">Join now →</a>
+  </div>
+  <style>
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .live-dot { display:inline-block; width:8px; height:8px; background:#10b981; border-radius:50%; animation:pulse-dot 2s ease infinite; margin-right:6px; }
+  </style>
+
   <section class="hero">
     <div class="container">
       <div class="badge">
-        <span>🤖</span> Multi-agent orchestration is here
+        <span class="live-dot"></span> Early Access Now Open — February 2026
       </div>
       <h1>Orchestrate AI Agents<br>Without Losing Control</h1>
       <p>The control panel for coordinating multiple AI agents. Track what they're building, manage permissions, monitor costs, and stop runaways instantly.</p>
       
-      <div class="glass-card cta-card">
+      <div class="glass-card cta-card" id="waitlist">
         <h3>Get Exclusive Early Access</h3>
         <p style="color: #94a3b8; margin-bottom: 20px; font-size: 15px;">Join the waitlist and be first to ship multi-agent systems with confidence</p>
         <form class="email-form" id="waitlist-form">
@@ -373,162 +383,117 @@
     </div>
   </section>
 
-  <!-- Live Agent Dashboard Demo -->
+  <!-- Demo Video Section -->
   <section class="section" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 80px 20px;">
-    <div class="container" style="max-width: 1000px;">
-      <h2 style="text-align: center; margin-bottom: 8px; font-size: 32px;">Live Dashboard Preview</h2>
+    <div class="container" style="max-width: 900px;">
+      <h2 style="text-align: center; margin-bottom: 20px; font-size: 32px;">See Agent Control Panel in Action</h2>
       <p style="text-align: center; color: #94a3b8; margin-bottom: 40px; font-size: 16px;">
-        This is what your agent fleet looks like in real-time
+        Watch how teams are using Agent Control Panel to orchestrate AI agents safely and efficiently
       </p>
       
-      <div id="live-demo" style="background: #0d1117; border-radius: 12px; overflow: hidden; border: 1px solid rgba(16, 185, 129, 0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.5); font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px;">
-        <!-- Title bar -->
-        <div style="background: #161b22; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #30363d;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <div style="width: 12px; height: 12px; border-radius: 50%; background: #f85149;"></div>
-            <div style="width: 12px; height: 12px; border-radius: 50%; background: #d29922;"></div>
-            <div style="width: 12px; height: 12px; border-radius: 50%; background: #3fb950;"></div>
-            <span style="color: #8b949e; margin-left: 12px; font-size: 12px;">Agent Control Panel — Fleet Overview</span>
-          </div>
-          <div style="display: flex; gap: 16px; font-size: 12px; color: #8b949e;">
-            <span>⚡ <span style="color: #3fb950;" id="demo-uptime">99.7%</span> uptime</span>
-            <span>💰 $<span id="demo-cost">47.23</span>/hr</span>
-            <span id="demo-clock" style="color: #58a6ff;"></span>
-          </div>
+      <!-- Interactive Live Terminal Demo -->
+      <div id="live-demo" style="position: relative; background: #0d1117; border-radius: 12px; overflow: hidden; border: 2px solid rgba(16, 185, 129, 0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.5); font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;">
+        <!-- Terminal Title Bar -->
+        <div style="background: #161b22; padding: 10px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #30363d;">
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #f85149;"></div>
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #f0883e;"></div>
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #3fb950;"></div>
+          <span style="margin-left: 12px; color: #8b949e; font-size: 13px;">agent-control-panel — live monitoring</span>
+          <span id="demo-live-dot" style="margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 12px; color: #3fb950;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #3fb950; display: inline-block; animation: pulse-dot 2s infinite;"></span> LIVE
+          </span>
         </div>
-        <!-- Agent rows -->
-        <div style="padding: 0;">
-          <div style="display: grid; grid-template-columns: 28px 1fr 110px 90px 100px 80px; padding: 8px 16px; color: #484f58; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #21262d;">
-            <span></span><span>Agent</span><span>Task</span><span>Status</span><span>Tokens</span><span>Cost</span>
-          </div>
-          <div id="agent-row-0" class="demo-row" style="display: grid; grid-template-columns: 28px 1fr 110px 90px 100px 80px; padding: 10px 16px; align-items: center; border-bottom: 1px solid #21262d; transition: background 0.3s;">
-            <span style="color: #3fb950;">●</span>
-            <span><span style="color: #f0f6fc; font-weight: 600;">buildy</span> <span style="color: #484f58;">— code-gen</span></span>
-            <span style="color: #8b949e;" class="demo-task">writing API</span>
-            <span><span style="background: #0d4429; color: #3fb950; padding: 2px 8px; border-radius: 10px; font-size: 11px;">running</span></span>
-            <span style="color: #8b949e;" class="demo-tokens">142.3k</span>
-            <span style="color: #8b949e;">$3.21</span>
-          </div>
-          <div id="agent-row-1" class="demo-row" style="display: grid; grid-template-columns: 28px 1fr 110px 90px 100px 80px; padding: 10px 16px; align-items: center; border-bottom: 1px solid #21262d; transition: background 0.3s;">
-            <span style="color: #3fb950;">●</span>
-            <span><span style="color: #f0f6fc; font-weight: 600;">sentry</span> <span style="color: #484f58;">— security</span></span>
-            <span style="color: #8b949e;" class="demo-task">scanning deps</span>
-            <span><span style="background: #0d4429; color: #3fb950; padding: 2px 8px; border-radius: 10px; font-size: 11px;">running</span></span>
-            <span style="color: #8b949e;" class="demo-tokens">89.1k</span>
-            <span style="color: #8b949e;">$1.87</span>
-          </div>
-          <div id="agent-row-2" class="demo-row" style="display: grid; grid-template-columns: 28px 1fr 110px 90px 100px 80px; padding: 10px 16px; align-items: center; border-bottom: 1px solid #21262d; transition: background 0.3s;">
-            <span style="color: #d29922;">●</span>
-            <span><span style="color: #f0f6fc; font-weight: 600;">reviewer</span> <span style="color: #484f58;">— qa</span></span>
-            <span style="color: #8b949e;" class="demo-task">PR #847</span>
-            <span><span style="background: #3d2e00; color: #d29922; padding: 2px 8px; border-radius: 10px; font-size: 11px;">queued</span></span>
-            <span style="color: #8b949e;" class="demo-tokens">0</span>
-            <span style="color: #8b949e;">$0.00</span>
-          </div>
-          <div id="agent-row-3" class="demo-row" style="display: grid; grid-template-columns: 28px 1fr 110px 90px 100px 80px; padding: 10px 16px; align-items: center; border-bottom: 1px solid #21262d; transition: background 0.3s;">
-            <span style="color: #3fb950;">●</span>
-            <span><span style="color: #f0f6fc; font-weight: 600;">deployer</span> <span style="color: #484f58;">— infra</span></span>
-            <span style="color: #8b949e;" class="demo-task">k8s rollout</span>
-            <span><span style="background: #0d4429; color: #3fb950; padding: 2px 8px; border-radius: 10px; font-size: 11px;">running</span></span>
-            <span style="color: #8b949e;" class="demo-tokens">56.8k</span>
-            <span style="color: #8b949e;">$1.14</span>
-          </div>
-          <div id="agent-row-4" class="demo-row" style="display: grid; grid-template-columns: 28px 1fr 110px 90px 100px 80px; padding: 10px 16px; align-items: center; transition: background 0.3s;">
-            <span style="color: #8b949e;">●</span>
-            <span><span style="color: #f0f6fc; font-weight: 600;">writer</span> <span style="color: #484f58;">— content</span></span>
-            <span style="color: #8b949e;" class="demo-task">idle</span>
-            <span><span style="background: #21262d; color: #8b949e; padding: 2px 8px; border-radius: 10px; font-size: 11px;">idle</span></span>
-            <span style="color: #8b949e;" class="demo-tokens">0</span>
-            <span style="color: #8b949e;">$0.00</span>
-          </div>
+        <!-- Terminal Content -->
+        <div style="padding: 20px; min-height: 320px; font-size: 13px; line-height: 1.7; color: #c9d1d9;">
+          <div id="demo-output" style="white-space: pre-wrap;"></div>
+          <span id="demo-cursor" style="display: inline-block; width: 8px; height: 16px; background: #3fb950; animation: blink 1s step-end infinite; vertical-align: middle;"></span>
         </div>
-        <!-- Activity feed -->
-        <div style="border-top: 1px solid #30363d; padding: 12px 16px; max-height: 120px; overflow: hidden;">
-          <div style="color: #484f58; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Activity Feed</div>
-          <div id="activity-feed" style="display: flex; flex-direction: column; gap: 4px; font-size: 12px;"></div>
+        <!-- Agent Status Bar -->
+        <div style="background: #161b22; padding: 12px 16px; border-top: 1px solid #30363d; display: flex; gap: 20px; flex-wrap: wrap; font-size: 12px;">
+          <span style="color: #3fb950;">● 4 agents running</span>
+          <span style="color: #f0883e;">● 1 warning</span>
+          <span style="color: #8b949e;">↑ $12.47 today</span>
+          <span style="color: #8b949e;">⏱ 847 tool calls</span>
+          <span style="color: #8b949e; margin-left: auto;">Budget: 62% remaining</span>
         </div>
       </div>
+      <style>
+        @keyframes blink { 50% { opacity: 0; } }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+      </style>
+      <script>
+      (function() {
+        const lines = [
+          { text: '$ acp status --all', color: '#3fb950', delay: 0 },
+          { text: '', delay: 300 },
+          { text: '┌─────────────────────────────────────────────────────────────┐', color: '#30363d', delay: 100 },
+          { text: '│  AGENT CONTROL PANEL v2.1.0          Feb 2026  │', color: '#58a6ff', delay: 50 },
+          { text: '└─────────────────────────────────────────────────────────────┘', color: '#30363d', delay: 50 },
+          { text: '', delay: 200 },
+          { text: ' AGENT              STATUS     COST     TOKENS    SECURITY', color: '#8b949e', delay: 100 },
+          { text: ' ─────────────────────────────────────────────────────────────', color: '#30363d', delay: 50 },
+          { text: ' code-reviewer       ● active   $3.21    42.1k     ██████████ A+', color: '#3fb950', delay: 80 },
+          { text: ' deploy-bot          ● active   $1.87    23.4k     █████████░ A ', color: '#3fb950', delay: 80 },
+          { text: ' data-pipeline       ● active   $5.12    67.8k     ████████░░ B+', color: '#3fb950', delay: 80 },
+          { text: ' content-writer      ⚠ warning  $2.27    31.2k     ██████░░░░ B-', color: '#f0883e', delay: 80 },
+          { text: '', delay: 300 },
+          { text: ' ⚠ ALERT: content-writer exceeded file access threshold', color: '#f0883e', delay: 100 },
+          { text: '   → Accessed 47 files in /sensitive (limit: 20)', color: '#f0883e', delay: 80 },
+          { text: '   → Auto-sandboxed. Awaiting review.', color: '#f0883e', delay: 80 },
+          { text: '', delay: 400 },
+          { text: '$ acp logs content-writer --last 3', color: '#3fb950', delay: 600 },
+          { text: '', delay: 300 },
+          { text: ' 12:01:14  tool_call    read_file     /src/config.yaml        ✓', color: '#8b949e', delay: 60 },
+          { text: ' 12:01:15  tool_call    read_file     /sensitive/keys.env     ⚠ FLAGGED', color: '#f85149', delay: 60 },
+          { text: ' 12:01:15  action       AUTO_SANDBOX  permissions revoked     🛡️', color: '#58a6ff', delay: 60 },
+          { text: '', delay: 400 },
+          { text: ' ✓ Agent sandboxed in 0.3s. No data exfiltrated.', color: '#3fb950', delay: 100 },
+          { text: ' ✓ Audit log saved. Incident #ACP-2847 created.', color: '#3fb950', delay: 100 },
+          { text: '', delay: 600 },
+          { text: '$ █', color: '#3fb950', delay: 0, final: true },
+        ];
+        const el = document.getElementById('demo-output');
+        const cursor = document.getElementById('demo-cursor');
+        let lineIdx = 0;
+        let totalDelay = 0;
+        function addLine(line) {
+          totalDelay += line.delay;
+          setTimeout(() => {
+            if (line.final) { cursor.style.display = 'none'; }
+            const span = document.createElement('div');
+            span.textContent = line.text;
+            span.style.color = line.color || '#c9d1d9';
+            el.appendChild(span);
+          }, totalDelay);
+        }
+        // Start after 1s
+        setTimeout(() => { lines.forEach(addLine); }, 1000);
+        // Replay every 25s
+        setInterval(() => {
+          el.innerHTML = '';
+          cursor.style.display = 'inline-block';
+          totalDelay = 0;
+          lines.forEach(addLine);
+        }, 25000);
+      })();
+      </script>
       
       <div style="display: flex; justify-content: center; gap: 40px; margin-top: 30px; flex-wrap: wrap;">
         <div style="text-align: center;">
-          <div style="font-size: 28px; font-weight: 700; color: #10b981; margin-bottom: 4px;">5</div>
-          <div style="font-size: 14px; color: #64748b;">Agents tracked</div>
+          <div style="font-size: 28px; font-weight: 700; color: #10b981; margin-bottom: 4px;">2 min</div>
+          <div style="font-size: 14px; color: #64748b;">Quick setup</div>
         </div>
         <div style="text-align: center;">
-          <div style="font-size: 28px; font-weight: 700; color: #10b981; margin-bottom: 4px;">288k</div>
-          <div style="font-size: 14px; color: #64748b;">Tokens/hr</div>
+          <div style="font-size: 28px; font-weight: 700; color: #10b981; margin-bottom: 4px;">10+</div>
+          <div style="font-size: 14px; color: #64748b;">Agent types</div>
         </div>
         <div style="text-align: center;">
-          <div style="font-size: 28px; font-weight: 700; color: #10b981; margin-bottom: 4px;">$6.22</div>
-          <div style="font-size: 14px; color: #64748b;">Total cost/hr</div>
+          <div style="font-size: 28px; font-weight: 700; color: #10b981; margin-bottom: 4px;">Real-time</div>
+          <div style="font-size: 14px; color: #64748b;">Monitoring</div>
         </div>
       </div>
     </div>
   </section>
-  
-  <script>
-  (function() {
-    const tasks = ['writing API','refactoring','fixing tests','deploying','code review','scanning deps','updating docs','PR #847','k8s rollout','DB migration','lint check','building UI'];
-    const feedMsgs = [
-      ['buildy','committed 3 files to main'],
-      ['sentry','found 0 critical vulnerabilities'],
-      ['deployer','rollout 3/3 pods ready'],
-      ['reviewer','approved PR #847'],
-      ['buildy','API endpoint /agents created'],
-      ['sentry','dependency audit passed'],
-      ['deployer','health check OK — 200'],
-      ['writer','blog draft saved'],
-      ['buildy','wrote 142 lines of code'],
-      ['sentry','no secrets detected in diff'],
-    ];
-    const feed = document.getElementById('activity-feed');
-    let feedCount = 0;
-    function addFeedItem() {
-      const m = feedMsgs[Math.floor(Math.random() * feedMsgs.length)];
-      const el = document.createElement('div');
-      el.style.cssText = 'color: #8b949e; opacity: 0; transition: opacity 0.5s;';
-      const now = new Date();
-      const ts = now.toTimeString().slice(0,8);
-      el.innerHTML = '<span style="color:#484f58;">' + ts + '</span> <span style="color:#58a6ff;">' + m[0] + '</span> ' + m[1];
-      feed.insertBefore(el, feed.firstChild);
-      requestAnimationFrame(() => el.style.opacity = '1');
-      if (feed.children.length > 5) feed.removeChild(feed.lastChild);
-    }
-    // Update clock
-    function updateClock() {
-      const c = document.getElementById('demo-clock');
-      if (c) c.textContent = new Date().toTimeString().slice(0,8) + ' UTC';
-    }
-    // Randomize tasks
-    function shuffleTasks() {
-      document.querySelectorAll('.demo-task').forEach(el => {
-        if (Math.random() > 0.6) el.textContent = tasks[Math.floor(Math.random() * tasks.length)];
-      });
-      // Randomize tokens
-      document.querySelectorAll('.demo-tokens').forEach(el => {
-        const v = parseFloat(el.textContent);
-        if (v > 0) el.textContent = (v + (Math.random() * 2 - 0.5)).toFixed(1) + 'k';
-      });
-      // Cost ticker
-      const costEl = document.getElementById('demo-cost');
-      if (costEl) costEl.textContent = (47 + Math.random() * 3).toFixed(2);
-    }
-    // Row highlight
-    function highlightRow() {
-      const rows = document.querySelectorAll('.demo-row');
-      rows.forEach(r => r.style.background = 'transparent');
-      const r = rows[Math.floor(Math.random() * rows.length)];
-      if (r) r.style.background = 'rgba(16,185,129,0.05)';
-    }
-    // Init
-    addFeedItem(); addFeedItem(); addFeedItem();
-    setInterval(addFeedItem, 3000);
-    setInterval(updateClock, 1000);
-    setInterval(shuffleTasks, 4000);
-    setInterval(highlightRow, 2500);
-    updateClock();
-  })();
-  </script>
 
   <section class="section">
     <div class="container">
@@ -572,81 +537,6 @@
           <div class="feature-icon">⚡</div>
           <h3>Emergency Stop</h3>
           <p>One-click kill switch for all agents. Because sometimes you just need to pull the plug.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Live Waste Counter -->
-  <section style="background: linear-gradient(135deg, #1a0a0a 0%, #0f172a 50%, #1a0a0a 100%); padding: 60px 20px; border-top: 1px solid rgba(239,68,68,0.2); border-bottom: 1px solid rgba(239,68,68,0.2);">
-    <div class="container" style="max-width: 900px; text-align: center;">
-      <p style="color: #ef4444; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; font-weight: 600;">⚠️ Right now, across all unmonitored AI agents</p>
-      <div style="font-size: 64px; font-weight: 900; font-family: 'Courier New', monospace; background: linear-gradient(135deg, #ef4444 0%, #f97316 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px;" id="waste-counter">$0</div>
-      <p style="color: #94a3b8; font-size: 18px; margin-bottom: 4px;">wasted on runaway loops, duplicate work, and untracked spend</p>
-      <p style="color: #64748b; font-size: 14px; margin-bottom: 24px;">since you opened this page</p>
-      <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px;">
-        <div style="text-align: center;">
-          <div style="font-size: 28px; font-weight: 700; color: #ef4444;" id="waste-agents">0</div>
-          <div style="color: #64748b; font-size: 12px;">agents running blind</div>
-        </div>
-        <div style="text-align: center;">
-          <div style="font-size: 28px; font-weight: 700; color: #f97316;" id="waste-tokens">0</div>
-          <div style="color: #64748b; font-size: 12px;">wasted tokens (millions)</div>
-        </div>
-        <div style="text-align: center;">
-          <div style="font-size: 28px; font-weight: 700; color: #eab308;" id="waste-incidents">0</div>
-          <div style="color: #64748b; font-size: 12px;">runaway incidents</div>
-        </div>
-      </div>
-      <button class="btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); padding: 14px 32px; font-size: 16px;">Stop the Bleeding →</button>
-    </div>
-  </section>
-  <script>
-  (function() {
-    var start = Date.now();
-    var rate = 847; // $/sec globally wasted on unmonitored agents (industry estimate)
-    var tokenRate = 12.3; // millions of tokens/sec
-    var agentBase = 142000;
-    var incidentRate = 0.3; // per second
-    function fmt(n) { return n >= 1000 ? n.toLocaleString('en-US', {maximumFractionDigits:0}) : n.toFixed(2); }
-    function tick() {
-      var elapsed = (Date.now() - start) / 1000;
-      document.getElementById('waste-counter').textContent = '$' + fmt(rate * elapsed);
-      document.getElementById('waste-agents').textContent = (agentBase + Math.floor(elapsed * 2.1)).toLocaleString();
-      document.getElementById('waste-tokens').textContent = (tokenRate * elapsed).toFixed(1) + 'M';
-      document.getElementById('waste-incidents').textContent = Math.floor(incidentRate * elapsed).toLocaleString();
-      requestAnimationFrame(tick);
-    }
-    tick();
-  })();
-  </script>
-
-  <!-- How It Works Section -->
-  <section class="section" style="background: #0f172a; padding: 80px 20px;">
-    <div class="container" style="max-width: 900px;">
-      <h2 style="text-align: center; margin-bottom: 16px; font-size: 36px;">How It Works</h2>
-      <p style="text-align: center; color: #94a3b8; margin-bottom: 60px; font-size: 18px;">Go from chaos to control in 3 steps</p>
-      
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px;">
-        <div style="text-align: center; position: relative;">
-          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px; font-weight: 700; color: white;">1</div>
-          <h3 style="margin-bottom: 12px; font-size: 20px;">Connect Your Agents</h3>
-          <p style="color: #94a3b8; line-height: 1.7; font-size: 15px;">Add our lightweight SDK to your existing agents. Works with OpenAI, Anthropic, LangChain, CrewAI, MCP servers — any framework. Takes under 5 minutes.</p>
-          <code style="display: inline-block; margin-top: 12px; background: #1e293b; padding: 8px 16px; border-radius: 6px; color: #10b981; font-size: 13px;">pip install agent-control-panel</code>
-        </div>
-        
-        <div style="text-align: center;">
-          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px; font-weight: 700; color: white;">2</div>
-          <h3 style="margin-bottom: 12px; font-size: 20px;">Set Rules & Budgets</h3>
-          <p style="color: #94a3b8; line-height: 1.7; font-size: 15px;">Define what each agent can access, how much it can spend, and when to trigger alerts. Set cost limits, file sandboxes, and network policies per agent.</p>
-          <code style="display: inline-block; margin-top: 12px; background: #1e293b; padding: 8px 16px; border-radius: 6px; color: #3b82f6; font-size: 13px;">acp.set_budget("$50/day")</code>
-        </div>
-        
-        <div style="text-align: center;">
-          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px; font-weight: 700; color: white;">3</div>
-          <h3 style="margin-bottom: 12px; font-size: 20px;">Monitor & Ship</h3>
-          <p style="color: #94a3b8; line-height: 1.7; font-size: 15px;">Watch your agents work in real-time from a single dashboard. Get alerts, review audit logs, and hit the kill switch if anything goes sideways.</p>
-          <code style="display: inline-block; margin-top: 12px; background: #1e293b; padding: 8px 16px; border-radius: 6px; color: #8b5cf6; font-size: 13px;">acp.dashboard() → live view</code>
         </div>
       </div>
     </div>
@@ -705,380 +595,8 @@
         <p style="font-size: 18px; color: #10b981; margin-bottom: 10px;">
           <strong>🚀 <span id="count">247</span> forward-thinking teams are already on the waitlist</strong>
         </p>
-        <p style="color: #94a3b8; font-size: 14px;">Early access is live now • Spots are limited</p>
+        <p style="color: #94a3b8; font-size: 14px;">Early access is live • Spots are limited</p>
       </div>
-    </div>
-  </section>
-
-  <!-- Visual Showcase Section -->
-  <section class="section" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 80px 20px;">
-    <div class="container" style="max-width: 1100px;">
-      <h2 style="text-align: center; margin-bottom: 16px; font-size: 36px;">See It In Action</h2>
-      <p style="text-align: center; color: #94a3b8; margin-bottom: 60px; font-size: 18px;">From architecture to dashboard — everything you need to control your agent fleet</p>
-      
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
-        <div style="position: relative; border-radius: 16px; overflow: hidden; border: 1px solid rgba(16, 185, 129, 0.2); transition: all 0.3s;" onmouseover="this.style.borderColor='rgba(16,185,129,0.5)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(16,185,129,0.2)'; this.style.transform='none'">
-          <img src="/images/generated/dashboard-hero-0.png" alt="Agent Control Panel Dashboard" style="width: 100%; display: block;">
-          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8));">
-            <div style="font-weight: 600; font-size: 16px;">📊 Real-Time Dashboard</div>
-            <div style="color: #94a3b8; font-size: 13px;">Monitor all agents, costs, and status at a glance</div>
-          </div>
-        </div>
-        <div style="position: relative; border-radius: 16px; overflow: hidden; border: 1px solid rgba(59, 130, 246, 0.2); transition: all 0.3s;" onmouseover="this.style.borderColor='rgba(59,130,246,0.5)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(59,130,246,0.2)'; this.style.transform='none'">
-          <img src="/images/generated/mcp-architecture-0.png" alt="MCP Architecture Diagram" style="width: 100%; display: block;">
-          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8));">
-            <div style="font-weight: 600; font-size: 16px;">🔌 MCP Architecture</div>
-            <div style="color: #94a3b8; font-size: 13px;">ACP sits between your agents and LLM providers</div>
-          </div>
-        </div>
-      </div>
-      
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-        <div style="position: relative; border-radius: 16px; overflow: hidden; border: 1px solid rgba(168, 85, 247, 0.2); transition: all 0.3s;" onmouseover="this.style.borderColor='rgba(168,85,247,0.5)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(168,85,247,0.2)'; this.style.transform='none'">
-          <img src="/images/generated/agent-network-0.png" alt="Agent Network Visualization" style="width: 100%; display: block;">
-          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8));">
-            <div style="font-weight: 600; font-size: 16px;">🌐 Agent Network</div>
-            <div style="color: #94a3b8; font-size: 13px;">Visualize connections between your entire agent fleet</div>
-          </div>
-        </div>
-        <div style="position: relative; border-radius: 16px; overflow: hidden; border: 1px solid rgba(16, 185, 129, 0.2); transition: all 0.3s;" onmouseover="this.style.borderColor='rgba(16,185,129,0.5)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(16,185,129,0.2)'; this.style.transform='none'">
-          <img src="/images/generated/hero-banner-0.png" alt="Agent Command Center" style="width: 100%; display: block;">
-          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8));">
-            <div style="font-weight: 600; font-size: 16px;">🎯 Command Center</div>
-            <div style="color: #94a3b8; font-size: 13px;">Your mission control for AI agent operations</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- MCP Architecture Section -->
-  <section class="section" style="background: linear-gradient(135deg, #0f172a 0%, #1a0f2e 50%, #0f172a 100%); padding: 80px 20px; overflow: hidden;">
-    <div class="container" style="max-width: 1000px;">
-      <div style="text-align: center; margin-bottom: 12px;">
-        <span style="background: linear-gradient(135deg, #a855f7, #6366f1); padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">MCP Native</span>
-      </div>
-      <h2 style="text-align: center; margin-bottom: 12px; font-size: 36px;">The Control Plane for<br><span style="background: linear-gradient(135deg, #a855f7, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Model Context Protocol</span></h2>
-      <p style="text-align: center; color: #94a3b8; margin-bottom: 60px; font-size: 18px; max-width: 650px; margin-left: auto; margin-right: auto;">
-        MCP is the new standard for connecting AI agents to tools. ACP is the only platform that monitors, secures, and controls MCP connections in real-time.
-      </p>
-
-      <!-- Architecture Diagram -->
-      <div style="position: relative; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 16px; padding: 48px 32px; margin-bottom: 40px;">
-        
-        <!-- Top: Agents -->
-        <div style="display: flex; justify-content: center; gap: 24px; margin-bottom: 32px; flex-wrap: wrap;">
-          <div class="mcp-node" style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 10px; padding: 14px 20px; text-align: center; min-width: 120px;">
-            <div style="font-size: 24px; margin-bottom: 4px;">🤖</div>
-            <div style="font-size: 13px; font-weight: 600; color: #60a5fa;">Claude Agent</div>
-          </div>
-          <div class="mcp-node" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 14px 20px; text-align: center; min-width: 120px;">
-            <div style="font-size: 24px; margin-bottom: 4px;">🤖</div>
-            <div style="font-size: 13px; font-weight: 600; color: #34d399;">GPT Agent</div>
-          </div>
-          <div class="mcp-node" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 10px; padding: 14px 20px; text-align: center; min-width: 120px;">
-            <div style="font-size: 24px; margin-bottom: 4px;">🤖</div>
-            <div style="font-size: 13px; font-weight: 600; color: #fbbf24;">Custom Agent</div>
-          </div>
-        </div>
-
-        <!-- Arrows down -->
-        <div style="text-align: center; margin-bottom: 16px;">
-          <div style="display: inline-flex; gap: 80px;">
-            <span style="color: #475569; font-size: 20px;">↓</span>
-            <span style="color: #475569; font-size: 20px;">↓</span>
-            <span style="color: #475569; font-size: 20px;">↓</span>
-          </div>
-          <div style="color: #64748b; font-size: 11px; margin-top: 4px; letter-spacing: 2px;">MCP PROTOCOL</div>
-        </div>
-
-        <!-- Middle: ACP Control Plane -->
-        <div style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(99, 102, 241, 0.15)); border: 2px solid rgba(168, 85, 247, 0.4); border-radius: 14px; padding: 24px; margin: 0 auto 16px; max-width: 600px; position: relative;">
-          <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #a855f7, #6366f1); padding: 4px 16px; border-radius: 12px; font-size: 11px; font-weight: 700; letter-spacing: 1px;">AGENT CONTROL PANEL</div>
-          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; text-align: center;">
-            <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px 8px;">
-              <div style="font-size: 18px;">🔍</div>
-              <div style="font-size: 10px; color: #c4b5fd; margin-top: 4px;">Monitor</div>
-            </div>
-            <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px 8px;">
-              <div style="font-size: 18px;">🛡️</div>
-              <div style="font-size: 10px; color: #c4b5fd; margin-top: 4px;">Secure</div>
-            </div>
-            <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px 8px;">
-              <div style="font-size: 18px;">💰</div>
-              <div style="font-size: 10px; color: #c4b5fd; margin-top: 4px;">Cost Track</div>
-            </div>
-            <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px 8px;">
-              <div style="font-size: 18px;">⚡</div>
-              <div style="font-size: 10px; color: #c4b5fd; margin-top: 4px;">Kill Switch</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Arrows down -->
-        <div style="text-align: center; margin-bottom: 16px;">
-          <div style="display: inline-flex; gap: 60px;">
-            <span style="color: #475569; font-size: 20px;">↓</span>
-            <span style="color: #475569; font-size: 20px;">↓</span>
-            <span style="color: #475569; font-size: 20px;">↓</span>
-            <span style="color: #475569; font-size: 20px;">↓</span>
-          </div>
-          <div style="color: #64748b; font-size: 11px; margin-top: 4px; letter-spacing: 2px;">MCP SERVERS</div>
-        </div>
-
-        <!-- Bottom: MCP Servers -->
-        <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
-          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 16px; font-size: 12px; color: #94a3b8;">📁 Filesystem</div>
-          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 16px; font-size: 12px; color: #94a3b8;">🗄️ Database</div>
-          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 16px; font-size: 12px; color: #94a3b8;">🌐 APIs</div>
-          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 16px; font-size: 12px; color: #94a3b8;">🐙 GitHub</div>
-          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 16px; font-size: 12px; color: #94a3b8;">☁️ Cloud</div>
-        </div>
-      </div>
-
-      <!-- Key differentiators -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-        <div style="background: rgba(168, 85, 247, 0.05); border: 1px solid rgba(168, 85, 247, 0.15); border-radius: 12px; padding: 24px;">
-          <div style="font-size: 14px; font-weight: 700; color: #c4b5fd; margin-bottom: 8px;">🔌 Proxy Mode</div>
-          <p style="color: #94a3b8; font-size: 13px; line-height: 1.6; margin: 0;">ACP sits between agents and MCP servers as a transparent proxy. Zero code changes — just point your MCP config at ACP.</p>
-        </div>
-        <div style="background: rgba(168, 85, 247, 0.05); border: 1px solid rgba(168, 85, 247, 0.15); border-radius: 12px; padding: 24px;">
-          <div style="font-size: 14px; font-weight: 700; color: #c4b5fd; margin-bottom: 8px;">📊 Per-Tool Analytics</div>
-          <p style="color: #94a3b8; font-size: 13px; line-height: 1.6; margin: 0;">See which MCP tools each agent calls, how often, latency, error rates, and costs. Identify bottlenecks instantly.</p>
-        </div>
-        <div style="background: rgba(168, 85, 247, 0.05); border: 1px solid rgba(168, 85, 247, 0.15); border-radius: 12px; padding: 24px;">
-          <div style="font-size: 14px; font-weight: 700; color: #c4b5fd; margin-bottom: 8px;">🚫 Tool Allowlists</div>
-          <p style="color: #94a3b8; font-size: 13px; line-height: 1.6; margin: 0;">Restrict which MCP tools each agent can access. Block dangerous operations, enforce read-only for junior agents.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Use Cases Section -->
-  <section class="section" style="background: #0f172a; padding: 80px 20px;">
-    <div class="container" style="max-width: 1100px;">
-      <h2 style="text-align: center; margin-bottom: 16px; font-size: 36px;">How Teams Use ACP</h2>
-      <p style="text-align: center; color: #94a3b8; margin-bottom: 60px; font-size: 18px;">Real scenarios from teams shipping with multi-agent systems</p>
-      
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
-        <!-- Use Case 1 -->
-        <div style="background: rgba(255,255,255,0.03); border-radius: 16px; padding: 32px 24px; border: 1px solid rgba(16, 185, 129, 0.15); transition: all 0.3s;" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(16,185,129,0.15)'; this.style.transform='none'">
-          <div style="font-size: 36px; margin-bottom: 16px;">🏗️</div>
-          <h3 style="font-size: 20px; margin-bottom: 12px; color: #f1f5f9;">AI Dev Teams</h3>
-          <p style="color: #94a3b8; font-size: 14px; line-height: 1.7; margin-bottom: 16px;">Run a coding agent, a reviewer agent, and a deployer agent in parallel. ACP tracks cost per PR, kills runaway loops, and ensures the reviewer always runs before deploy.</p>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;">Cost control</span>
-            <span style="background: rgba(59,130,246,0.1); color: #3b82f6; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;">Workflow gates</span>
-          </div>
-        </div>
-        
-        <!-- Use Case 2 -->
-        <div style="background: rgba(255,255,255,0.03); border-radius: 16px; padding: 32px 24px; border: 1px solid rgba(59, 130, 246, 0.15); transition: all 0.3s;" onmouseover="this.style.borderColor='rgba(59,130,246,0.4)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(59,130,246,0.15)'; this.style.transform='none'">
-          <div style="font-size: 36px; margin-bottom: 16px;">🔍</div>
-          <h3 style="font-size: 20px; margin-bottom: 12px; color: #f1f5f9;">Research Pipelines</h3>
-          <p style="color: #94a3b8; font-size: 14px; line-height: 1.7; margin-bottom: 16px;">Orchestrate scraper agents, summarizer agents, and report-writing agents. Monitor token spend across hundreds of daily runs and get alerts when costs spike unexpectedly.</p>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <span style="background: rgba(168,85,247,0.1); color: #a855f7; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;">Budget alerts</span>
-            <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;">Audit trail</span>
-          </div>
-        </div>
-        
-        <!-- Use Case 3 -->
-        <div style="background: rgba(255,255,255,0.03); border-radius: 16px; padding: 32px 24px; border: 1px solid rgba(168, 85, 247, 0.15); transition: all 0.3s;" onmouseover="this.style.borderColor='rgba(168,85,247,0.4)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(168,85,247,0.15)'; this.style.transform='none'">
-          <div style="font-size: 36px; margin-bottom: 16px;">🏢</div>
-          <h3 style="font-size: 20px; margin-bottom: 12px; color: #f1f5f9;">Enterprise Compliance</h3>
-          <p style="color: #94a3b8; font-size: 14px; line-height: 1.7; margin-bottom: 16px;">Customer-facing agents handling sensitive data need guardrails. ACP provides per-agent sandboxing, security scores, and complete audit logs for SOC 2 and GDPR compliance.</p>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <span style="background: rgba(59,130,246,0.1); color: #3b82f6; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;">Security scoring</span>
-            <span style="background: rgba(168,85,247,0.1); color: #a855f7; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;">Compliance</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Comparison Table Section -->
-  <section class="section" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 80px 20px;">
-    <div class="container" style="max-width: 900px;">
-      <h2 style="text-align: center; margin-bottom: 8px; font-size: 36px;">⚔️ ACP vs. The Alternatives</h2>
-      <p style="text-align: center; color: #94a3b8; margin-bottom: 48px; font-size: 18px;">Stop duct-taping scripts together. Get purpose-built agent control.</p>
-
-      <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
-          <thead>
-            <tr>
-              <th style="text-align: left; padding: 16px 20px; color: #94a3b8; font-weight: 600; border-bottom: 2px solid #334155;"></th>
-              <th style="text-align: center; padding: 16px 20px; color: #10b981; font-weight: 700; border-bottom: 2px solid #10b981; font-size: 16px;">ACP</th>
-              <th style="text-align: center; padding: 16px 20px; color: #94a3b8; font-weight: 600; border-bottom: 2px solid #334155;">DIY Scripts</th>
-              <th style="text-align: center; padding: 16px 20px; color: #94a3b8; font-weight: 600; border-bottom: 2px solid #334155;">Generic APM</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom: 1px solid #1e293b;">
-              <td style="padding: 14px 20px; color: #e2e8f0;">Setup time</td>
-              <td style="padding: 14px 20px; text-align: center; color: #10b981; font-weight: 700;">5 minutes</td>
-              <td style="padding: 14px 20px; text-align: center; color: #ef4444;">2-4 weeks</td>
-              <td style="padding: 14px 20px; text-align: center; color: #f59e0b;">1-2 days</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #1e293b; background: rgba(255,255,255,0.02);">
-              <td style="padding: 14px 20px; color: #e2e8f0;">Per-agent cost tracking</td>
-              <td style="padding: 14px 20px; text-align: center; color: #10b981; font-size: 18px;">✅</td>
-              <td style="padding: 14px 20px; text-align: center; color: #f59e0b;">🔧 Build it</td>
-              <td style="padding: 14px 20px; text-align: center; color: #ef4444;">❌</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #1e293b;">
-              <td style="padding: 14px 20px; color: #e2e8f0;">Emergency kill switch</td>
-              <td style="padding: 14px 20px; text-align: center; color: #10b981; font-size: 18px;">✅</td>
-              <td style="padding: 14px 20px; text-align: center; color: #f59e0b;">🔧 Build it</td>
-              <td style="padding: 14px 20px; text-align: center; color: #ef4444;">❌</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #1e293b; background: rgba(255,255,255,0.02);">
-              <td style="padding: 14px 20px; color: #e2e8f0;">Agent permission sandboxing</td>
-              <td style="padding: 14px 20px; text-align: center; color: #10b981; font-size: 18px;">✅</td>
-              <td style="padding: 14px 20px; text-align: center; color: #ef4444;">❌</td>
-              <td style="padding: 14px 20px; text-align: center; color: #ef4444;">❌</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #1e293b;">
-              <td style="padding: 14px 20px; color: #e2e8f0;">MCP/LangChain/CrewAI native</td>
-              <td style="padding: 14px 20px; text-align: center; color: #10b981; font-size: 18px;">✅</td>
-              <td style="padding: 14px 20px; text-align: center; color: #f59e0b;">🔧 Per-framework</td>
-              <td style="padding: 14px 20px; text-align: center; color: #ef4444;">❌</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #1e293b; background: rgba(255,255,255,0.02);">
-              <td style="padding: 14px 20px; color: #e2e8f0;">Compliance audit logs</td>
-              <td style="padding: 14px 20px; text-align: center; color: #10b981; font-size: 18px;">✅</td>
-              <td style="padding: 14px 20px; text-align: center; color: #f59e0b;">🔧 Build it</td>
-              <td style="padding: 14px 20px; text-align: center; color: #f59e0b;">Partial</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #1e293b;">
-              <td style="padding: 14px 20px; color: #e2e8f0;">Multi-agent orchestration view</td>
-              <td style="padding: 14px 20px; text-align: center; color: #10b981; font-size: 18px;">✅</td>
-              <td style="padding: 14px 20px; text-align: center; color: #ef4444;">❌</td>
-              <td style="padding: 14px 20px; text-align: center; color: #ef4444;">❌</td>
-            </tr>
-            <tr>
-              <td style="padding: 14px 20px; color: #e2e8f0;">Ongoing maintenance</td>
-              <td style="padding: 14px 20px; text-align: center; color: #10b981; font-weight: 700;">Zero</td>
-              <td style="padding: 14px 20px; text-align: center; color: #ef4444;">∞ hours</td>
-              <td style="padding: 14px 20px; text-align: center; color: #f59e0b;">Some</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div style="text-align: center; margin-top: 40px;">
-        <a href="#waitlist" style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #10b981, #059669); color: white; font-weight: 700; border-radius: 8px; text-decoration: none; font-size: 16px; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Stop Building — Start Shipping →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ROI Calculator Section -->
-  <section class="section" style="background: linear-gradient(135deg, #0f172a 0%, #0c2a1f 50%, #0f172a 100%); padding: 80px 20px;">
-    <div class="container" style="max-width: 700px;">
-      <h2 style="text-align: center; margin-bottom: 8px; font-size: 36px;">💰 ROI Calculator</h2>
-      <p style="text-align: center; color: #94a3b8; margin-bottom: 48px; font-size: 18px;">See how much you'll save with Agent Control Panel</p>
-
-      <div style="background: #1e293b; border-radius: 12px; padding: 32px; border: 1px solid #334155;">
-        <div style="display: flex; flex-direction: column; gap: 24px;">
-          <div>
-            <label style="color: #e2e8f0; font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">
-              Number of AI agents <span id="roi-agents-val" style="color: #10b981;">5</span>
-            </label>
-            <input type="range" id="roi-agents" min="1" max="50" value="5" style="width: 100%; accent-color: #10b981;">
-          </div>
-          <div>
-            <label style="color: #e2e8f0; font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">
-              Avg cost per agent/day <span id="roi-cost-val" style="color: #10b981;">$25</span>
-            </label>
-            <input type="range" id="roi-cost" min="5" max="200" value="25" step="5" style="width: 100%; accent-color: #10b981;">
-          </div>
-          <div>
-            <label style="color: #e2e8f0; font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">
-              Runaway incidents per month <span id="roi-incidents-val" style="color: #10b981;">3</span>
-            </label>
-            <input type="range" id="roi-incidents" min="0" max="20" value="3" style="width: 100%; accent-color: #10b981;">
-          </div>
-        </div>
-
-        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #334155;">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; text-align: center;">
-            <div style="background: #0f172a; border-radius: 8px; padding: 20px;">
-              <div style="color: #94a3b8; font-size: 13px; margin-bottom: 4px;">Monthly spend without ACP</div>
-              <div id="roi-without" style="color: #ef4444; font-size: 28px; font-weight: 700;">$4,500</div>
-            </div>
-            <div style="background: #0f172a; border-radius: 8px; padding: 20px;">
-              <div style="color: #94a3b8; font-size: 13px; margin-bottom: 4px;">Monthly spend with ACP</div>
-              <div id="roi-with" style="color: #10b981; font-size: 28px; font-weight: 700;">$3,150</div>
-            </div>
-          </div>
-          <div style="text-align: center; margin-top: 20px; background: linear-gradient(135deg, #065f46, #064e3b); border-radius: 8px; padding: 20px;">
-            <div style="color: #6ee7b7; font-size: 14px; margin-bottom: 4px;">You save</div>
-            <div id="roi-savings" style="color: #fff; font-size: 36px; font-weight: 800;">$1,350/mo</div>
-            <div id="roi-percent" style="color: #6ee7b7; font-size: 14px; margin-top: 4px;">30% cost reduction</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Ship Log Section -->
-  <section class="section" style="background: linear-gradient(180deg, #0f172a 0%, #1a1037 100%); padding: 80px 20px;">
-    <div class="container" style="max-width: 900px;">
-      <h2 style="text-align: center; margin-bottom: 8px; font-size: 36px;">🔨 Ship Log</h2>
-      <p style="text-align: center; color: #94a3b8; margin-bottom: 48px; font-size: 18px;">We ship every day. Here's the proof.</p>
-      
-      <div style="position: relative; padding-left: 32px; border-left: 2px solid rgba(16,185,129,0.3);">
-        <!-- Entry 1 -->
-        <div style="margin-bottom: 32px; position: relative;">
-          <div style="position: absolute; left: -41px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: #10b981; border: 3px solid #0f172a;"></div>
-          <div style="background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.15); border-radius: 12px; padding: 20px 24px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <span style="color: #10b981; font-weight: 700; font-size: 14px;">TODAY</span>
-              <span style="color: #64748b; font-size: 12px;">Build #37</span>
-            </div>
-            <h4 style="color: #f1f5f9; font-size: 16px; margin-bottom: 6px;">Ship Log — Live Build Timeline</h4>
-            <p style="color: #94a3b8; font-size: 14px; margin: 0;">Added transparent build history so visitors can see we ship daily. Building trust through radical transparency.</p>
-          </div>
-        </div>
-        <!-- Entry 2 -->
-        <div style="margin-bottom: 32px; position: relative;">
-          <div style="position: absolute; left: -41px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: #3b82f6; border: 3px solid #0f172a;"></div>
-          <div style="background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.15); border-radius: 12px; padding: 20px 24px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <span style="color: #3b82f6; font-weight: 700; font-size: 14px;">FEB 8</span>
-              <span style="color: #64748b; font-size: 12px;">Build #36</span>
-            </div>
-            <h4 style="color: #f1f5f9; font-size: 16px; margin-bottom: 6px;">Use Cases Section — Real Team Scenarios</h4>
-            <p style="color: #94a3b8; font-size: 14px; margin: 0;">Added 3 concrete use cases: AI Dev Teams, Research Pipelines, Enterprise Compliance. Helping visitors self-identify.</p>
-          </div>
-        </div>
-        <!-- Entry 3 -->
-        <div style="margin-bottom: 32px; position: relative;">
-          <div style="position: absolute; left: -41px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: #a855f7; border: 3px solid #0f172a;"></div>
-          <div style="background: rgba(168,85,247,0.05); border: 1px solid rgba(168,85,247,0.15); border-radius: 12px; padding: 20px 24px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <span style="color: #a855f7; font-weight: 700; font-size: 14px;">FEB 8</span>
-              <span style="color: #64748b; font-size: 12px;">Build #35</span>
-            </div>
-            <h4 style="color: #f1f5f9; font-size: 16px; margin-bottom: 6px;">Competitive Comparison Table</h4>
-            <p style="color: #94a3b8; font-size: 14px; margin: 0;">ACP vs general observability tools. Highlighting what makes us purpose-built for multi-agent systems.</p>
-          </div>
-        </div>
-        <!-- Entry 4 -->
-        <div style="position: relative;">
-          <div style="position: absolute; left: -41px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: #64748b; border: 3px solid #0f172a;"></div>
-          <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px 24px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <span style="color: #64748b; font-weight: 700; font-size: 14px;">FEB 7-8</span>
-              <span style="color: #64748b; font-size: 12px;">Builds #1-34</span>
-            </div>
-            <h4 style="color: #94a3b8; font-size: 16px; margin-bottom: 6px;">34 builds shipped — Dashboard, SDK, Pricing, Integrations, and more</h4>
-            <p style="color: #64748b; font-size: 14px; margin: 0;">From zero to full product landing in 2 days. That's how fast we move.</p>
-          </div>
-        </div>
-      </div>
-      
-      <p style="text-align: center; margin-top: 40px; color: #64748b; font-size: 14px;">🔨 36 builds and counting. We ship while others plan.</p>
     </div>
   </section>
 
@@ -1123,48 +641,6 @@
           <div style="color: #64748b; font-weight: 500; font-size: 16px;">Vercel</div>
           <div style="color: #64748b; font-weight: 500; font-size: 16px;">Docker</div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Why ACP Section -->
-  <section class="section" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 80px 20px;">
-    <div class="container" style="max-width: 900px;">
-      <h2 style="text-align: center; margin-bottom: 16px; font-size: 36px;">Why Agent Control Panel?</h2>
-      <p style="text-align: center; color: #94a3b8; margin-bottom: 50px; font-size: 18px;">Built specifically for multi-agent teams — not retrofitted from something else</p>
-      
-      <div style="display: flex; flex-direction: column; gap: 20px;">
-        <div style="display: grid; grid-template-columns: 1fr 100px 100px; gap: 0; background: rgba(255,255,255,0.03); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06);">
-          <div style="padding: 14px 20px; font-weight: 600; color: #94a3b8; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255,255,255,0.06);"></div>
-          <div style="padding: 14px 12px; text-align: center; font-weight: 700; color: #10b981; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.06); background: rgba(16,185,129,0.05);">ACP</div>
-          <div style="padding: 14px 12px; text-align: center; font-weight: 600; color: #64748b; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.06);">Others</div>
-          
-          <div style="padding: 14px 20px; color: #e2e8f0; border-bottom: 1px solid rgba(255,255,255,0.04);">Multi-agent orchestration</div>
-          <div style="padding: 14px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(16,185,129,0.03); font-size: 18px;">✅</div>
-          <div style="padding: 14px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.04); color: #64748b; font-size: 18px;">⚠️</div>
-          
-          <div style="padding: 14px 20px; color: #e2e8f0; border-bottom: 1px solid rgba(255,255,255,0.04);">Per-agent cost tracking</div>
-          <div style="padding: 14px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(16,185,129,0.03); font-size: 18px;">✅</div>
-          <div style="padding: 14px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.04); color: #64748b; font-size: 18px;">❌</div>
-          
-          <div style="padding: 14px 20px; color: #e2e8f0; border-bottom: 1px solid rgba(255,255,255,0.04);">Emergency kill switch</div>
-          <div style="padding: 14px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(16,185,129,0.03); font-size: 18px;">✅</div>
-          <div style="padding: 14px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.04); color: #64748b; font-size: 18px;">❌</div>
-          
-          <div style="padding: 14px 20px; color: #e2e8f0; border-bottom: 1px solid rgba(255,255,255,0.04);">Security scoring per agent</div>
-          <div style="padding: 14px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(16,185,129,0.03); font-size: 18px;">✅</div>
-          <div style="padding: 14px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.04); color: #64748b; font-size: 18px;">❌</div>
-          
-          <div style="padding: 14px 20px; color: #e2e8f0; border-bottom: 1px solid rgba(255,255,255,0.04);">Framework agnostic</div>
-          <div style="padding: 14px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(16,185,129,0.03); font-size: 18px;">✅</div>
-          <div style="padding: 14px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.04); color: #64748b; font-size: 18px;">⚠️</div>
-          
-          <div style="padding: 14px 20px; color: #e2e8f0;">5-minute setup</div>
-          <div style="padding: 14px 12px; text-align: center; background: rgba(16,185,129,0.03); font-size: 18px;">✅</div>
-          <div style="padding: 14px 12px; text-align: center; color: #64748b; font-size: 18px;">⚠️</div>
-        </div>
-        
-        <p style="text-align: center; color: #64748b; font-size: 13px; margin-top: 8px;">Compared to general-purpose observability tools (Datadog, LangSmith, Helicone) which weren't built for multi-agent control</p>
       </div>
     </div>
   </section>
@@ -1238,108 +714,81 @@
     </div>
   </section>
 
+  <!-- Why Now - Momentum Section -->
+  <section class="section" style="background: linear-gradient(135deg, #0f172a 0%, #1a1a2e 50%, #0f172a 100%); padding: 80px 20px;">
+    <div class="container" style="max-width: 900px;">
+      <h2 style="text-align: center; margin-bottom: 16px; font-size: 36px;">The Window Is Closing</h2>
+      <p style="text-align: center; color: #94a3b8; margin-bottom: 50px; max-width: 600px; margin-left: auto; margin-right: auto;">Every week without agent controls costs more. Here's what's happening right now:</p>
+      
+      <div style="display: grid; gap: 20px; max-width: 700px; margin: 0 auto;">
+        <div style="display: flex; gap: 16px; align-items: flex-start; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; padding: 20px;">
+          <span style="font-size: 28px; flex-shrink: 0;">🔥</span>
+          <div>
+            <div style="font-weight: 600; margin-bottom: 4px; color: #f87171;">$2.4M lost last month</div>
+            <div style="color: #94a3b8; font-size: 14px;">Average enterprise spend on runaway agents — tokens burned with zero oversight. One team reported a single agent loop costing $47K overnight.</div>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 16px; align-items: flex-start; background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 12px; padding: 20px;">
+          <span style="font-size: 28px; flex-shrink: 0;">⚡</span>
+          <div>
+            <div style="font-weight: 600; margin-bottom: 4px; color: #fbbf24;">MCP adoption up 340% in Q1 2026</div>
+            <div style="color: #94a3b8; font-size: 14px;">Model Context Protocol is becoming the standard for agent-to-tool communication. Teams running 5+ MCP servers need centralized control — yesterday.</div>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 16px; align-items: flex-start; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; padding: 20px;">
+          <span style="font-size: 28px; flex-shrink: 0;">🛡️</span>
+          <div>
+            <div style="font-weight: 600; margin-bottom: 4px; color: #10b981;">SOC 2 auditors are asking about agents</div>
+            <div style="color: #94a3b8; font-size: 14px;">Compliance frameworks are catching up. If your agents touch customer data without audit logs, you're one audit away from a finding.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="cta-section">
     <div class="container">
       <h2>The Multi-Agent Era is Here. Are You Ready?</h2>
       <p>Claude Opus 4.6 just dropped. GPT-5.3-Codex is live. Teams of agents are building C compilers. Don't get left behind shipping AI without proper controls.</p>
       <button class="btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="padding: 16px 40px; font-size: 18px;">Get Early Access Now →</button>
-      <p style="margin-top: 16px; color: #94a3b8; font-size: 14px;">✓ No credit card required &nbsp;•&nbsp; ✓ Free tier available &nbsp;•&nbsp; ✓ Early access live now</p>
+      <p style="margin-top: 16px; color: #94a3b8; font-size: 14px;">✓ No credit card required &nbsp;•&nbsp; ✓ Early access is live now</p>
     </div>
   </section>
 
   <!-- Sticky Bottom CTA Bar -->
-  <div id="sticky-cta" style="
-    position: fixed;
-    bottom: -80px;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(16, 185, 129, 0.3);
-    padding: 12px 20px;
-    transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
-  ">
-    <span style="color: #e2e8f0; font-size: 14px; font-weight: 500;">🛡️ Join <span id="sticky-count" style="color: #10b981; font-weight: 700;">teams</span> on the waitlist</span>
-    <input id="sticky-email" type="email" placeholder="you@company.com" style="
-      padding: 8px 14px;
-      border-radius: 6px;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      background: rgba(30, 41, 59, 0.8);
-      color: #e2e8f0;
-      font-size: 14px;
-      width: 220px;
-      outline: none;
-    " />
-    <button id="sticky-btn" onclick="submitSticky()" style="
-      padding: 8px 20px;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      white-space: nowrap;
-    ">Get Early Access →</button>
-    <button onclick="document.getElementById('sticky-cta').style.bottom='-80px'" style="
-      background: none;
-      border: none;
-      color: #64748b;
-      cursor: pointer;
-      font-size: 18px;
-      padding: 0 4px;
-      line-height: 1;
-    ">✕</button>
+  <div id="sticky-cta" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border-top: 1px solid rgba(16, 185, 129, 0.3); padding: 12px 20px;">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 20px;">🔨</span>
+        <span style="font-weight: 600; font-size: 15px;">Stop agent chaos.</span>
+        <span style="color: #94a3b8; font-size: 14px; display: none;" class="sticky-subtitle">Get the control panel your team needs.</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px; white-space: nowrap;">Get Early Access →</button>
+        <button onclick="document.getElementById('sticky-cta').style.display='none'" style="background: none; border: none; color: #64748b; cursor: pointer; font-size: 18px; padding: 4px 8px;">✕</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    // Sticky CTA: show after scrolling past hero
+    // Show sticky CTA after scrolling past hero
     const stickyCta = document.getElementById('sticky-cta');
-    let stickyDismissed = false;
+    const stickySubtitle = document.querySelector('.sticky-subtitle');
     window.addEventListener('scroll', () => {
-      if (stickyDismissed) return;
-      stickyCta.style.bottom = window.scrollY > 600 ? '0' : '-80px';
+      if (window.scrollY > 600) {
+        stickyCta.style.display = 'block';
+        if (window.innerWidth > 768 && stickySubtitle) stickySubtitle.style.display = 'inline';
+      } else {
+        stickyCta.style.display = 'none';
+      }
     });
-    document.querySelector('#sticky-cta button:last-child').addEventListener('click', () => { stickyDismissed = true; });
-
-    async function submitSticky() {
-      const input = document.getElementById('sticky-email');
-      const btn = document.getElementById('sticky-btn');
-      if (!input.value) return;
-      btn.textContent = 'Joining...';
-      btn.disabled = true;
-      try {
-        const res = await fetch('/api/waitlist', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: input.value })
-        });
-        const data = await res.json();
-        if (data.success) {
-          btn.textContent = '✓ You\'re in!';
-          btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-          input.value = '';
-          document.getElementById('count').textContent = data.count;
-          document.getElementById('sticky-count').textContent = data.count + ' teams';
-        }
-      } catch (err) { btn.textContent = 'Try again'; btn.disabled = false; }
-    }
-  </script>
-
-  <script>
     // Load waitlist count
     fetch('/api/waitlist/count')
       .then(r => r.json())
       .then(data => {
         document.getElementById('count').textContent = data.count;
-        const sc = document.getElementById('sticky-count');
-        if (sc) sc.textContent = data.count + ' teams';
       });
 
     // Handle form submission
@@ -1373,36 +822,8 @@
     });
   </script>
   
-      <!-- Build: e6d1d21 | 2026-02-06 13:36:58 +0000 | https://github.com/saltyprojects/agent-control-panel/commit/e6d1d21a54c8e6e9f374b14a5a2e7a849c93755b -->
+      <!-- Build #43 | 2026-02-08 11:32 UTC -->
 </body>
-<script>
-  // ROI Calculator
-  function updateROI() {
-    const agents = parseInt(document.getElementById('roi-agents').value);
-    const costPerDay = parseInt(document.getElementById('roi-cost').value);
-    const incidents = parseInt(document.getElementById('roi-incidents').value);
-    
-    document.getElementById('roi-agents-val').textContent = agents;
-    document.getElementById('roi-cost-val').textContent = '$' + costPerDay;
-    document.getElementById('roi-incidents-val').textContent = incidents;
-    
-    const monthlyBase = agents * costPerDay * 30;
-    const runawayLoss = incidents * costPerDay * 8; // avg 8x normal cost per incident
-    const withoutACP = monthlyBase + runawayLoss;
-    const savingsPercent = 30;
-    const withACP = Math.round(withoutACP * (1 - savingsPercent / 100));
-    const savings = withoutACP - withACP;
-    
-    document.getElementById('roi-without').textContent = '$' + withoutACP.toLocaleString();
-    document.getElementById('roi-with').textContent = '$' + withACP.toLocaleString();
-    document.getElementById('roi-savings').textContent = '$' + savings.toLocaleString() + '/mo';
-    document.getElementById('roi-percent').textContent = savingsPercent + '% cost reduction';
-  }
-  document.getElementById('roi-agents').addEventListener('input', updateROI);
-  document.getElementById('roi-cost').addEventListener('input', updateROI);
-  document.getElementById('roi-incidents').addEventListener('input', updateROI);
-  updateROI();
-</script>
 </html>
 
 <!-- Auto-deploy test: 1770386087 -->

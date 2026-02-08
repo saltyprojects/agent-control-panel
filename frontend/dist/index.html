@@ -391,13 +391,92 @@
         Watch how teams are using Agent Control Panel to orchestrate AI agents safely and efficiently
       </p>
       
-      <div style="position: relative; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; overflow: hidden; border: 2px solid rgba(16, 185, 129, 0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
-        <div style="padding-top: 56.25%; position: relative; background: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1200 675%22%3E%3Crect fill=%22%231a1a2e%22 width=%221200%22 height=%22675%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22monospace%22 font-size=%2224%22 fill=%22%2310b981%22%3E🎬 Demo Video Coming Soon%3C/text%3E%3C/svg%3E') center/cover;">
-          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: rgba(16, 185, 129, 0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 32px rgba(16, 185, 129, 0.4);">
-            <div style="width: 0; height: 0; border-left: 25px solid white; border-top: 15px solid transparent; border-bottom: 15px solid transparent; margin-left: 8px;"></div>
-          </div>
+      <!-- Interactive Live Terminal Demo -->
+      <div id="live-demo" style="position: relative; background: #0d1117; border-radius: 12px; overflow: hidden; border: 2px solid rgba(16, 185, 129, 0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.5); font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;">
+        <!-- Terminal Title Bar -->
+        <div style="background: #161b22; padding: 10px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #30363d;">
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #f85149;"></div>
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #f0883e;"></div>
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: #3fb950;"></div>
+          <span style="margin-left: 12px; color: #8b949e; font-size: 13px;">agent-control-panel — live monitoring</span>
+          <span id="demo-live-dot" style="margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 12px; color: #3fb950;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #3fb950; display: inline-block; animation: pulse-dot 2s infinite;"></span> LIVE
+          </span>
+        </div>
+        <!-- Terminal Content -->
+        <div style="padding: 20px; min-height: 320px; font-size: 13px; line-height: 1.7; color: #c9d1d9;">
+          <div id="demo-output" style="white-space: pre-wrap;"></div>
+          <span id="demo-cursor" style="display: inline-block; width: 8px; height: 16px; background: #3fb950; animation: blink 1s step-end infinite; vertical-align: middle;"></span>
+        </div>
+        <!-- Agent Status Bar -->
+        <div style="background: #161b22; padding: 12px 16px; border-top: 1px solid #30363d; display: flex; gap: 20px; flex-wrap: wrap; font-size: 12px;">
+          <span style="color: #3fb950;">● 4 agents running</span>
+          <span style="color: #f0883e;">● 1 warning</span>
+          <span style="color: #8b949e;">↑ $12.47 today</span>
+          <span style="color: #8b949e;">⏱ 847 tool calls</span>
+          <span style="color: #8b949e; margin-left: auto;">Budget: 62% remaining</span>
         </div>
       </div>
+      <style>
+        @keyframes blink { 50% { opacity: 0; } }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+      </style>
+      <script>
+      (function() {
+        const lines = [
+          { text: '$ acp status --all', color: '#3fb950', delay: 0 },
+          { text: '', delay: 300 },
+          { text: '┌─────────────────────────────────────────────────────────────┐', color: '#30363d', delay: 100 },
+          { text: '│  AGENT CONTROL PANEL v2.1.0          Feb 2026  │', color: '#58a6ff', delay: 50 },
+          { text: '└─────────────────────────────────────────────────────────────┘', color: '#30363d', delay: 50 },
+          { text: '', delay: 200 },
+          { text: ' AGENT              STATUS     COST     TOKENS    SECURITY', color: '#8b949e', delay: 100 },
+          { text: ' ─────────────────────────────────────────────────────────────', color: '#30363d', delay: 50 },
+          { text: ' code-reviewer       ● active   $3.21    42.1k     ██████████ A+', color: '#3fb950', delay: 80 },
+          { text: ' deploy-bot          ● active   $1.87    23.4k     █████████░ A ', color: '#3fb950', delay: 80 },
+          { text: ' data-pipeline       ● active   $5.12    67.8k     ████████░░ B+', color: '#3fb950', delay: 80 },
+          { text: ' content-writer      ⚠ warning  $2.27    31.2k     ██████░░░░ B-', color: '#f0883e', delay: 80 },
+          { text: '', delay: 300 },
+          { text: ' ⚠ ALERT: content-writer exceeded file access threshold', color: '#f0883e', delay: 100 },
+          { text: '   → Accessed 47 files in /sensitive (limit: 20)', color: '#f0883e', delay: 80 },
+          { text: '   → Auto-sandboxed. Awaiting review.', color: '#f0883e', delay: 80 },
+          { text: '', delay: 400 },
+          { text: '$ acp logs content-writer --last 3', color: '#3fb950', delay: 600 },
+          { text: '', delay: 300 },
+          { text: ' 12:01:14  tool_call    read_file     /src/config.yaml        ✓', color: '#8b949e', delay: 60 },
+          { text: ' 12:01:15  tool_call    read_file     /sensitive/keys.env     ⚠ FLAGGED', color: '#f85149', delay: 60 },
+          { text: ' 12:01:15  action       AUTO_SANDBOX  permissions revoked     🛡️', color: '#58a6ff', delay: 60 },
+          { text: '', delay: 400 },
+          { text: ' ✓ Agent sandboxed in 0.3s. No data exfiltrated.', color: '#3fb950', delay: 100 },
+          { text: ' ✓ Audit log saved. Incident #ACP-2847 created.', color: '#3fb950', delay: 100 },
+          { text: '', delay: 600 },
+          { text: '$ █', color: '#3fb950', delay: 0, final: true },
+        ];
+        const el = document.getElementById('demo-output');
+        const cursor = document.getElementById('demo-cursor');
+        let lineIdx = 0;
+        let totalDelay = 0;
+        function addLine(line) {
+          totalDelay += line.delay;
+          setTimeout(() => {
+            if (line.final) { cursor.style.display = 'none'; }
+            const span = document.createElement('div');
+            span.textContent = line.text;
+            span.style.color = line.color || '#c9d1d9';
+            el.appendChild(span);
+          }, totalDelay);
+        }
+        // Start after 1s
+        setTimeout(() => { lines.forEach(addLine); }, 1000);
+        // Replay every 25s
+        setInterval(() => {
+          el.innerHTML = '';
+          cursor.style.display = 'inline-block';
+          totalDelay = 0;
+          lines.forEach(addLine);
+        }, 25000);
+      })();
+      </script>
       
       <div style="display: flex; justify-content: center; gap: 40px; margin-top: 30px; flex-wrap: wrap;">
         <div style="text-align: center;">
