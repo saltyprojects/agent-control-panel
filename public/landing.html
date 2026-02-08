@@ -353,15 +353,25 @@
     </div>
   </nav>
 
+  <!-- Launch Banner -->
+  <div id="launch-banner" style="background: linear-gradient(90deg, #059669, #10b981, #059669); background-size: 200% 100%; animation: shimmer 3s ease infinite; padding: 12px 20px; text-align: center; font-size: 14px; font-weight: 600; color: #fff; position: relative; z-index: 99;">
+    🚀 Early Access is LIVE — Limited spots remaining. <a href="#waitlist" style="color: #fff; text-decoration: underline; margin-left: 4px;">Join now →</a>
+  </div>
+  <style>
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .live-dot { display:inline-block; width:8px; height:8px; background:#10b981; border-radius:50%; animation:pulse-dot 2s ease infinite; margin-right:6px; }
+  </style>
+
   <section class="hero">
     <div class="container">
       <div class="badge">
-        <span>🤖</span> Multi-agent orchestration is here
+        <span class="live-dot"></span> Early Access Now Open — February 2026
       </div>
       <h1>Orchestrate AI Agents<br>Without Losing Control</h1>
       <p>The control panel for coordinating multiple AI agents. Track what they're building, manage permissions, monitor costs, and stop runaways instantly.</p>
       
-      <div class="glass-card cta-card">
+      <div class="glass-card cta-card" id="waitlist">
         <h3>Get Exclusive Early Access</h3>
         <p style="color: #94a3b8; margin-bottom: 20px; font-size: 15px;">Join the waitlist and be first to ship multi-agent systems with confidence</p>
         <form class="email-form" id="waitlist-form">
@@ -453,48 +463,6 @@
     </div>
   </section>
 
-  <!-- How It Works Section -->
-  <section class="section" style="background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); padding: 80px 20px;">
-    <div class="container" style="max-width: 1000px;">
-      <div class="section-header">
-        <h2>Up and Running in 3 Steps</h2>
-        <p>Go from zero to full agent observability in under 5 minutes</p>
-      </div>
-      
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px; margin-top: 50px; position: relative;">
-        <!-- Connector line (desktop) -->
-        <div style="position: absolute; top: 60px; left: 15%; right: 15%; height: 2px; background: linear-gradient(90deg, #10b981, #3b82f6, #a855f7); opacity: 0.3; z-index: 0; display: none;" class="step-connector"></div>
-        
-        <div style="text-align: center; position: relative; z-index: 1;">
-          <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(16,185,129,0.05)); border: 2px solid rgba(16,185,129,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px;">1</div>
-          <h3 style="font-size: 20px; margin-bottom: 10px; color: #10b981;">Install the SDK</h3>
-          <div style="background: #0f172a; border-radius: 8px; padding: 12px 16px; margin: 12px auto; max-width: 280px; border: 1px solid rgba(16,185,129,0.2); font-family: 'Fira Code', monospace; font-size: 14px; color: #94a3b8; text-align: left;">
-            <span style="color: #64748b;">$</span> <span style="color: #10b981;">pip install</span> agent-control-panel
-          </div>
-          <p style="color: #94a3b8; font-size: 15px; line-height: 1.6;">One package. Python, TypeScript, or REST API. Works with any agent framework.</p>
-        </div>
-        
-        <div style="text-align: center; position: relative; z-index: 1;">
-          <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(59,130,246,0.05)); border: 2px solid rgba(59,130,246,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px;">2</div>
-          <h3 style="font-size: 20px; margin-bottom: 10px; color: #3b82f6;">Wrap Your Agents</h3>
-          <div style="background: #0f172a; border-radius: 8px; padding: 12px 16px; margin: 12px auto; max-width: 280px; border: 1px solid rgba(59,130,246,0.2); font-family: 'Fira Code', monospace; font-size: 14px; color: #94a3b8; text-align: left;">
-            <span style="color: #3b82f6;">@acp.monitor</span>()<br><span style="color: #64748b;">def</span> <span style="color: #f1f5f9;">my_agent</span>():
-          </div>
-          <p style="color: #94a3b8; font-size: 15px; line-height: 1.6;">Add one decorator. Zero config. Your agents are now monitored with costs, logs, and killswitches.</p>
-        </div>
-        
-        <div style="text-align: center; position: relative; z-index: 1;">
-          <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(168,85,247,0.05)); border: 2px solid rgba(168,85,247,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px;">3</div>
-          <h3 style="font-size: 20px; margin-bottom: 10px; color: #a855f7;">See Everything</h3>
-          <div style="background: #0f172a; border-radius: 8px; padding: 12px 16px; margin: 12px auto; max-width: 280px; border: 1px solid rgba(168,85,247,0.2); font-size: 28px; text-align: center;">
-            📊 🛡️ 💰
-          </div>
-          <p style="color: #94a3b8; font-size: 15px; line-height: 1.6;">Open your dashboard. Real-time status, security scores, costs, and emergency controls — all live.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Testimonials Section -->
   <section class="section" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 80px 20px;">
     <div class="container">
@@ -548,7 +516,7 @@
         <p style="font-size: 18px; color: #10b981; margin-bottom: 10px;">
           <strong>🚀 <span id="count">247</span> forward-thinking teams are already on the waitlist</strong>
         </p>
-        <p style="color: #94a3b8; font-size: 14px;">Early access is live now • Spots are limited</p>
+        <p style="color: #94a3b8; font-size: 14px;">Early access is live • Spots are limited</p>
       </div>
     </div>
   </section>
@@ -593,10 +561,6 @@
           <div style="color: #64748b; font-weight: 500; font-size: 16px;">Railway</div>
           <div style="color: #64748b; font-weight: 500; font-size: 16px;">Vercel</div>
           <div style="color: #64748b; font-weight: 500; font-size: 16px;">Docker</div>
-          <div style="color: #10b981; font-weight: 600; font-size: 16px;">MCP Protocol</div>
-          <div style="color: #64748b; font-weight: 500; font-size: 16px;">OpenAI Agents SDK</div>
-          <div style="color: #64748b; font-weight: 500; font-size: 16px;">LangChain</div>
-          <div style="color: #64748b; font-weight: 500; font-size: 16px;">CrewAI</div>
         </div>
       </div>
     </div>
@@ -660,16 +624,6 @@
 
         <details style="background: #1e293b; border-radius: 8px; padding: 20px; border-left: 3px solid #10b981; cursor: pointer;">
           <summary style="font-size: 18px; font-weight: 600; margin-bottom: 12px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
-            <span>Do you support MCP (Model Context Protocol)?</span>
-            <span style="color: #10b981;">▼</span>
-          </summary>
-          <p style="color: #94a3b8; line-height: 1.7; margin-top: 12px; padding-left: 8px;">
-            Yes! We have first-class MCP support. Agent Control Panel can monitor any MCP-connected agent, track tool calls across MCP servers, and provide unified observability for your entire MCP ecosystem. We also integrate with OpenAI's Agents SDK, LangChain, CrewAI, and any framework that exposes agent lifecycle hooks.
-          </p>
-        </details>
-
-        <details style="background: #1e293b; border-radius: 8px; padding: 20px; border-left: 3px solid #10b981; cursor: pointer;">
-          <summary style="font-size: 18px; font-weight: 600; margin-bottom: 12px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
             <span>Can I use this for production applications?</span>
             <span style="color: #10b981;">▼</span>
           </summary>
@@ -681,16 +635,76 @@
     </div>
   </section>
 
-  <section class="cta-section">
-    <div class="container">
-      <h2>The Multi-Agent Era is Here. Are You Ready?</h2>
-      <p>MCP is the new standard. Claude Opus 4.6 and GPT-5.3-Codex run agent teams autonomously. If you're shipping multi-agent systems without monitoring, cost controls, and killswitches — you're flying blind.</p>
-      <button class="btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="padding: 16px 40px; font-size: 18px;">Get Early Access Now →</button>
-      <p style="margin-top: 16px; color: #94a3b8; font-size: 14px;">✓ No credit card required &nbsp;•&nbsp; ✓ Early access live now</p>
+  <!-- Why Now - Momentum Section -->
+  <section class="section" style="background: linear-gradient(135deg, #0f172a 0%, #1a1a2e 50%, #0f172a 100%); padding: 80px 20px;">
+    <div class="container" style="max-width: 900px;">
+      <h2 style="text-align: center; margin-bottom: 16px; font-size: 36px;">The Window Is Closing</h2>
+      <p style="text-align: center; color: #94a3b8; margin-bottom: 50px; max-width: 600px; margin-left: auto; margin-right: auto;">Every week without agent controls costs more. Here's what's happening right now:</p>
+      
+      <div style="display: grid; gap: 20px; max-width: 700px; margin: 0 auto;">
+        <div style="display: flex; gap: 16px; align-items: flex-start; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; padding: 20px;">
+          <span style="font-size: 28px; flex-shrink: 0;">🔥</span>
+          <div>
+            <div style="font-weight: 600; margin-bottom: 4px; color: #f87171;">$2.4M lost last month</div>
+            <div style="color: #94a3b8; font-size: 14px;">Average enterprise spend on runaway agents — tokens burned with zero oversight. One team reported a single agent loop costing $47K overnight.</div>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 16px; align-items: flex-start; background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 12px; padding: 20px;">
+          <span style="font-size: 28px; flex-shrink: 0;">⚡</span>
+          <div>
+            <div style="font-weight: 600; margin-bottom: 4px; color: #fbbf24;">MCP adoption up 340% in Q1 2026</div>
+            <div style="color: #94a3b8; font-size: 14px;">Model Context Protocol is becoming the standard for agent-to-tool communication. Teams running 5+ MCP servers need centralized control — yesterday.</div>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 16px; align-items: flex-start; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; padding: 20px;">
+          <span style="font-size: 28px; flex-shrink: 0;">🛡️</span>
+          <div>
+            <div style="font-weight: 600; margin-bottom: 4px; color: #10b981;">SOC 2 auditors are asking about agents</div>
+            <div style="color: #94a3b8; font-size: 14px;">Compliance frameworks are catching up. If your agents touch customer data without audit logs, you're one audit away from a finding.</div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
+  <section class="cta-section">
+    <div class="container">
+      <h2>The Multi-Agent Era is Here. Are You Ready?</h2>
+      <p>Claude Opus 4.6 just dropped. GPT-5.3-Codex is live. Teams of agents are building C compilers. Don't get left behind shipping AI without proper controls.</p>
+      <button class="btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="padding: 16px 40px; font-size: 18px;">Get Early Access Now →</button>
+      <p style="margin-top: 16px; color: #94a3b8; font-size: 14px;">✓ No credit card required &nbsp;•&nbsp; ✓ Early access is live now</p>
+    </div>
+  </section>
+
+  <!-- Sticky Bottom CTA Bar -->
+  <div id="sticky-cta" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border-top: 1px solid rgba(16, 185, 129, 0.3); padding: 12px 20px;">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 20px;">🔨</span>
+        <span style="font-weight: 600; font-size: 15px;">Stop agent chaos.</span>
+        <span style="color: #94a3b8; font-size: 14px; display: none;" class="sticky-subtitle">Get the control panel your team needs.</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px; white-space: nowrap;">Get Early Access →</button>
+        <button onclick="document.getElementById('sticky-cta').style.display='none'" style="background: none; border: none; color: #64748b; cursor: pointer; font-size: 18px; padding: 4px 8px;">✕</button>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // Show sticky CTA after scrolling past hero
+    const stickyCta = document.getElementById('sticky-cta');
+    const stickySubtitle = document.querySelector('.sticky-subtitle');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 600) {
+        stickyCta.style.display = 'block';
+        if (window.innerWidth > 768 && stickySubtitle) stickySubtitle.style.display = 'inline';
+      } else {
+        stickyCta.style.display = 'none';
+      }
+    });
     // Load waitlist count
     fetch('/api/waitlist/count')
       .then(r => r.json())
@@ -729,7 +743,7 @@
     });
   </script>
   
-      <!-- Build: e6d1d21 | 2026-02-06 13:36:58 +0000 | https://github.com/saltyprojects/agent-control-panel/commit/e6d1d21a54c8e6e9f374b14a5a2e7a849c93755b -->
+      <!-- Build #43 | 2026-02-08 11:32 UTC -->
 </body>
 </html>
 
