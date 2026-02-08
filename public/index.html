@@ -1247,12 +1247,99 @@
     </div>
   </section>
 
+  <!-- Sticky Bottom CTA Bar -->
+  <div id="sticky-cta" style="
+    position: fixed;
+    bottom: -80px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(16, 185, 129, 0.3);
+    padding: 12px 20px;
+    transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+  ">
+    <span style="color: #e2e8f0; font-size: 14px; font-weight: 500;">🛡️ Join <span id="sticky-count" style="color: #10b981; font-weight: 700;">teams</span> on the waitlist</span>
+    <input id="sticky-email" type="email" placeholder="you@company.com" style="
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      background: rgba(30, 41, 59, 0.8);
+      color: #e2e8f0;
+      font-size: 14px;
+      width: 220px;
+      outline: none;
+    " />
+    <button id="sticky-btn" onclick="submitSticky()" style="
+      padding: 8px 20px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    ">Get Early Access →</button>
+    <button onclick="document.getElementById('sticky-cta').style.bottom='-80px'" style="
+      background: none;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      font-size: 18px;
+      padding: 0 4px;
+      line-height: 1;
+    ">✕</button>
+  </div>
+
+  <script>
+    // Sticky CTA: show after scrolling past hero
+    const stickyCta = document.getElementById('sticky-cta');
+    let stickyDismissed = false;
+    window.addEventListener('scroll', () => {
+      if (stickyDismissed) return;
+      stickyCta.style.bottom = window.scrollY > 600 ? '0' : '-80px';
+    });
+    document.querySelector('#sticky-cta button:last-child').addEventListener('click', () => { stickyDismissed = true; });
+
+    async function submitSticky() {
+      const input = document.getElementById('sticky-email');
+      const btn = document.getElementById('sticky-btn');
+      if (!input.value) return;
+      btn.textContent = 'Joining...';
+      btn.disabled = true;
+      try {
+        const res = await fetch('/api/waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: input.value })
+        });
+        const data = await res.json();
+        if (data.success) {
+          btn.textContent = '✓ You\'re in!';
+          btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+          input.value = '';
+          document.getElementById('count').textContent = data.count;
+          document.getElementById('sticky-count').textContent = data.count + ' teams';
+        }
+      } catch (err) { btn.textContent = 'Try again'; btn.disabled = false; }
+    }
+  </script>
+
   <script>
     // Load waitlist count
     fetch('/api/waitlist/count')
       .then(r => r.json())
       .then(data => {
         document.getElementById('count').textContent = data.count;
+        const sc = document.getElementById('sticky-count');
+        if (sc) sc.textContent = data.count + ' teams';
       });
 
     // Handle form submission
